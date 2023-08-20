@@ -103,9 +103,6 @@ position = Vector2(397, 214)
 [node name="unit3" parent="Units" groups=["units"] instance=ExtResource("3_it4u3")]
 position = Vector2(-163, 70)
 
-[node name="unit4" parent="Units" groups=["units"] instance=ExtResource("3_it4u3")]
-position = Vector2(273, -99)
-
 [node name="ui" type="CanvasLayer" parent="."]
 
 [node name="selectbox" type="Panel" parent="ui"]
