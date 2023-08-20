@@ -1,0 +1,35 @@
+[gd_scene load_steps=5 format=3 uid="uid://cxe80dasal4cw"]
+
+[ext_resource type="Texture2D" uid="uid://7hdowu0meedn" path="res://tank.png" id="1_cxny8"]
+[ext_resource type="Script" path="res://unit.gd" id="1_rodqq"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_j1shc"]
+size = Vector2(72, 78)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ujj1i"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 11
+border_width_top = 11
+border_width_right = 11
+border_width_bottom = 11
+border_color = Color(0, 0.945098, 0.627451, 1)
+border_blend = true
+
+[node name="CharacterBody2D" type="CharacterBody2D"]
+script = ExtResource("1_rodqq")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-1, 17)
+shape = SubResource("RectangleShape2D_j1shc")
+
+[node name="selectbox" type="Panel" parent="."]
+visible = false
+offset_left = -41.0
+offset_top = -26.0
+offset_right = 41.0
+offset_bottom = 64.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_ujj1i")
+
+[node name="Tank" type="Sprite2D" parent="."]
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("1_cxny8")
