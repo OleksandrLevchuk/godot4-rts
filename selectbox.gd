@@ -16,7 +16,7 @@ func _process(_delta):
 		drag_start = get_global_mouse_position()
 	elif is_dragging:
 		var mouse = get_global_mouse_position()
-		position = vmin( drag_start, mouse ) # not sure if two mouse calls should be put into a var
+		position = vmin( drag_start, mouse )
 		size = vabs( drag_start - mouse )
 		if Input.is_action_just_released("left_click"):
 			emit_signal("area_selected", position, size )
