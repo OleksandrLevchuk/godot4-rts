@@ -10,9 +10,11 @@ func _process(_delta):
 		'mouse coords': get_global_mouse_position(),
 		'selection position': panel.position,
 		'selection size': panel.size,
-#		'unit coords': unit.position,
 		'camera coords': camera.position,
 		'camera zoom': camera.zoom,
+		'unit coords': unit.position,
+		'unit speed': unit.velocity,
+		'unit angle': rad_to_deg(unit.rotation),
 	}
 	var s = ''
 	for key in dict:

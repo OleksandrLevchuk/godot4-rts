@@ -1,10 +1,11 @@
-[gd_scene load_steps=9 format=3 uid="uid://byys03pyjar55"]
+[gd_scene load_steps=10 format=3 uid="uid://byys03pyjar55"]
 
 [ext_resource type="Script" path="res://selectbox.gd" id="1_lcklq"]
 [ext_resource type="Script" path="res://world.gd" id="1_ypdlr"]
 [ext_resource type="Texture2D" uid="uid://bkqqokig6kd87" path="res://icon.svg" id="2_sfpdn"]
 [ext_resource type="Script" path="res://info.gd" id="2_vad6t"]
 [ext_resource type="PackedScene" uid="uid://cxe80dasal4cw" path="res://unit.tscn" id="3_it4u3"]
+[ext_resource type="Script" path="res://todo list.gd" id="6_loxv4"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_35yg4"]
 texture = ExtResource("2_sfpdn")
@@ -96,15 +97,7 @@ layer_0/tile_data = PackedInt32Array(262139, 65536, 1, 262138, 65536, 1, 262142,
 
 [node name="unit" parent="Units" instance=ExtResource("3_it4u3")]
 position = Vector2(123, 107)
-
-[node name="unit2" parent="Units" instance=ExtResource("3_it4u3")]
-position = Vector2(-54, 41)
-
-[node name="unit3" parent="Units" instance=ExtResource("3_it4u3")]
-position = Vector2(94, -96)
-
-[node name="unit4" parent="Units" instance=ExtResource("3_it4u3")]
-position = Vector2(-203, 90)
+is_selected = true
 
 [node name="ui" type="CanvasLayer" parent="."]
 
@@ -119,6 +112,9 @@ offset_bottom = 23.0
 script = ExtResource("2_vad6t")
 
 [node name="Camera" type="Camera2D" parent="."]
+
+[node name="todo list" type="Node" parent="."]
+script = ExtResource("6_loxv4")
 
 [connection signal="area_selected" from="ui/selectbox" to="." method="_on_selectbox_area_selected"]
 [connection signal="item_rect_changed" from="Camera" to="ui/selectbox" method="_on_camera_item_rect_changed"]
