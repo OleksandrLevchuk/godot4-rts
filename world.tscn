@@ -94,14 +94,17 @@ layer_0/tile_data = PackedInt32Array(262139, 65536, 1, 262138, 65536, 1, 262142,
 
 [node name="Units" type="Node2D" parent="."]
 
-[node name="unit" parent="Units" groups=["units"] instance=ExtResource("3_it4u3")]
+[node name="unit" parent="Units" instance=ExtResource("3_it4u3")]
 position = Vector2(123, 107)
 
-[node name="unit2" parent="Units" groups=["units"] instance=ExtResource("3_it4u3")]
-position = Vector2(397, 214)
+[node name="unit2" parent="Units" instance=ExtResource("3_it4u3")]
+position = Vector2(-54, 41)
 
-[node name="unit3" parent="Units" groups=["units"] instance=ExtResource("3_it4u3")]
-position = Vector2(-163, 70)
+[node name="unit3" parent="Units" instance=ExtResource("3_it4u3")]
+position = Vector2(94, -96)
+
+[node name="unit4" parent="Units" instance=ExtResource("3_it4u3")]
+position = Vector2(-203, 90)
 
 [node name="ui" type="CanvasLayer" parent="."]
 
