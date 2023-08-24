@@ -1,0 +1,33 @@
+[gd_scene load_steps=5 format=3 uid="uid://dgg0qggy2pu7o"]
+
+[ext_resource type="Texture2D" uid="uid://cyel4b2a3tbwc" path="res://art/resource.png" id="1_fpclo"]
+[ext_resource type="Script" path="res://resource.gd" id="1_vsgv5"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qwo5b"]
+size = Vector2(26, 16)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_v5yx7"]
+
+[node name="resource" type="StaticBody2D"]
+script = ExtResource("1_vsgv5")
+
+[node name="Resource" type="Sprite2D" parent="."]
+position = Vector2(0, -3)
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("1_fpclo")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_qwo5b")
+
+[node name="hitbox" type="Area2D" parent="."]
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="hitbox"]
+shape = SubResource("CircleShape2D_v5yx7")
+
+[node name="Timer" type="Timer" parent="."]
+
+[node name="ProgressBar" type="ProgressBar" parent="."]
+offset_left = -23.0
+offset_top = -44.0
+offset_right = 23.0
+offset_bottom = -17.0

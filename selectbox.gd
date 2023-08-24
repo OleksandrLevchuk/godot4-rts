@@ -6,9 +6,9 @@ var select_shape = RectangleShape2D.new()
 signal area_selected # we will signal the world script to select units
 
 func vmin(v1, v2): return Vector2( min(v1.x, v2.x), min(v1.y, v2.y) ) # effectively converts coords into rect position
-func vmax(v1, v2): return Vector2( max(v1.x, v2.x), max(v1.y, v2.y) ) # unused, but pretty <3
+#func vmax(v1, v2): return Vector2( max(v1.x, v2.x), max(v1.y, v2.y) ) # unused, but pretty <3
 func vabs(v): return Vector2( abs(v.x), abs(v.y) ) # effectively converts a vector difference into rect size
-func coords2rect(v1,v2): return Rect2( vmin(v1,v2), vabs(v1-v2) ) # rect is convenient for stuffs
+#func coords2rect(v1,v2): return Rect2( vmin(v1,v2), vabs(v1-v2) ) # rect is convenient for stuffs
 	
 func _process(_delta):
 	if Input.is_action_just_pressed("left_click"):

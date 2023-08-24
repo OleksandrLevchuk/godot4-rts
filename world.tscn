@@ -6,7 +6,7 @@
 [ext_resource type="Script" path="res://info.gd" id="2_vad6t"]
 [ext_resource type="PackedScene" uid="uid://cxe80dasal4cw" path="res://unit.tscn" id="3_it4u3"]
 [ext_resource type="Script" path="res://todo list.gd" id="6_loxv4"]
-[ext_resource type="Texture2D" uid="uid://cyel4b2a3tbwc" path="res://art/resource.png" id="7_74ltv"]
+[ext_resource type="PackedScene" uid="uid://dgg0qggy2pu7o" path="res://resource.tscn" id="7_acvk4"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_35yg4"]
 texture = ExtResource("2_sfpdn")
@@ -117,10 +117,8 @@ script = ExtResource("2_vad6t")
 [node name="todo list" type="Node" parent="."]
 script = ExtResource("6_loxv4")
 
-[node name="Resource" type="Sprite2D" parent="."]
-position = Vector2(303, 61)
-scale = Vector2(0.5, 0.5)
-texture = ExtResource("7_74ltv")
+[node name="resource" parent="." instance=ExtResource("7_acvk4")]
+position = Vector2(288, 61)
 
 [connection signal="area_selected" from="ui/selectbox" to="." method="_on_selectbox_area_selected"]
 [connection signal="item_rect_changed" from="Camera" to="ui/selectbox" method="_on_camera_item_rect_changed"]
