@@ -7,7 +7,9 @@ extends CharacterBody2D
 var is_moving = false
 var is_rotating = false
 var max_speed = 200
-var rotation_speed = PI / 3 # how many seconds it takes to do a 180 degrees turn
+var rotation_speed = PI / 1 # how many seconds it takes to do a 180 degrees turn
+var desired_rotation = 0
+var rotation_threshold = deg_to_rad( 1 )
 
 func _ready():
 	animation.speed_scale = 2.0
@@ -17,7 +19,6 @@ func set_selected(value):
 	is_selected = value
 	box.visible = value
 
-
 func _input(event):
 	if event.is_action_pressed('right_click'):
 		destination = get_global_mouse_position()
@@ -25,17 +26,20 @@ func _input(event):
 		is_rotating = true
 		animation.play('drive')
 		
-func _physics_process(_delta):
-	if not is_moving: # waiting for orders
+func get_rotation_direction(start_angle: float, target_angle: float) -> int:
+	var diff = target_angle - start_angle
+	return sign(diff) if abs(diff) < PI else -sign(diff)
+	
+func _physics_process(delta):
+	if not is_moving: # no orders has been given yet
 		return # so do nothing
-	if position.distance_to(destination) < 15: # we've arrived, let's stop
+	desired_rotation = position.angle_to_point(destination)
+	var difference = wrapf( desired_rotation - rotation, -PI, PI ) # wrapf allows subtracting angles without bugs
+#	var difference = asin(sin(rotation-desired_rotation)) # this also should work ???
+	if abs( difference ) > deg_to_rad( 1 ): # if the difference is too big
+		rotation = wrapf( rotation + rotation_speed * delta * sign(difference), -PI, PI ) # rotates in the direction of the difference
+	velocity = Vector2( cos(rotation), sin(rotation) ) * max_speed
+	move_and_slide()
+	if position.distance_to(destination) < 25: # we've arrived, let's stop
 		is_moving = false
 		animation.stop()
-		return # otherwise, keep moving
-	if is_rotating:
-		var angle_to_destination = position.angle_to_point(destination)
-		rotation = rotation + deg_to_rad( randi()%3 - 1 )
-		if abs( rotation - angle_to_destination ) < deg_to_rad( 5 ):
-			is_rotating = false
-	velocity = position.direction_to(destination) * max_speed
-	move_and_slide()

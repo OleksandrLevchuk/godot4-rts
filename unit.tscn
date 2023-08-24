@@ -54,21 +54,26 @@ _data = {
 }
 
 [node name="CharacterBody2D" type="CharacterBody2D" groups=["units"]]
+rotation = -1.5708
+motion_mode = 1
 script = ExtResource("1_rodqq")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, 12.5)
+position = Vector2(0, -0.125)
+rotation = 1.5708
 shape = SubResource("RectangleShape2D_j1shc")
 
 [node name="selectbox" type="Panel" parent="."]
-visible = false
-offset_left = -22.0
-offset_top = -14.0
-offset_right = 22.0
-offset_bottom = 39.0
+offset_left = 27.0
+offset_top = -22.0
+offset_right = 71.0
+offset_bottom = 32.0
+rotation = 1.5708
 theme_override_styles/panel = SubResource("StyleBoxFlat_ujj1i")
 
 [node name="Tank" type="Sprite2D" parent="."]
+position = Vector2(13, 0)
+rotation = 1.5708
 scale = Vector2(0.25, 0.25)
 texture = ExtResource("2_gikie")
 hframes = 4
