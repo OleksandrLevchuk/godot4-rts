@@ -7,7 +7,7 @@ extends Label
 	
 func _process(_delta):
 	var dict = { 
-		'resource': Game.Crystals,
+		'crystals': Game.Crystals,
 		'units gathering': Game.Units_gathering,
 #		'viewport rect size': get_viewport().get_visible_rect().size,
 #		'mouse coords': get_global_mouse_position(),
@@ -22,7 +22,7 @@ func _process(_delta):
 #		'desired angle': rad_to_deg(unit.position.angle_to_point(unit.destination)),
 #		'cursor angle': rad_to_deg(unit.position.angle_to_point(get_global_mouse_position()-cursor_offset))
 	}
-	var s = ''
+	var tempstr = ''
 	for key in dict:
-		s += key + ': ' + str(dict[key]) + ',\n'
-	text = s
+		tempstr += key + ': ' + str(dict[key]) + ',\n'
+	text = tempstr.left(-2) # remove the trailing comma

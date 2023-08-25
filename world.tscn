@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://bkqqokig6kd87" path="res://icon.svg" id="2_sfpdn"]
 [ext_resource type="PackedScene" uid="uid://cxe80dasal4cw" path="res://tank.tscn" id="3_it4u3"]
 [ext_resource type="PackedScene" uid="uid://b6qi0uh341w1n" path="res://ui.tscn" id="4_n2fly"]
-[ext_resource type="Script" path="res://todo list.gd" id="6_loxv4"]
+[ext_resource type="Script" path="res://Camera.gd" id="5_6ks6h"]
 [ext_resource type="PackedScene" uid="uid://dgg0qggy2pu7o" path="res://crystal.tscn" id="7_acvk4"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_35yg4"]
@@ -104,9 +104,7 @@ position = Vector2(277, -105)
 [node name="ui" parent="." instance=ExtResource("4_n2fly")]
 
 [node name="Camera" type="Camera2D" parent="."]
-
-[node name="todo list" type="Node" parent="."]
-script = ExtResource("6_loxv4")
+script = ExtResource("5_6ks6h")
 
 [node name="objects" type="Node" parent="."]
 
