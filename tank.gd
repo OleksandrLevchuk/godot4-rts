@@ -17,7 +17,7 @@ func set_selected(value):
 	box.visible = value
 
 func _input(event):
-	if event.is_action_pressed('right_click'):
+	if is_selected and event.is_action_pressed('right_click'):
 		destination = get_global_mouse_position()
 		is_moving = true
 		animation.play('drive')
