@@ -32,7 +32,7 @@ func start_gathering():
 func _on_timer_timeout():
 	current_time -= units
 	var tween = get_tree().create_tween()
-	tween.tween_property( bar, 'value', current_time, 0.5 ).set_trans(Tween.TRANS_LINEAR)
+	tween.tween_property( bar, 'value', current_time, 0.5 ).set_trans(Tween.TRANS_CIRC)
 
 func end_gathering():
 	Game.Crystals += 1

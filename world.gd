@@ -8,7 +8,9 @@ var select_rect = RectangleShape2D.new()
 func _ready():
 	units = get_tree().get_nodes_in_group('units')
 
-func _on_ui_area_selected( rect_pos, rect_size ):
-	print('selecting')
+func _on_ui_area_selected( rect ):
 	for unit in units:
-		unit.set_selected( Rect2( rect_pos - camera_offset, rect_size).has_point( unit.position ) )
+		unit.set_selected( rect.has_point( unit.position + camera_offset ) ) # compensate negative coords to be more positive
+
+func _input(event):
+	if Input.is_action_pressed("quit"): get_tree().quit()
