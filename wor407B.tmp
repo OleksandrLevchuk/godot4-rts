@@ -119,3 +119,5 @@ position = Vector2(-330, 114)
 
 [node name="crystal4" parent="objects" instance=ExtResource("7_acvk4")]
 position = Vector2(-141, -158)
+
+[connection signal="area_selected" from="ui" to="." method="_on_ui_area_selected"]

@@ -21,6 +21,7 @@ func _input(event):
 		destination = get_global_mouse_position()
 		is_moving = true
 		animation.play('drive')
+#	if event.is
 
 func _physics_process(delta):
 	if not is_moving: return # no orders has been given yet

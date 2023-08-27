@@ -1,12 +1,15 @@
 extends Node
 var done = "
 	change the tank orientation as it moves
+	make some visual at the point you click, where the tank heads to
+	optimize the way the select box sends a signal to the world node indirectly through the ui node
 "
 var todo = "
-	make some visual at the point you click, where the tank heads to
-	organize the fking project folder
+	fix the tank trembling when going in a straight line
+	fix the tank forever trying to go through walls
+	fix the tank running circles when the target is too close
+	organize the fking project folder, maybe put scripts into a separate one
 	i want triangular selection boxes
-	optimize the way the select box sends a signal to the world node indirectly through the ui node
 	i want some verticality
 	as of now, there's only a drag selection. implement a single unit selection too
 	instead of a constant speed, make the tank accelerate gradually, with reduced turn rate at high speeds

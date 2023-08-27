@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://b6qi0uh341w1n"]
+[gd_scene load_steps=6 format=3 uid="uid://b6qi0uh341w1n"]
 
 [ext_resource type="Script" path="res://selectbox.gd" id="1_k21uh"]
-[ext_resource type="Script" path="res://ui.gd" id="1_psyky"]
 [ext_resource type="Script" path="res://info.gd" id="2_4wqkh"]
+[ext_resource type="Script" path="res://line.gd" id="4_sw5u5"]
+[ext_resource type="Script" path="res://order_target.gd" id="5_dmycc"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7ojft"]
 bg_color = Color(1, 1, 1, 0.223529)
@@ -12,7 +13,6 @@ border_width_right = 1
 border_width_bottom = 1
 
 [node name="ui" type="CanvasLayer"]
-script = ExtResource("1_psyky")
 
 [node name="selectbox" type="Panel" parent="."]
 theme_override_styles/panel = SubResource("StyleBoxFlat_7ojft")
@@ -24,4 +24,8 @@ offset_right = 40.0
 offset_bottom = 23.0
 script = ExtResource("2_4wqkh")
 
-[connection signal="area_selected" from="selectbox" to="." method="_on_selectbox_area_selected"]
+[node name="line" type="Node2D" parent="."]
+script = ExtResource("4_sw5u5")
+
+[node name="order_target" type="Node2D" parent="."]
+script = ExtResource("5_dmycc")
