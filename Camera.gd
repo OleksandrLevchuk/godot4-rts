@@ -19,21 +19,18 @@ func _process(delta):
 		pan_target = position.lerp(position+pan_input, pan_speed) # lerping a vector to percentages higher than 1 is kinda like projecting
 	if is_panning:
 		position = position.lerp( pan_target, delta / easing ) # lower value for smoother pan
-		if position.distance_to(pan_target) < 2 : 
-			is_panning = false
-			print('ended panning')
+		if position.distance_to(pan_target) < 2 : is_panning = false
 	if is_zooming:
-		var zoom_before = zoom.x
-		zoom = zoom.lerp( Vector2.ONE * zoom_factor, delta / easing )
+		var zoom_before = zoom.x # save it for position calculation later
+		# multiplying by Vector2.ONE is the same as Vector2(zoom_factor,zoom_factor)
+		zoom = zoom.lerp( zoom_factor * Vector2.ONE, delta / easing )
+		# still need to find a better way to end lerping
 		if abs(zoom.x-zoom_factor) < 0.001:
 			is_zooming = false
 			zoom = Vector2.ONE * zoom_factor # snap to the precise zoom value
 		# somehow, this nudges the camera back to the cursor by exactly the amount it slid away while zooming
-		# insanely, this line took me hours to figure out
 		position = position.lerp( get_global_mouse_position(), zoom.x/zoom_before - 1 )
-
-func to_screen ( pos : Vector2 ) -> Vector2 :
-	return get_canvas_transform().affine_inverse().basis_xform( pos )
+		# lerp is the most magical thing
 
 @export var zoom_min = 0.5
 @export var zoom_max = 3

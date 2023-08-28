@@ -19,6 +19,10 @@ config/icon="res://icon.svg"
 
 Game="*res://global/game.gd"
 
+[editor]
+
+movie_writer/movie_file="C:/Users/Me/Dropbox/godot video recording.avi"
+
 [input]
 
 left_click={

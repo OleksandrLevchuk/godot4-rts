@@ -3,9 +3,9 @@ var done = "
 	change the tank orientation as it moves
 	make some visual at the point you click, where the tank heads to
 	optimize the way the select box sends a signal to the world node indirectly through the ui node
+	fix the tank trembling when going in a straight line
 "
 var todo = "
-	fix the tank trembling when going in a straight line
 	fix the tank forever trying to go through walls
 	fix the tank running circles when the target is too close
 	organize the fking project folder, maybe put scripts into a separate one
