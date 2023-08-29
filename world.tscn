@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://byys03pyjar55"]
+[gd_scene load_steps=10 format=3 uid="uid://byys03pyjar55"]
 
 [ext_resource type="Script" path="res://world.gd" id="1_ypdlr"]
 [ext_resource type="Texture2D" uid="uid://bkqqokig6kd87" path="res://icon.svg" id="2_sfpdn"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://b6qi0uh341w1n" path="res://ui.tscn" id="4_n2fly"]
 [ext_resource type="Script" path="res://Camera.gd" id="5_6ks6h"]
 [ext_resource type="PackedScene" uid="uid://dgg0qggy2pu7o" path="res://crystal.tscn" id="7_acvk4"]
+[ext_resource type="Texture2D" uid="uid://d0w7iciwtcmi8" path="res://art/factory.png" id="7_tx6fk"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_35yg4"]
 texture = ExtResource("2_sfpdn")
@@ -123,3 +124,8 @@ position = Vector2(-330, 114)
 
 [node name="crystal4" parent="Node2D" instance=ExtResource("7_acvk4")]
 position = Vector2(-141, -158)
+
+[node name="Factory" type="Sprite2D" parent="."]
+position = Vector2(30, -80)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("7_tx6fk")
