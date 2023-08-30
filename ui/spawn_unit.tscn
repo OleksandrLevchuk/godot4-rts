@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://r8xtyeslr4ia"]
 
-[ext_resource type="Script" path="res://spawn_unit.gd" id="1_qqyxa"]
+[ext_resource type="Script" path="res://ui/spawn_unit.gd" id="1_qqyxa"]
 [ext_resource type="Texture2D" uid="uid://b10ttc7xemae1" path="res://art/tank/tank.png" id="2_8yemp"]
 
 [node name="spawn_unit" type="Node2D"]

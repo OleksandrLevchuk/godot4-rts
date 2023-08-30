@@ -1,7 +1,8 @@
 extends CharacterBody2D
+class_name Tank
 
-@onready var box = get_node('selectbox')
-@onready var animation = get_node('AnimationPlayer')
+@onready var box =$selectbox
+@onready var animation = $AnimationPlayer
 @onready var destination = position
 @export var is_selected = false
 var is_moving = false
@@ -9,6 +10,9 @@ var is_turning = false
 var max_speed = 200
 var rotation_speed = PI / 1 # how many seconds it takes to do a 180 degrees turn
 
+func _init( point:Vector2=Vector2.ZERO ):
+	position = point
+	
 func _ready():
 	animation.speed_scale = 2.0
 	set_selected(is_selected)
