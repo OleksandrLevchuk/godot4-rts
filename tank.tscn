@@ -8,10 +8,10 @@ size = Vector2(44, 53)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ujj1i"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
-border_width_left = 11
-border_width_top = 11
-border_width_right = 11
-border_width_bottom = 11
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
 border_color = Color(0, 0.945098, 0.627451, 1)
 border_blend = true
 
@@ -53,7 +53,7 @@ _data = {
 "drive": SubResource("Animation_jhrpe")
 }
 
-[node name="CharacterBody2D" type="CharacterBody2D"]
+[node name="tank" type="CharacterBody2D"]
 rotation = -1.5708
 motion_mode = 1
 script = ExtResource("1_rodqq")

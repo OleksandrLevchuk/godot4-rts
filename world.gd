@@ -1,10 +1,8 @@
 extends Node2D
 
-var units = []
 var selection_start
 
 func _ready():
-	units = get_tree().get_nodes_in_group('units')
 	Game.spawn_unit()
 
 func _input(event):
@@ -14,5 +12,5 @@ func _input(event):
 		selection_start = get_global_mouse_position()
 	elif Input.is_action_just_released('left_click'):
 		var selection_rect = Rect2(selection_start,Vector2.ZERO).expand(get_global_mouse_position())
-		for unit in units:
+		for unit in get_tree().get_nodes_in_group('units'):
 			unit.set_selected(selection_rect.has_point(unit.position))
