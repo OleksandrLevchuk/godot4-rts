@@ -5,6 +5,7 @@ var selection_start
 
 func _ready():
 	units = get_tree().get_nodes_in_group('units')
+	Game.spawn_unit()
 
 func _input(event):
 	if event is InputEventMouseMotion: return

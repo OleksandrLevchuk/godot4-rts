@@ -12,6 +12,7 @@ var rotation_speed = PI / 1 # how many seconds it takes to do a 180 degrees turn
 func _ready():
 	animation.speed_scale = 2.0
 	set_selected(is_selected)
+	add_to_group('units', true)
 
 func set_selected(value):
 	is_selected = value

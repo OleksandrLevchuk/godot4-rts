@@ -6,7 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://b6qi0uh341w1n" path="res://ui.tscn" id="4_n2fly"]
 [ext_resource type="Script" path="res://Camera.gd" id="5_6ks6h"]
 [ext_resource type="PackedScene" uid="uid://dgg0qggy2pu7o" path="res://crystal.tscn" id="7_acvk4"]
-[ext_resource type="Texture2D" uid="uid://d0w7iciwtcmi8" path="res://art/factory.png" id="7_tx6fk"]
+[ext_resource type="PackedScene" uid="uid://bi4ni5ylf72jo" path="res://factory.tscn" id="7_rgfsw"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_35yg4"]
 texture = ExtResource("2_sfpdn")
@@ -93,39 +93,30 @@ layer_0/tile_data = PackedInt32Array(262139, 65536, 1, 262138, 65536, 1, 262142,
 y_sort_enabled = true
 
 [node name="tank" parent="units" instance=ExtResource("3_it4u3")]
-position = Vector2(123, 107)
+position = Vector2(123, 101)
 is_selected = true
-
-[node name="tank2" parent="units" instance=ExtResource("3_it4u3")]
-position = Vector2(-261, 187)
-
-[node name="tank3" parent="units" instance=ExtResource("3_it4u3")]
-position = Vector2(-309, -127)
-
-[node name="tank4" parent="units" instance=ExtResource("3_it4u3")]
-position = Vector2(277, -105)
 
 [node name="ui" parent="." instance=ExtResource("4_n2fly")]
 
 [node name="Camera" type="Camera2D" parent="."]
 script = ExtResource("5_6ks6h")
 
-[node name="Node2D" type="Node2D" parent="."]
+[node name="objects" type="Node2D" parent="."]
 y_sort_enabled = true
 
-[node name="crystal" parent="Node2D" instance=ExtResource("7_acvk4")]
+[node name="crystal" parent="objects" instance=ExtResource("7_acvk4")]
 position = Vector2(288, 61)
 
-[node name="crystal2" parent="Node2D" instance=ExtResource("7_acvk4")]
+[node name="crystal2" parent="objects" instance=ExtResource("7_acvk4")]
 position = Vector2(210, 224)
 
-[node name="crystal3" parent="Node2D" instance=ExtResource("7_acvk4")]
+[node name="crystal3" parent="objects" instance=ExtResource("7_acvk4")]
 position = Vector2(-330, 114)
 
-[node name="crystal4" parent="Node2D" instance=ExtResource("7_acvk4")]
+[node name="crystal4" parent="objects" instance=ExtResource("7_acvk4")]
 position = Vector2(-141, -158)
 
-[node name="Factory" type="Sprite2D" parent="."]
-position = Vector2(30, -80)
-scale = Vector2(0.5, 0.5)
-texture = ExtResource("7_tx6fk")
+[node name="buildings" type="Node2D" parent="."]
+position = Vector2(84, -136)
+
+[node name="factory" parent="buildings" instance=ExtResource("7_rgfsw")]

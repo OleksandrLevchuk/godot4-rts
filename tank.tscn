@@ -53,7 +53,7 @@ _data = {
 "drive": SubResource("Animation_jhrpe")
 }
 
-[node name="CharacterBody2D" type="CharacterBody2D" groups=["units"]]
+[node name="CharacterBody2D" type="CharacterBody2D"]
 rotation = -1.5708
 motion_mode = 1
 script = ExtResource("1_rodqq")

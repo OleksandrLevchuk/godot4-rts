@@ -1,0 +1,40 @@
+[gd_scene load_steps=3 format=3 uid="uid://r8xtyeslr4ia"]
+
+[ext_resource type="Script" path="res://spawn_unit.gd" id="1_qqyxa"]
+[ext_resource type="Texture2D" uid="uid://b10ttc7xemae1" path="res://art/tank/tank.png" id="2_8yemp"]
+
+[node name="spawn_unit" type="Node2D"]
+script = ExtResource("1_qqyxa")
+
+[node name="Panel" type="Panel" parent="."]
+offset_right = 384.0
+offset_bottom = 256.0
+
+[node name="Label" type="Label" parent="."]
+offset_right = 384.0
+offset_bottom = 128.0
+text = "Would you like to spawn this unit?"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="yes" type="Button" parent="."]
+offset_left = 64.0
+offset_top = 168.0
+offset_right = 128.0
+offset_bottom = 199.0
+text = "Yes"
+
+[node name="no" type="Button" parent="."]
+offset_left = 256.0
+offset_top = 168.0
+offset_right = 320.0
+offset_bottom = 199.0
+text = "No"
+
+[node name="Tank" type="Sprite2D" parent="."]
+position = Vector2(192, 152)
+scale = Vector2(0.0930233, 0.0930233)
+texture = ExtResource("2_8yemp")
+
+[connection signal="pressed" from="yes" to="." method="_on_yes_pressed"]
+[connection signal="pressed" from="no" to="." method="_on_no_pressed"]

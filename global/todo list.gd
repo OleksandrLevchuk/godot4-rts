@@ -7,9 +7,9 @@
 ###########################################################
 #		TO DO:
 #	fix the tank forever trying to go through walls
-#	teach the tank to drive in reverse
+#	teach the tank to drive in reverse - this will require route precalculation to decide whether moving backwards is worth the time
 #	fix the tank sometimes flipping instantly when ordered to go slightly backwards
-#	fix the t/ank running circles when the target is too close
+#	fix the tank running circles when the target is too close
 #	organize the fking project folder, maybe put scripts into a separate one
 #	i want triangular selection boxes
 #	i want some verticality
