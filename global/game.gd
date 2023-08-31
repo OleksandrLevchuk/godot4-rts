@@ -1,8 +1,15 @@
 extends Node
 
-var Crystals = 0
-var Units_gathering = 0
-@onready var units_node :Node2D = get_tree().get_root().get_node('world/units')
+var Crystals :int = 0
+var Units_gathering :int = 0
 
-#func spawn_unit(): # unit, pos ):
-#	get_tree().get_root().get_node('world/ui').add_child(spawn.instantiate())
+
+@onready var dialog_scene = preload("res://ui/unit_spawn_dialog.tscn")
+
+var is_dialog_up = false
+func create_unit_spawn_dialog(pos:Vector2):
+	if is_dialog_up: return
+	is_dialog_up = true
+	var dialog = dialog_scene.instantiate()
+	dialog.spawn_pos = pos
+	get_tree().get_root().get_node('world/ui').add_child(dialog)

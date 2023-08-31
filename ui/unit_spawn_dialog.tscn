@@ -1,10 +1,10 @@
-[gd_scene load_steps=3 format=3 uid="uid://r8xtyeslr4ia"]
+[gd_scene load_steps=3 format=3 uid="uid://biiwauuhth8os"]
 
-[ext_resource type="Script" path="res://ui/spawn_unit.gd" id="1_qqyxa"]
-[ext_resource type="Texture2D" uid="uid://b10ttc7xemae1" path="res://art/tank/tank.png" id="2_8yemp"]
+[ext_resource type="Script" path="res://ui/spawn_unit.gd" id="1_tvb7d"]
+[ext_resource type="Texture2D" uid="uid://b10ttc7xemae1" path="res://art/tank/tank.png" id="2_mrt1f"]
 
 [node name="spawn_unit" type="Node2D"]
-script = ExtResource("1_qqyxa")
+script = ExtResource("1_tvb7d")
 
 [node name="Panel" type="Panel" parent="."]
 offset_right = 384.0
@@ -34,7 +34,7 @@ text = "No"
 [node name="Tank" type="Sprite2D" parent="."]
 position = Vector2(192, 152)
 scale = Vector2(0.0930233, 0.0930233)
-texture = ExtResource("2_8yemp")
+texture = ExtResource("2_mrt1f")
 
 [connection signal="pressed" from="yes" to="." method="_on_yes_pressed"]
 [connection signal="pressed" from="no" to="." method="_on_no_pressed"]

@@ -2,10 +2,6 @@ extends Node2D
 
 var select_start :Vector2
 
-#func _ready():
-#	print('ready')
-#	print(units_node)
-
 func _input(event):
 	if event is InputEventMouseMotion: return
 	if Input.is_action_pressed("quit"): get_tree().quit()

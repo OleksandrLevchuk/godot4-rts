@@ -14,17 +14,17 @@ func _process(_delta):
 	if current_time <= 0:
 		end_gathering()
 
-func _on_hitbox_body_entered(body):
-	if 'tank' in body.name:
+func _on_hitbox_body_entered(body:CharacterBody2D):
+	if body.is_in_group('units'):
 		if units == 0: start_gathering()
 		units += 1
 		Game.Units_gathering += 1
 
 func _on_hitbox_body_exited(body):
-	if 'tank' in body.name:
+	if body.is_in_group('units'):
+		if units == 0: timer.stop()
 		units -= 1
 		Game.Units_gathering -= 1
-		if units == 0: timer.stop()
 		
 func start_gathering():
 	timer.start()

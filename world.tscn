@@ -103,6 +103,7 @@ script = ExtResource("5_6ks6h")
 
 [node name="objects" type="Node2D" parent="."]
 y_sort_enabled = true
+metadata/_edit_lock_ = true
 
 [node name="crystal" parent="objects" instance=ExtResource("7_acvk4")]
 position = Vector2(288, 61)
@@ -117,6 +118,8 @@ position = Vector2(-330, 114)
 position = Vector2(-141, -158)
 
 [node name="buildings" type="Node2D" parent="."]
-position = Vector2(84, -136)
+metadata/_edit_lock_ = true
 
 [node name="factory" parent="buildings" instance=ExtResource("7_rgfsw")]
+position = Vector2(174, -139)
+input_pickable = true

@@ -5,10 +5,10 @@
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dl0cw"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
-border_width_left = 11
-border_width_top = 11
-border_width_right = 11
-border_width_bottom = 11
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
 border_color = Color(0, 0.945098, 0.627451, 1)
 border_blend = true
 
@@ -21,6 +21,7 @@ scale = Vector2(1.99414, 1.99414)
 polygon = PackedVector2Array(-4, 64, 43, 8, 3, -18, -40, 6)
 
 [node name="selectbox" type="Panel" parent="."]
+visible = false
 offset_left = 101.0
 offset_top = -88.0
 offset_right = 272.0
