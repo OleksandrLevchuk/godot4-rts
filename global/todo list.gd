@@ -6,6 +6,7 @@
 #	fix the tank trembling when going in a straight line
 ###########################################################
 #		TO DO:
+#	fix tanks spawning inside of the factory
 #	fix the tank forever trying to go through walls
 #	make the tank recalculate its path sometimes, for example every 3 sec
 #	fix the tank running circles when the target is too close
