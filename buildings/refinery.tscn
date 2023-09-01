@@ -1,0 +1,38 @@
+[gd_scene load_steps=6 format=3 uid="uid://blhofuu2vpg2i"]
+
+[ext_resource type="Script" path="res://buildings/refinery.gd" id="1_qc3re"]
+[ext_resource type="Shader" path="res://buildings/refinery.gdshader" id="2_2oo0b"]
+[ext_resource type="Texture2D" uid="uid://d0w7iciwtcmi8" path="res://art/factory.png" id="2_5ddhu"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_jqmm7"]
+radius = 54.0093
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_x62q1"]
+shader = ExtResource("2_2oo0b")
+
+[node name="refinery" type="StaticBody2D"]
+y_sort_enabled = true
+script = ExtResource("1_qc3re")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-3, -2)
+shape = SubResource("CircleShape2D_jqmm7")
+
+[node name="timer" type="Timer" parent="."]
+wait_time = 0.1
+
+[node name="bar" type="ProgressBar" parent="."]
+offset_left = -72.0
+offset_top = -165.0
+offset_right = 76.0
+offset_bottom = -138.0
+pivot_offset = Vector2(80, 139)
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_x62q1")
+position = Vector2(8, -26)
+scale = Vector2(-0.3, 0.5)
+texture = ExtResource("2_5ddhu")
+offset = Vector2(26.6667, 32)
+
+[connection signal="timeout" from="timer" to="." method="_on_timer_timeout"]

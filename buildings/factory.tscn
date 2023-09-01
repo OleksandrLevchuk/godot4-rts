@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://bi4ni5ylf72jo"]
 
-[ext_resource type="Script" path="res://factory.gd" id="1_4cd7g"]
 [ext_resource type="Texture2D" uid="uid://d0w7iciwtcmi8" path="res://art/factory.png" id="1_45tgh"]
+[ext_resource type="Script" path="res://buildings/factory.gd" id="1_qv0e3"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dl0cw"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -13,12 +13,12 @@ border_color = Color(0, 0.945098, 0.627451, 1)
 border_blend = true
 
 [node name="factory" type="StaticBody2D"]
-script = ExtResource("1_4cd7g")
+script = ExtResource("1_qv0e3")
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
 position = Vector2(-0.161133, -21.0497)
 scale = Vector2(1.99414, 1.99414)
-polygon = PackedVector2Array(-4, 64, 43, 8, 3, -18, -40, 6)
+polygon = PackedVector2Array(-1.4236, 45.1572, 19.1366, 29.6116, 26.6587, 37.6351, 39.6969, 27.1043, 32.1748, 19.0808, 49.2248, 5.54109, 12.1161, -28.0574, -33.5176, -1.47948, -39.0338, -7.99859, -47.0573, -4.4883, -33.5176, 15.5705, -41.0397, 19.5822, -34.5206, 29.6116, -20.4794, 21.0866)
 
 [node name="selectbox" type="Panel" parent="."]
 visible = false

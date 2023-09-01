@@ -1,15 +1,18 @@
-[gd_scene load_steps=10 format=3 uid="uid://byys03pyjar55"]
+[gd_scene load_steps=11 format=3 uid="uid://byys03pyjar55"]
 
 [ext_resource type="Script" path="res://world.gd" id="1_ypdlr"]
-[ext_resource type="Texture2D" uid="uid://bkqqokig6kd87" path="res://icon.svg" id="2_sfpdn"]
 [ext_resource type="PackedScene" uid="uid://cxe80dasal4cw" path="res://tank.tscn" id="3_it4u3"]
 [ext_resource type="PackedScene" uid="uid://b6qi0uh341w1n" path="res://ui/ui.tscn" id="4_n2fly"]
 [ext_resource type="Script" path="res://Camera.gd" id="5_6ks6h"]
 [ext_resource type="PackedScene" uid="uid://dgg0qggy2pu7o" path="res://crystal.tscn" id="7_acvk4"]
-[ext_resource type="PackedScene" uid="uid://bi4ni5ylf72jo" path="res://factory.tscn" id="7_rgfsw"]
+[ext_resource type="PackedScene" uid="uid://blhofuu2vpg2i" path="res://buildings/refinery.tscn" id="7_h2bom"]
+[ext_resource type="PackedScene" uid="uid://bi4ni5ylf72jo" path="res://buildings/factory.tscn" id="7_rgfsw"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_2ti2g"]
+load_path = "res://.godot/imported/icon.svg-218a8f2b3041327d8a5756f3a245f83b.ctex"
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_35yg4"]
-texture = ExtResource("2_sfpdn")
+texture = SubResource("CompressedTexture2D_2ti2g")
 use_texture_padding = false
 0:0/0 = 0
 1:1/0 = 0
@@ -123,3 +126,6 @@ metadata/_edit_lock_ = true
 [node name="factory" parent="buildings" instance=ExtResource("7_rgfsw")]
 position = Vector2(174, -139)
 input_pickable = true
+
+[node name="refinery" parent="buildings" instance=ExtResource("7_h2bom")]
+position = Vector2(-302, -153)

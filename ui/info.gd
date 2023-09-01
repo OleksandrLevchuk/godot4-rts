@@ -8,6 +8,7 @@ extends Label
 func _process(_delta):
 	var dict = { 
 		'crystals': Game.Crystals,
+		'energy': Game.Energy,
 		'units gathering': Game.Units_gathering,
 #		'viewport rect size': get_viewport().get_visible_rect().size,
 #		'mouse coords': get_global_mouse_position(),

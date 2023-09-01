@@ -1,6 +1,7 @@
 extends Node
 
 var Crystals :int = 0
+var Energy :int = 0
 var Units_gathering :int = 0
 
 
