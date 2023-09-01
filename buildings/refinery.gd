@@ -10,7 +10,7 @@ func _ready():
 
 func _on_timer_timeout():
 	time -= 1
-	get_tree().create_tween().tween_property($bar,'value',time,0.1) #.set_trans(Tween.TRANS_LINEAR)
+	get_tree().create_tween().tween_property($bar,'value',time,0.1)
 	if time==0: 
 		Game.Energy += 1
 		_ready()
