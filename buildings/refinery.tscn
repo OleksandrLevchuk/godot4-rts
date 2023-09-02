@@ -1,14 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://blhofuu2vpg2i"]
+[gd_scene load_steps=4 format=3 uid="uid://blhofuu2vpg2i"]
 
 [ext_resource type="Script" path="res://buildings/refinery.gd" id="1_qc3re"]
-[ext_resource type="Shader" path="res://buildings/refinery.gdshader" id="2_2oo0b"]
-[ext_resource type="Texture2D" uid="uid://d0w7iciwtcmi8" path="res://art/factory.png" id="2_5ddhu"]
+[ext_resource type="Texture2D" uid="uid://p3lr8gy66yyc" path="res://art/generator.png" id="2_iju20"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_jqmm7"]
 radius = 54.0093
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_x62q1"]
-shader = ExtResource("2_2oo0b")
 
 [node name="refinery" type="StaticBody2D"]
 y_sort_enabled = true
@@ -28,11 +24,8 @@ offset_right = 76.0
 offset_bottom = -138.0
 pivot_offset = Vector2(80, 139)
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-material = SubResource("ShaderMaterial_x62q1")
-position = Vector2(8, -26)
-scale = Vector2(-0.3, 0.5)
-texture = ExtResource("2_5ddhu")
-offset = Vector2(26.6667, 32)
+[node name="Generator" type="Sprite2D" parent="."]
+position = Vector2(0, -32)
+texture = ExtResource("2_iju20")
 
 [connection signal="timeout" from="timer" to="." method="_on_timer_timeout"]

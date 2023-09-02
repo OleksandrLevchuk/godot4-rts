@@ -9,7 +9,6 @@
 [ext_resource type="PackedScene" uid="uid://bi4ni5ylf72jo" path="res://buildings/factory.tscn" id="7_rgfsw"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_2ti2g"]
-load_path = "res://.godot/imported/icon.svg-218a8f2b3041327d8a5756f3a245f83b.ctex"
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_35yg4"]
 texture = SubResource("CompressedTexture2D_2ti2g")
