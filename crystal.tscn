@@ -18,11 +18,6 @@ bg_color = Color(0.937255, 0.615686, 0.517647, 1)
 [node name="crystal" type="StaticBody2D"]
 script = ExtResource("1_txber")
 
-[node name="Resource" type="Sprite2D" parent="."]
-position = Vector2(0, -3)
-scale = Vector2(0.25, 0.25)
-texture = ExtResource("1_fpclo")
-
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_qwo5b")
 
@@ -31,18 +26,22 @@ shape = SubResource("RectangleShape2D_qwo5b")
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="hitbox"]
 shape = SubResource("CircleShape2D_v5yx7")
 
-[node name="ProgressBar" type="ProgressBar" parent="."]
+[node name="bar" type="ProgressBar" parent="."]
 offset_left = -23.0
 offset_top = -28.0
 offset_right = 23.0
 offset_bottom = -20.0
 theme_override_styles/background = SubResource("StyleBoxFlat_1olry")
 theme_override_styles/fill = SubResource("StyleBoxFlat_5s6e2")
-value = 50.0
 show_percentage = false
 
-[node name="Timer" type="Timer" parent="."]
+[node name="timer" type="Timer" parent="."]
+
+[node name="Resource" type="Sprite2D" parent="."]
+position = Vector2(0, -3)
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("1_fpclo")
 
 [connection signal="body_entered" from="hitbox" to="." method="_on_hitbox_body_entered"]
 [connection signal="body_exited" from="hitbox" to="." method="_on_hitbox_body_exited"]
-[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="timeout" from="timer" to="." method="_on_timer_timeout"]

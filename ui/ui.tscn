@@ -1,8 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://b6qi0uh341w1n"]
+[gd_scene load_steps=5 format=3 uid="uid://b6qi0uh341w1n"]
 
 [ext_resource type="Script" path="res://ui/selectbox.gd" id="1_k21uh"]
 [ext_resource type="Script" path="res://ui/info.gd" id="2_4wqkh"]
-[ext_resource type="Script" path="res://ui/line.gd" id="4_sw5u5"]
 [ext_resource type="Script" path="res://ui/order_target.gd" id="5_dmycc"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7ojft"]
@@ -23,9 +22,6 @@ metadata/_edit_use_anchors_ = true
 offset_right = 40.0
 offset_bottom = 23.0
 script = ExtResource("2_4wqkh")
-
-[node name="line" type="Node2D" parent="."]
-script = ExtResource("4_sw5u5")
 
 [node name="order_target" type="Node2D" parent="."]
 script = ExtResource("5_dmycc")

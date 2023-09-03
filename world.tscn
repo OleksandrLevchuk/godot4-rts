@@ -84,9 +84,9 @@ sources/0 = SubResource("TileSetAtlasSource_35yg4")
 [node name="world" type="Node2D"]
 y_sort_enabled = true
 script = ExtResource("1_ypdlr")
-transition_speed = 0.37893
 
 [node name="TileMap" type="TileMap" parent="."]
+visible = false
 tile_set = SubResource("TileSet_qtvp7")
 format = 2
 layer_0/z_index = -1
