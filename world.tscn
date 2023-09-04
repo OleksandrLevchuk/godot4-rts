@@ -1,11 +1,12 @@
-[gd_scene load_steps=11 format=3 uid="uid://byys03pyjar55"]
+[gd_scene load_steps=12 format=3 uid="uid://byys03pyjar55"]
 
 [ext_resource type="Script" path="res://world.gd" id="1_ypdlr"]
+[ext_resource type="Script" path="res://units.gd" id="2_8clxq"]
 [ext_resource type="PackedScene" uid="uid://cxe80dasal4cw" path="res://tank.tscn" id="3_it4u3"]
 [ext_resource type="PackedScene" uid="uid://b6qi0uh341w1n" path="res://ui/ui.tscn" id="4_n2fly"]
 [ext_resource type="Script" path="res://Camera.gd" id="5_6ks6h"]
 [ext_resource type="PackedScene" uid="uid://dgg0qggy2pu7o" path="res://crystal.tscn" id="7_acvk4"]
-[ext_resource type="PackedScene" uid="uid://blhofuu2vpg2i" path="res://buildings/refinery.tscn" id="7_h2bom"]
+[ext_resource type="PackedScene" uid="uid://blhofuu2vpg2i" path="res://buildings/power_plant.tscn" id="7_h2bom"]
 [ext_resource type="PackedScene" uid="uid://bi4ni5ylf72jo" path="res://buildings/factory.tscn" id="7_rgfsw"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_2ti2g"]
@@ -94,6 +95,7 @@ layer_0/tile_data = PackedInt32Array(262139, 65536, 1, 262138, 65536, 1, 262142,
 
 [node name="units" type="Node2D" parent="."]
 y_sort_enabled = true
+script = ExtResource("2_8clxq")
 
 [node name="tank" parent="units" instance=ExtResource("3_it4u3")]
 position = Vector2(123, 101)
@@ -127,5 +129,8 @@ metadata/_edit_lock_ = true
 position = Vector2(174, -139)
 input_pickable = true
 
-[node name="refinery" parent="buildings" instance=ExtResource("7_h2bom")]
+[node name="power_plant" parent="buildings" instance=ExtResource("7_h2bom")]
 position = Vector2(-302, -153)
+
+[connection signal="spawn_unit" from="ui" to="units" method="_on_ui_spawn_unit"]
+[connection signal="show_spawn_dialog" from="buildings/factory" to="ui" method="_on_factory_show_spawn_dialog"]

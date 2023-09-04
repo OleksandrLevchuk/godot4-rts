@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://ui/spawn_unit.gd" id="1_tvb7d"]
 [ext_resource type="Texture2D" uid="uid://b10ttc7xemae1" path="res://art/tank/tank.png" id="2_mrt1f"]
 
-[node name="spawn_unit" type="Node2D"]
+[node name="unit_spawn_dialog" type="Node2D"]
 script = ExtResource("1_tvb7d")
 
 [node name="Panel" type="Panel" parent="."]

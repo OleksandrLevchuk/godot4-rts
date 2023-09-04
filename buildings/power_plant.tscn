@@ -1,21 +1,21 @@
 [gd_scene load_steps=4 format=3 uid="uid://blhofuu2vpg2i"]
 
-[ext_resource type="Script" path="res://buildings/refinery.gd" id="1_qc3re"]
+[ext_resource type="Script" path="res://buildings/power_plant.gd" id="1_73k3y"]
 [ext_resource type="Texture2D" uid="uid://p3lr8gy66yyc" path="res://art/buildings/generator.png" id="2_iju20"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_jqmm7"]
 radius = 54.0093
 
-[node name="refinery" type="StaticBody2D"]
+[node name="power_plant" type="StaticBody2D"]
 y_sort_enabled = true
-script = ExtResource("1_qc3re")
+script = ExtResource("1_73k3y")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-3, -2)
 shape = SubResource("CircleShape2D_jqmm7")
 
 [node name="timer" type="Timer" parent="."]
-wait_time = 0.2
+wait_time = 0.3
 autostart = true
 
 [node name="bar" type="ProgressBar" parent="."]
@@ -24,6 +24,7 @@ offset_top = -165.0
 offset_right = 76.0
 offset_bottom = -152.0
 pivot_offset = Vector2(80, 139)
+max_value = 10.0
 show_percentage = false
 
 [node name="Generator" type="Sprite2D" parent="."]

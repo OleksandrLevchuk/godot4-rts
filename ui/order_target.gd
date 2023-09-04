@@ -13,7 +13,6 @@ var is_fading := false
 func _draw():
 	draw_circle( target, CIRCLE_SIZE*fade_percent, COLOR1.lerp(COLOR2, fade_percent) )
 
-
 func _process(delta):
 	if Input.is_action_just_pressed("right_click"):
 		target = get_global_mouse_position()
