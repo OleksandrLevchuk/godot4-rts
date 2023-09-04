@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://b6qi0uh341w1n"]
+[gd_scene load_steps=6 format=3 uid="uid://b6qi0uh341w1n"]
 
 [ext_resource type="Script" path="res://ui/selectbox.gd" id="1_k21uh"]
+[ext_resource type="Script" path="res://ui/ui.gd" id="1_noydw"]
 [ext_resource type="Script" path="res://ui/info.gd" id="2_4wqkh"]
 [ext_resource type="Script" path="res://ui/order_target.gd" id="5_dmycc"]
 
@@ -12,6 +13,7 @@ border_width_right = 1
 border_width_bottom = 1
 
 [node name="ui" type="CanvasLayer"]
+script = ExtResource("1_noydw")
 
 [node name="selectbox" type="Panel" parent="."]
 theme_override_styles/panel = SubResource("StyleBoxFlat_7ojft")
