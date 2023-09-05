@@ -24,7 +24,7 @@ offset_top = -165.0
 offset_right = 76.0
 offset_bottom = -152.0
 pivot_offset = Vector2(80, 139)
-max_value = 10.0
+max_value = 3.0
 show_percentage = false
 
 [node name="Generator" type="Sprite2D" parent="."]
