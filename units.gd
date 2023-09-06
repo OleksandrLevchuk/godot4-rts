@@ -1,6 +1,7 @@
 extends Node2D
 
 @onready var unit_scene = preload("res://tank.tscn")
+signal unit_spawned # to notify the minimap
 
 func area_is_free(origin, radius):
 	var area = Rect2(origin,Vector2.ZERO).grow(radius)
@@ -20,3 +21,4 @@ func _on_ui_spawn_unit(pos:Vector2):
 	unit.position = find_free_spot_at(pos)
 	unit.rotation = randf()*TAU-PI
 	unit.add_to_group('units', true)
+	unit_spawned.emit(unit.position)

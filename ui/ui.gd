@@ -17,3 +17,7 @@ func _on_factory_show_spawn_dialog(pos:Vector2):
 func _ready():
 	$info.update()
 	Game.update_ui.connect($info.update)
+
+
+func _on_units_unit_spawned(pos):
+	$minimap.add('unit',pos)

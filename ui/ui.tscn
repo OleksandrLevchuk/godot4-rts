@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://b6qi0uh341w1n"]
+[gd_scene load_steps=7 format=3 uid="uid://b6qi0uh341w1n"]
 
 [ext_resource type="Script" path="res://ui/selectbox.gd" id="1_k21uh"]
 [ext_resource type="Script" path="res://ui/ui.gd" id="1_noydw"]
 [ext_resource type="Script" path="res://ui/info.gd" id="2_4wqkh"]
 [ext_resource type="Script" path="res://ui/order_target.gd" id="5_dmycc"]
+[ext_resource type="PackedScene" uid="uid://cqcw77smpe35t" path="res://minimap.tscn" id="5_nndtc"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7ojft"]
 bg_color = Color(1, 1, 1, 0.223529)
@@ -21,9 +22,17 @@ script = ExtResource("1_k21uh")
 metadata/_edit_use_anchors_ = true
 
 [node name="info" type="Label" parent="."]
-offset_right = 40.0
-offset_bottom = 23.0
+offset_left = 492.0
+offset_top = 16.0
+offset_right = 532.0
+offset_bottom = 42.0
+text = "asdf"
+horizontal_alignment = 2
 script = ExtResource("2_4wqkh")
 
 [node name="order_target" type="Node2D" parent="."]
 script = ExtResource("5_dmycc")
+
+[node name="minimap" parent="." instance=ExtResource("5_nndtc")]
+offset_right = 0.0
+offset_bottom = 0.0
