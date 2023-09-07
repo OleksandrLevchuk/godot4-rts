@@ -3,3 +3,4 @@
 # Vector2.ONE * x is the same as Vector2(x,x)
 # Rect2(start,end-start).abs() creates a proper rect, regardless where the points are
 # randf()*TAU-PI gives a random angle
+# velocity = Vector2( cos(rotation), sin(rotation) ) * MAX_SPEED

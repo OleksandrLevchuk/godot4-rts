@@ -12,7 +12,7 @@ func area_is_free(origin, radius):
 func find_free_spot_at(area_center):
 	const area_size = 50
 	for offset in INF: # to infinity and beyond!
-		var point = area_center + offset * Vector2(randf()*2-1,randf()*2-1)
+		var point = area_center + offset * Vector2.ONE * (randf()*2-1)
 		if area_is_free(point, area_size): return point
 
 func _on_ui_spawn_unit(pos:Vector2):
@@ -21,4 +21,4 @@ func _on_ui_spawn_unit(pos:Vector2):
 	unit.position = find_free_spot_at(pos)
 	unit.rotation = randf()*TAU-PI
 	unit.add_to_group('units', true)
-	unit_spawned.emit(unit.position)
+	unit_spawned.emit(unit.minimap_id,unit.position)

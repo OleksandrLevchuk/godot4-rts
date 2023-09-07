@@ -57,7 +57,6 @@ script = ExtResource("2_8clxq")
 
 [node name="tank" parent="units" instance=ExtResource("3_it4u3")]
 position = Vector2(123, 101)
-is_selected = true
 
 [node name="ui" parent="." instance=ExtResource("4_n2fly")]
 

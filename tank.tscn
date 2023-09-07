@@ -78,7 +78,7 @@ scale = Vector2(0.25, 0.25)
 texture = ExtResource("2_gikie")
 hframes = 4
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+[node name="animation" type="AnimationPlayer" parent="."]
 libraries = {
 "": SubResource("AnimationLibrary_3hjh7")
 }
