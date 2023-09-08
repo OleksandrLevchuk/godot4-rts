@@ -1,12 +1,14 @@
 extends CharacterBody2D
 
 const MAX_SPEED := 200
-const ACCELERATION_TIME := 6 # seconds to reach max speed
+const ACCELERATION_TIME := 1 # seconds to reach max speed
 
 @onready var destination = position
 var is_selected := false
 var is_moving := false
 var is_turning := false
+var is_accelerating := false
+var is_decelerating := false
 var accel_mult := 0.0
 var rotation_speed = PI / 1 # how many seconds it takes to do a 180 degrees turn
 var minimap_id
@@ -25,16 +27,38 @@ func _input(event):
 		destination = get_global_mouse_position()
 		is_moving = true
 		is_turning = true
-#		create_tween().tween_property(self, 'accel_mult', 1.0, ACCELERATION_TIME)
+		is_accelerating = accel_mult < 1
 		$animation.play('drive')
+
+func cubic_bezier( t:float, a:=0, b:=1.23, c:=0.2, d=0.52 ):
+	var p0 = Vector2.ZERO
+	var p1 = Vector2(a,b)
+	var p2 = Vector2(c,d)
+	var p3 = Vector2.ONE
+	
+	var q0 = p0.lerp(p1, t)
+	var q1 = p1.lerp(p2, t)
+	var q2 = p2.lerp(p3, t)
+
+	var r0 = q0.lerp(q1, t)
+	var r1 = q1.lerp(q2, t)
+	return r0.lerp(r1, t).y
+
 
 func _physics_process(delta):
 	if not is_moving: return # no orders has been given yet
-	accel_mult += delta/ACCELERATION_TIME
-	accel_mult = min( 1.0, accel_mult )
-	# the tank accelerates hard at first, losing the acceleration with time
-	var accel_mult_eased = lerp( 0.2, 2-accel_mult, accel_mult ) 
-	print( accel_mult_eased )
+	var accel_mult_eased = 1
+	if is_accelerating:
+		accel_mult += delta/ACCELERATION_TIME
+		if accel_mult > 1:
+			accel_mult = 1
+			is_accelerating = false
+		# the tank accelerates hard at first, losing the acceleration with time
+		accel_mult_eased = cubic_bezier( accel_mult )
+		print( accel_mult, ' -> ', accel_mult_eased )
+#		accel_mult_eased = lerp( 0.2, 2-accel_mult, accel_mult )
+	if is_decelerating:
+		accel_mult -= delta/ACCELERATION_TIME * 2 # break twice as fast
 	if is_turning: # currently, the tank will only turn once per order, and will not recalculate it's agle if it's shifted by something
 		var desired_angle = position.angle_to_point(destination)
 		var difference = asin( sin( desired_angle - rotation ) ) # this also works... less readable but probably faster
