@@ -19,6 +19,5 @@ func _ready():
 	Game.update_ui.connect($info.update)
 
 
-func _on_units_unit_spawned(pos, id):
-	
-	$minimap.add_marker('unit', pos, id)
+func _on_units_unit_spawned( id, pos ):
+	$minimap.add_marker('unit', id, pos )

@@ -17,8 +17,8 @@ func find_free_spot_at(area_center):
 
 func _on_ui_spawn_unit(pos:Vector2):
 	var unit = unit_scene.instantiate()
-	add_child(unit)
-	unit.position = find_free_spot_at(pos)
+	add_child( unit )
+	unit.position = find_free_spot_at( pos )
 	unit.rotation = randf()*TAU-PI
-	unit.add_to_group('units', true)
-	unit_spawned.emit(unit.minimap_id,unit.position)
+	unit.add_to_group( 'units', true )
+	unit_spawned.emit( unit.minimap_id, unit.position )

@@ -3,7 +3,6 @@ extends Node2D
 var select_start :Vector2
 
 #func _ready():
-#	print(min(1,2))
 
 func _input(event):
 	if Input.is_action_pressed("quit"): get_tree().quit()
