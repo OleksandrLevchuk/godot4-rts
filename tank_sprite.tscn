@@ -1,7 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://tq46vowam2m5"]
-
-[ext_resource type="Texture2D" uid="uid://b10ttc7xemae1" path="res://art/tank/tank.png" id="1_d1we4"]
-
-[node name="Sprite2D" type="Sprite2D"]
-scale = Vector2(0.25, 0.25)
-texture = ExtResource("1_d1we4")

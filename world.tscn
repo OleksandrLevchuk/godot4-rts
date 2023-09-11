@@ -56,7 +56,10 @@ y_sort_enabled = true
 script = ExtResource("2_8clxq")
 
 [node name="tank" parent="units" instance=ExtResource("3_it4u3")]
-position = Vector2(123, 101)
+position = Vector2(374, 161)
+
+[node name="tank2" parent="units" instance=ExtResource("3_it4u3")]
+position = Vector2(395, -76)
 
 [node name="ui" parent="." instance=ExtResource("4_n2fly")]
 

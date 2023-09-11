@@ -14,10 +14,16 @@ var accel_mult_eased := 0.0
 var minimap_id :int
 var destination :Vector2
 
+signal spawned
+signal moved
+
 func _ready():
 	$animation.speed_scale = 2.0
 	add_to_group('units', true)
 	minimap_id = Game.get_new_minimap_id()
+	spawned.emit()
+	moved.connect( get_tree().get_root().get_node("world/ui").on_unit_moved )
+	print("my minimap id is ", minimap_id)
 
 func set_selected(value):
 	is_selected = value
@@ -63,7 +69,8 @@ func _physics_process(delta):
 			is_turning = false
 	velocity = Vector2.RIGHT.rotated(rotation) * MAX_SPEED * accel_mult_eased
 	move_and_slide()
-	if position.distance_to(destination) < 15: # we've arrived, let's stop
+	moved.emit( minimap_id, position )
+	if position.distance_to( destination ) < 15: # we've arrived, let's stop
 		is_moving = false
 		accel_mult = 0.0
 		$animation.stop()
