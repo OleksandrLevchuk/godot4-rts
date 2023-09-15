@@ -14,15 +14,12 @@ var accel_mult_eased := 0.0
 var minimap_id :int
 var destination :Vector2
 
-signal spawned
 signal moved
 
 func _ready():
 	$animation.speed_scale = 2.0
 	add_to_group('units', true)
 	minimap_id = Game.get_new_minimap_id()
-	spawned.emit()
-	moved.connect( get_tree().get_root().get_node("world/ui").on_unit_moved )
 	print("my minimap id is ", minimap_id)
 
 func set_selected(value):

@@ -4,7 +4,7 @@ var select_start :Vector2
 
 #func _ready():
 
-func _input(event):
+func _input(_event):
 	if Input.is_action_pressed("quit"): get_tree().quit()
 	elif Input.is_action_just_pressed('left_click'):
 		select_start = get_global_mouse_position()

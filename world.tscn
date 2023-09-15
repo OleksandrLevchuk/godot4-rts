@@ -58,8 +58,29 @@ script = ExtResource("2_8clxq")
 [node name="tank" parent="units" instance=ExtResource("3_it4u3")]
 position = Vector2(374, 161)
 
+[node name="tank3" parent="units" instance=ExtResource("3_it4u3")]
+position = Vector2(-211, 131)
+
+[node name="tank4" parent="units" instance=ExtResource("3_it4u3")]
+position = Vector2(-81, -60)
+
+[node name="tank5" parent="units" instance=ExtResource("3_it4u3")]
+position = Vector2(-477, -230)
+
+[node name="tank6" parent="units" instance=ExtResource("3_it4u3")]
+position = Vector2(-468, 248)
+
+[node name="tank7" parent="units" instance=ExtResource("3_it4u3")]
+position = Vector2(465, -237)
+
+[node name="tank8" parent="units" instance=ExtResource("3_it4u3")]
+position = Vector2(-50, 263)
+
+[node name="tank9" parent="units" instance=ExtResource("3_it4u3")]
+position = Vector2(507, 265)
+
 [node name="tank2" parent="units" instance=ExtResource("3_it4u3")]
-position = Vector2(395, -76)
+position = Vector2(406, -89)
 
 [node name="ui" parent="." instance=ExtResource("4_n2fly")]
 
@@ -92,6 +113,9 @@ input_pickable = true
 [node name="power_plant" parent="buildings" instance=ExtResource("7_h2bom")]
 position = Vector2(-302, -153)
 
-[connection signal="unit_spawned" from="units" to="ui" method="_on_units_unit_spawned"]
+[connection signal="unit_moved" from="units" to="ui" method="_on_unit_moved"]
+[connection signal="unit_spawned" from="units" to="ui" method="_on_unit_spawned"]
 [connection signal="spawn_unit" from="ui" to="units" method="_on_ui_spawn_unit"]
+[connection signal="moved" from="camera" to="ui" method="_on_camera_moved"]
+[connection signal="zoomed" from="camera" to="ui" method="_on_camera_zoomed"]
 [connection signal="show_spawn_dialog" from="buildings/factory" to="ui" method="_on_factory_show_spawn_dialog"]

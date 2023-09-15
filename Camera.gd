@@ -11,6 +11,13 @@ var is_zooming := false
 var pan_target :Vector2
 var zoom_factor := 1.0
 
+signal moved
+signal zoomed
+
+
+func _ready():
+	moved.emit(position)
+	zoomed.emit(zoom)
 
 func _process(delta):
 	var pan_input := Vector2( 
@@ -22,6 +29,7 @@ func _process(delta):
 		print(pan_target)
 	if is_panning:
 		position = position.lerp( pan_target, delta / EASING )
+		moved.emit(position)
 		if position.distance_to(pan_target) < 2 : is_panning = false
 		
 	if not is_zooming: return
@@ -31,10 +39,12 @@ func _process(delta):
 		zoom = Vector2.ONE * zoom_factor #snap to the precise zoom value
 		is_zooming = false #this section is kinda lame idk
 	#nudge camera back to cursor by the amount it slid away while zooming
+	zoomed.emit(zoom)
 	position = position.lerp(get_global_mouse_position(),zoom.x/zoom_before-1)
+	
 
 
-func _input(event:InputEvent):
+func _input(_event:InputEvent):
 	var zoom_direction := Input.get_axis('wheel_up', 'wheel_down')
 	if not zoom_direction: return
 	zoom_factor += zoom_factor ** 1.5 * zoom_direction * ZOOM_SPEED * 0.01

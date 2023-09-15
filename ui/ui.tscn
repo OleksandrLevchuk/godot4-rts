@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://b6qi0uh341w1n"]
+[gd_scene load_steps=11 format=3 uid="uid://b6qi0uh341w1n"]
 
 [ext_resource type="Script" path="res://ui/selectbox.gd" id="1_k21uh"]
 [ext_resource type="Script" path="res://ui/ui.gd" id="1_noydw"]
@@ -6,7 +6,6 @@
 [ext_resource type="Script" path="res://minimap_viewport.gd" id="5_7imi8"]
 [ext_resource type="Script" path="res://ui/order_target.gd" id="5_dmycc"]
 [ext_resource type="Texture2D" uid="uid://bamblf1t5gppg" path="res://art/color.jpg" id="6_kctty"]
-[ext_resource type="PackedScene" uid="uid://tq46vowam2m5" path="res://minimap_markers/unit_marker.tscn" id="7_mu0tx"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7ojft"]
 bg_color = Color(1, 1, 1, 0.223529)
@@ -80,6 +79,7 @@ metadata/_edit_lock_ = true
 [node name="minimap" type="SubViewportContainer" parent="."]
 offset_right = 280.0
 offset_bottom = 280.0
+scale = Vector2(0.5, 0.5)
 
 [node name="viewport" type="SubViewport" parent="minimap"]
 handle_input_locally = false
@@ -98,9 +98,6 @@ layer_0/tile_data = PackedInt32Array(262139, 1, 0, 262138, 1, 0, 262142, 1, 0, 2
 
 [node name="units" type="Node2D" parent="minimap/viewport"]
 y_sort_enabled = true
-
-[node name="Polygon2D" parent="minimap/viewport/units" instance=ExtResource("7_mu0tx")]
-position = Vector2(22, 22)
 
 [node name="objects" type="Node2D" parent="minimap/viewport"]
 

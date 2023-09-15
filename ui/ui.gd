@@ -18,8 +18,17 @@ func _ready():
 	$info.update()
 	Game.update_ui.connect($info.update)
 
-func on_unit_spawned( id, pos ):
+func _on_unit_spawned( id, pos ):
 	$minimap/viewport.add_marker('unit', id, pos )
 
-func on_unit_moved( id, pos ):
+func _on_unit_moved( id, pos ):
+	print("ui received unit_moved signal")
 	$minimap/viewport.move_marker( id, pos )
+
+
+func _on_camera_moved(pos):
+	$minimap/viewport.move_camera(pos)
+
+
+func _on_camera_zoomed(zoom):
+	$minimap/viewport.zoom_camera(zoom)
