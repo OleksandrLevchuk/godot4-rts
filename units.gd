@@ -31,5 +31,4 @@ func _on_ordered_unit_spawn(pos:Vector2):
 	unit_spawned.emit( unit.minimap_id, unit.position )
 
 func _on_unit_moved(id,pos):
-	print("units emitted unit_moved")
 	unit_moved.emit(id,pos)

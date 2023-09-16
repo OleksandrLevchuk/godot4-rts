@@ -35,7 +35,7 @@ func _process(delta):
 	if not is_zooming: return
 	var zoom_before = zoom.x #save it for position calculation later
 	zoom = zoom.lerp( zoom_factor * Vector2.ONE, delta / EASING ) #never ends
-	if abs(zoom.x-zoom_factor) < 0.001: #so, force it to end
+	if abs(zoom.x-zoom_factor) < 0.001: #hence, force it to end
 		zoom = Vector2.ONE * zoom_factor #snap to the precise zoom value
 		is_zooming = false #this section is kinda lame idk
 	#nudge camera back to cursor by the amount it slid away while zooming

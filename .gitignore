@@ -2,6 +2,7 @@
 .godot/
 *.ignored/
 *.import
+*.tmp
 *.psd
 *.clip
 *.spine

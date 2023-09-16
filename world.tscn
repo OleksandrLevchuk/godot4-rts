@@ -58,30 +58,6 @@ script = ExtResource("2_8clxq")
 [node name="tank" parent="units" instance=ExtResource("3_it4u3")]
 position = Vector2(374, 161)
 
-[node name="tank3" parent="units" instance=ExtResource("3_it4u3")]
-position = Vector2(-211, 131)
-
-[node name="tank4" parent="units" instance=ExtResource("3_it4u3")]
-position = Vector2(-81, -60)
-
-[node name="tank5" parent="units" instance=ExtResource("3_it4u3")]
-position = Vector2(-477, -230)
-
-[node name="tank6" parent="units" instance=ExtResource("3_it4u3")]
-position = Vector2(-468, 248)
-
-[node name="tank7" parent="units" instance=ExtResource("3_it4u3")]
-position = Vector2(465, -237)
-
-[node name="tank8" parent="units" instance=ExtResource("3_it4u3")]
-position = Vector2(-50, 263)
-
-[node name="tank9" parent="units" instance=ExtResource("3_it4u3")]
-position = Vector2(507, 265)
-
-[node name="tank2" parent="units" instance=ExtResource("3_it4u3")]
-position = Vector2(406, -89)
-
 [node name="ui" parent="." instance=ExtResource("4_n2fly")]
 
 [node name="camera" type="Camera2D" parent="."]

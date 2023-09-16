@@ -22,9 +22,10 @@ func _ready():
 	minimap_id = Game.get_new_minimap_id()
 	print("my minimap id is ", minimap_id)
 
-func set_selected(value):
+func set_selected(value:=true):
 	is_selected = value
 	$selectbox.visible = value
+	
 
 func _input(event):
 	if is_selected and event.is_action_released('right_click'):

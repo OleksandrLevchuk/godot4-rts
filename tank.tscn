@@ -64,6 +64,7 @@ rotation = 1.5708
 shape = SubResource("RectangleShape2D_j1shc")
 
 [node name="selectbox" type="Panel" parent="."]
+visible = false
 offset_left = 27.0
 offset_top = -22.0
 offset_right = 71.0
