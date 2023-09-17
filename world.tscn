@@ -1,12 +1,12 @@
 [gd_scene load_steps=12 format=3 uid="uid://byys03pyjar55"]
 
-[ext_resource type="Script" path="res://world.gd" id="1_ypdlr"]
-[ext_resource type="Script" path="res://units.gd" id="2_8clxq"]
+[ext_resource type="Script" path="res://scripts/world.gd" id="1_ypdlr"]
+[ext_resource type="Script" path="res://scripts/units.gd" id="2_8clxq"]
 [ext_resource type="Texture2D" uid="uid://bamblf1t5gppg" path="res://art/color.jpg" id="2_jm5ff"]
-[ext_resource type="PackedScene" uid="uid://cxe80dasal4cw" path="res://tank.tscn" id="3_it4u3"]
+[ext_resource type="PackedScene" uid="uid://cxe80dasal4cw" path="res://units/tank.tscn" id="3_it4u3"]
 [ext_resource type="PackedScene" uid="uid://b6qi0uh341w1n" path="res://ui/ui.tscn" id="4_n2fly"]
-[ext_resource type="Script" path="res://Camera.gd" id="5_6ks6h"]
-[ext_resource type="PackedScene" uid="uid://dgg0qggy2pu7o" path="res://crystal.tscn" id="7_acvk4"]
+[ext_resource type="Script" path="res://scripts/Camera.gd" id="6_wfshn"]
+[ext_resource type="PackedScene" uid="uid://dgg0qggy2pu7o" path="res://objects/crystal.tscn" id="7_acvk4"]
 [ext_resource type="PackedScene" uid="uid://blhofuu2vpg2i" path="res://buildings/power_plant.tscn" id="7_h2bom"]
 [ext_resource type="PackedScene" uid="uid://bi4ni5ylf72jo" path="res://buildings/factory.tscn" id="7_rgfsw"]
 
@@ -61,7 +61,7 @@ position = Vector2(374, 161)
 [node name="ui" parent="." instance=ExtResource("4_n2fly")]
 
 [node name="camera" type="Camera2D" parent="."]
-script = ExtResource("5_6ks6h")
+script = ExtResource("6_wfshn")
 
 [node name="objects" type="Node2D" parent="."]
 y_sort_enabled = true

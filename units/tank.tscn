@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://cxe80dasal4cw"]
 
-[ext_resource type="Script" path="res://tank.gd" id="1_rodqq"]
+[ext_resource type="Script" path="res://scripts/tank.gd" id="1_oos82"]
 [ext_resource type="Texture2D" uid="uid://68ha12iw5bk2" path="res://art/tank/tank_spritesheet.png" id="2_gikie"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_j1shc"]
@@ -56,7 +56,7 @@ _data = {
 [node name="tank" type="CharacterBody2D"]
 rotation = -1.5708
 motion_mode = 1
-script = ExtResource("1_rodqq")
+script = ExtResource("1_oos82")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -0.125)

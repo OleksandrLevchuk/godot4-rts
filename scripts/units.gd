@@ -1,7 +1,7 @@
 #this node deals with finding spawn points and signaling minimap about units
 extends Node2D
 
-@onready var unit_scene = preload("res://tank.tscn")
+@export var unit_scene = preload("res://units/tank.tscn")
 signal unit_spawned
 signal unit_moved
 

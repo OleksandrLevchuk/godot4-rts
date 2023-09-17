@@ -1,6 +1,6 @@
 extends StaticBody2D
 
-var pop = preload("res://pop.tscn")
+var pop = preload("res://ui/pop.tscn")
 
 func _on_timer_timeout():
 	if $bar.value == $bar.max_value:
