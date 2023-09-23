@@ -1,11 +1,11 @@
 [gd_scene load_steps=11 format=3 uid="uid://b6qi0uh341w1n"]
 
-[ext_resource type="Script" path="res://scripts/selectbox.gd" id="1_k21uh"]
-[ext_resource type="Script" path="res://scripts/ui.gd" id="1_noydw"]
-[ext_resource type="Script" path="res://scripts/info.gd" id="2_4wqkh"]
-[ext_resource type="Script" path="res://scripts/minimap_viewport.gd" id="5_1bgg6"]
-[ext_resource type="Script" path="res://scripts/order_target.gd" id="5_dmycc"]
-[ext_resource type="Texture2D" uid="uid://bamblf1t5gppg" path="res://art/color.jpg" id="6_kctty"]
+[ext_resource type="Script" path="res://ui/selectbox.gd" id="1_k21uh"]
+[ext_resource type="Script" path="res://ui/ui.gd" id="1_noydw"]
+[ext_resource type="Script" path="res://ui/info.gd" id="2_4wqkh"]
+[ext_resource type="Script" path="res://ui/minimap_viewport.gd" id="5_1bgg6"]
+[ext_resource type="Script" path="res://ui/order_target.gd" id="5_dmycc"]
+[ext_resource type="Texture2D" uid="uid://cfd7f4gxy4adk" path="res://color.jpg" id="6_kctty"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7ojft"]
 bg_color = Color(1, 1, 1, 0.223529)
@@ -58,10 +58,12 @@ metadata/_edit_use_anchors_ = true
 metadata/_edit_lock_ = true
 
 [node name="info" type="Label" parent="."]
-offset_left = 492.0
-offset_top = 16.0
-offset_right = 532.0
-offset_bottom = 42.0
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -40.0
+offset_bottom = 26.0
+grow_horizontal = 0
 text = "asdf"
 horizontal_alignment = 2
 script = ExtResource("2_4wqkh")

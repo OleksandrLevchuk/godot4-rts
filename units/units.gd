@@ -1,7 +1,7 @@
 #this node deals with finding spawn points and signaling minimap about units
 extends Node2D
 
-@export var unit_scene = preload("res://units/tank.tscn")
+@export var unit_scene = preload("res://units/tank/tank.tscn")
 signal unit_spawned
 signal unit_moved
 
@@ -30,5 +30,5 @@ func _on_ordered_unit_spawn(pos:Vector2):
 	unit.add_to_group( 'units', true )
 	unit_spawned.emit( unit.minimap_id, unit.position )
 
-func _on_unit_moved(id,pos):
-	unit_moved.emit(id,pos)
+func _on_unit_moved(id, pos):
+	unit_moved.emit(id, pos)

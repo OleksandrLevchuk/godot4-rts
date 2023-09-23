@@ -5,6 +5,10 @@ var select_rectangle := RectangleShape2D.new()
 var selected :Array
 
 
+func _init():
+	print( Utils.project(Vector2(0,0), Vector2(2,2), 10) )
+
+
 func _input(event:InputEvent):
 	if event.is_action_pressed("quit"):
 		get_tree().quit()
@@ -12,7 +16,7 @@ func _input(event:InputEvent):
 		select_start = get_global_mouse_position()
 	elif event.is_action_released('left_click'):
 		var select_end := get_global_mouse_position()
-		select_rectangle.extents = (select_end - select_start) / 2
+		select_rectangle.extents = abs(select_end - select_start) / 2
 		var query := PhysicsShapeQueryParameters2D.new()
 		query.set_shape(select_rectangle)
 		query.transform = Transform2D( 0, (select_end+select_start)/2)

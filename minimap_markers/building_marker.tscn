@@ -1,7 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://ch623xjaewg12"]
-
-[ext_resource type="Texture2D" uid="uid://d0w7iciwtcmi8" path="res://art/buildings/factory.png" id="1_lxd1u"]
-
-[node name="factory" type="Sprite2D"]
-scale = Vector2(0.25, 0.25)
-texture = ExtResource("1_lxd1u")

@@ -1,0 +1,58 @@
+[gd_scene load_steps=9 format=3 uid="uid://dgg0qggy2pu7o"]
+
+[ext_resource type="Texture2D" uid="uid://b2lerc7yoswd" path="res://objects/crystal/crystal.png" id="1_fpclo"]
+[ext_resource type="Script" path="res://objects/crystal/crystal.gd" id="1_txber"]
+[ext_resource type="Script" path="res://global/HealthComponent.gd" id="3_eq4d8"]
+[ext_resource type="Script" path="res://global/HitboxComponent.gd" id="4_pxn1h"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qwo5b"]
+size = Vector2(26, 16)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1olry"]
+bg_color = Color(0.286275, 0.34902, 0.376471, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5s6e2"]
+bg_color = Color(0.937255, 0.615686, 0.517647, 1)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_v5yx7"]
+radius = 22.0
+
+[node name="crystal" type="StaticBody2D"]
+script = ExtResource("1_txber")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_qwo5b")
+
+[node name="HealthBar" type="ProgressBar" parent="."]
+offset_left = -23.0
+offset_top = -28.0
+offset_right = 23.0
+offset_bottom = -20.0
+theme_override_styles/background = SubResource("StyleBoxFlat_1olry")
+theme_override_styles/fill = SubResource("StyleBoxFlat_5s6e2")
+max_value = 10.0
+value = 10.0
+show_percentage = false
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -3)
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("1_fpclo")
+
+[node name="GatheringTimer" type="Timer" parent="."]
+
+[node name="HealthComponent" type="Node2D" parent="." node_paths=PackedStringArray("bar")]
+script = ExtResource("3_eq4d8")
+bar = NodePath("../HealthBar")
+
+[node name="HitboxComponent" type="Area2D" parent="." node_paths=PackedStringArray("timer", "health_component")]
+script = ExtResource("4_pxn1h")
+timer = NodePath("../GatheringTimer")
+health_component = NodePath("../HealthComponent")
+
+[node name="HitboxCollisionShape2D" type="CollisionShape2D" parent="HitboxComponent"]
+shape = SubResource("CircleShape2D_v5yx7")
+
+[connection signal="timeout" from="GatheringTimer" to="HitboxComponent" method="_on_gathering_timer_timeout"]
+[connection signal="body_entered" from="HitboxComponent" to="HitboxComponent" method="_on_body_entered"]
+[connection signal="body_exited" from="HitboxComponent" to="HitboxComponent" method="_on_body_exited"]
