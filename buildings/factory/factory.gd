@@ -1,13 +1,18 @@
 extends StaticBody2D
 
+@onready var spawn_dialog := preload("res://ui/unit_spawn_dialog.tscn")
 var is_hovered := false
-signal show_spawn_dialog
+signal selected
+
+func _ready():
+	selected.connect(get_parent()._on_selected)
+
 
 func _input(event:InputEvent):
 	if not event.is_action_released("left_click"): return
 	if is_hovered:
 		$selectbox.visible = true
-		show_spawn_dialog.emit(position)
+		selected.emit(position, spawn_dialog)
 	else:
 		$selectbox.visible = false
 		

@@ -21,10 +21,12 @@ func _input(event:InputEvent):
 		query.set_shape(select_rectangle)
 		query.transform = Transform2D( 0, (select_end+select_start)/2)
 		for unit in selected:
-			unit.collider.set_selected(false)
+			if unit.collider.has_method('deselect'):
+				unit.collider.deselect()
 		selected = get_world_2d().direct_space_state.intersect_shape(query)
 		for unit in selected:
-			unit.collider.set_selected()
+			if unit.collider.has_method('select'):
+				unit.collider.select()
 #		var select_rect := Rect2(select_start, select_end-select_start).abs()
 #		for unit in get_tree().get_nodes_in_group('units'):
 #			unit.set_selected( select_rect.has_point( unit.position ) )

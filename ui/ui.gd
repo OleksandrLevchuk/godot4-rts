@@ -1,8 +1,7 @@
 extends CanvasLayer
 
 var is_dialog_up := false
-@onready var dialog_scene := preload("res://ui/unit_spawn_dialog.tscn")
-signal spawn_unit
+signal ordered_unit_spawn
 
 
 func _ready():
@@ -10,18 +9,8 @@ func _ready():
 	Game.update_ui.connect($info.update)
 
 
-func _on_factory_show_spawn_dialog( pos: Vector2 ):
-	if is_dialog_up: return
-	is_dialog_up = true
-	var dialog = dialog_scene.instantiate()
-	dialog.spawn_pos = pos
-#	dialog.spawn_unit.connect(func(pos):spawn_unit.emit(pos))
-#	dialog.close_dialog.connect(func():is_dialog_up = false)
-	add_child( dialog )
-
-
-func _on_unit_spawned( id, pos ):
-	$minimap/viewport.add_marker('unit', id, pos )
+func _on_unit_spawned( pos:Vector2 ):
+	$minimap/viewport.add_marker('unit', pos )
 
 
 func _on_unit_moved( id, pos ):
@@ -34,3 +23,17 @@ func _on_camera_moved(pos):
 
 func _on_camera_zoomed(zoom):
 	$minimap/viewport.zoom_camera(zoom)
+
+
+func _on_buildings_building_selected(pos:Vector2, dialog_scene:Resource):
+	if is_dialog_up: return
+	is_dialog_up = true
+	var dialog = dialog_scene.instantiate()
+	dialog.spawn_pos = pos
+	add_child( dialog )
+#	dialog.spawn_unit.connect(func(pos):spawn_unit.emit(pos))
+#	dialog.close_dialog.connect(func():is_dialog_up = false)
+
+
+func _on_dialog_spawn_unit( pos ):
+	ordered_unit_spawn.emit(pos)

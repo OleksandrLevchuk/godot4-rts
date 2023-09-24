@@ -6,7 +6,6 @@ const TURN_RATE = PI / 1 # how many seconds it takes to do a 180 degrees turn
 const REFRESH_RATE := 1
 const SPEED_CURVE := [ Vector2(0.0, 1.2), Vector2(0.2, 0.5) ]
 
-var is_selected := false
 var is_moving := false
 var is_turning := false
 var is_accelerating := false
@@ -24,16 +23,18 @@ func _ready():
 	$animation.speed_scale = 2.0
 	add_to_group('units', true)
 	minimap_id = Game.get_new_minimap_id()
-	print("my minimap id is ", minimap_id)
 
 
-func set_selected(value:=true):
-	is_selected = value
-	$selectbox.visible = value
+func select():
+	$SelectionComponent.select()
+
+
+func deselect():
+	$SelectionComponent.deselect()
 
 
 func _input(event):
-	if is_selected and event.is_action_released('right_click'):
+	if $SelectionComponent.is_selected and event.is_action_released('right_click'):
 		destination = get_global_mouse_position()
 		is_moving = true
 		is_turning = true
@@ -50,7 +51,7 @@ func _physics_process(delta):
 		if accel_mult > 1:
 			accel_mult = 1
 			is_accelerating = false
-		accel_mult_eased = Utils.ease( accel_mult, SPEED_CURVE )
+		accel_mult_eased = Utils.curve( accel_mult, SPEED_CURVE )
 	elif is_decelerating:
 		accel_mult -= delta/ACCELERATION_TIME * 2 # break twice as fast
 

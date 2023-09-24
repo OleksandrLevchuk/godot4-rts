@@ -12,7 +12,7 @@ var elapsed := 0.0
 var markers=[]
 
 
-func add_marker(type, id, pos):
+func add_marker(type, pos):
 	var sprite = MARKER_TYPES[type].instantiate()
 	get_node(type + 's').add_child(sprite)
 	sprite.position = pos

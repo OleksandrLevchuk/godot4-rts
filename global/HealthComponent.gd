@@ -8,12 +8,11 @@ var health : int
 
 func _ready():
 	bar.max_value = MAX_HEALTH
+	bar.value = MAX_HEALTH
 	health = MAX_HEALTH
 
 func damage( dmg ):
-	print(health)
 	health -= dmg
-#	bar.value = health
 	create_tween().tween_property( bar, 'value', health, 0.5 )
 	if health <= 0:
 		Game.Crystals += 1

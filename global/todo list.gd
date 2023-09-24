@@ -8,6 +8,7 @@
 #	make the tank accelerate gradually, with reduced turn rate at high speeds
 ###########################################################
 #		TO DO:
+#	implement a selection component
 #	fix tanks spawning inside of the factory
 #	fix the tank forever trying to go through walls
 #	make the tank recalculate its path sometimes, for example every 3 sec

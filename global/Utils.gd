@@ -21,8 +21,7 @@ static func cubic_bezier( percent:float, ctrl1 : Vector2, ctrl2 : Vector2 ):
 	return quadratic_bezier(percent, middle1, middle2, middle3) # kinda magical, no?
 
 
-@warning_ignore("shadowed_global_identifier")
-static func ease( percent:float, points:Array ):
+static func curve( percent:float, points:Array ):
 #	if points is Array and points.size()==2:
 		return cubic_bezier(percent, points[0], points[1]).y
 #	elif points is Vector2:

@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://byys03pyjar55"]
+[gd_scene load_steps=13 format=3 uid="uid://byys03pyjar55"]
 
 [ext_resource type="Script" path="res://world.gd" id="1_45y3j"]
 [ext_resource type="Texture2D" uid="uid://cfd7f4gxy4adk" path="res://color.jpg" id="2_jphyv"]
@@ -8,6 +8,7 @@
 [ext_resource type="Script" path="res://Camera.gd" id="6_ujxww"]
 [ext_resource type="PackedScene" uid="uid://blhofuu2vpg2i" path="res://buildings/power_plant/power_plant.tscn" id="7_h2bom"]
 [ext_resource type="PackedScene" uid="uid://bi4ni5ylf72jo" path="res://buildings/factory/factory.tscn" id="7_rgfsw"]
+[ext_resource type="Script" path="res://buildings/buildings.gd" id="7_tku4g"]
 [ext_resource type="PackedScene" uid="uid://dgg0qggy2pu7o" path="res://objects/crystal/crystal.tscn" id="10_0ecfo"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_tp1gr"]
@@ -75,6 +76,7 @@ rotation = 3.14159
 script = ExtResource("6_ujxww")
 
 [node name="Buildings" type="Node2D" parent="."]
+script = ExtResource("7_tku4g")
 metadata/_edit_lock_ = true
 
 [node name="Factory" parent="Buildings" instance=ExtResource("7_rgfsw")]
@@ -99,7 +101,7 @@ position = Vector2(-175, 141)
 
 [connection signal="unit_moved" from="Units" to="UI" method="_on_unit_moved"]
 [connection signal="unit_spawned" from="Units" to="UI" method="_on_unit_spawned"]
-[connection signal="spawn_unit" from="UI" to="Units" method="_on_ui_spawn_unit"]
+[connection signal="ordered_unit_spawn" from="UI" to="Units" method="_on_ui_ordered_unit_spawn"]
 [connection signal="moved" from="Camera" to="UI" method="_on_camera_moved"]
 [connection signal="zoomed" from="Camera" to="UI" method="_on_camera_zoomed"]
-[connection signal="show_spawn_dialog" from="Buildings/Factory" to="UI" method="_on_factory_show_spawn_dialog"]
+[connection signal="building_selected" from="Buildings" to="UI" method="_on_buildings_building_selected"]

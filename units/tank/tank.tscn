@@ -1,19 +1,12 @@
-[gd_scene load_steps=8 format=3 uid="uid://cxe80dasal4cw"]
+[gd_scene load_steps=10 format=3 uid="uid://cxe80dasal4cw"]
 
 [ext_resource type="Script" path="res://units/tank/tank.gd" id="1_glmym"]
 [ext_resource type="Texture2D" uid="uid://nl6gqpbnjm8i" path="res://units/tank/tank_spritesheet.png" id="2_6hn61"]
+[ext_resource type="Script" path="res://global/HealthComponent.gd" id="3_yki5j"]
+[ext_resource type="Script" path="res://global/SelectionComponent.gd" id="4_aeidr"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_j1shc"]
 size = Vector2(44, 53)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ujj1i"]
-bg_color = Color(0.6, 0.6, 0.6, 0)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0, 0.945098, 0.627451, 1)
-border_blend = true
 
 [sub_resource type="Animation" id="Animation_66ek5"]
 length = 0.001
@@ -53,8 +46,16 @@ _data = {
 "drive": SubResource("Animation_jhrpe")
 }
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ujj1i"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0.945098, 0.627451, 1)
+border_blend = true
+
 [node name="tank" type="CharacterBody2D"]
-rotation = -1.5708
 motion_mode = 1
 script = ExtResource("1_glmym")
 
@@ -62,15 +63,6 @@ script = ExtResource("1_glmym")
 position = Vector2(0, -0.125)
 rotation = 1.5708
 shape = SubResource("RectangleShape2D_j1shc")
-
-[node name="selectbox" type="Panel" parent="."]
-visible = false
-offset_left = 27.0
-offset_top = -22.0
-offset_right = 71.0
-offset_bottom = 32.0
-rotation = 1.5708
-theme_override_styles/panel = SubResource("StyleBoxFlat_ujj1i")
 
 [node name="Tank" type="Sprite2D" parent="."]
 position = Vector2(13, 0)
@@ -84,7 +76,41 @@ libraries = {
 "": SubResource("AnimationLibrary_3hjh7")
 }
 
-[node name="Node2D" type="Node2D" parent="."]
-position = Vector2(13, 0)
+[node name="HealthRemoteTransform" type="RemoteTransform2D" parent="."]
+remote_path = NodePath("../HealthParent")
+update_rotation = false
+
+[node name="HealthParent" type="Node2D" parent="."]
+top_level = true
+
+[node name="HealthBar" type="ProgressBar" parent="HealthParent"]
+visible = false
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -35.0
+offset_top = -37.0
+offset_right = 35.0
+offset_bottom = -29.0
+grow_horizontal = 2
+show_percentage = false
+
+[node name="HealthComponent" type="Node2D" parent="." node_paths=PackedStringArray("bar")]
+script = ExtResource("3_yki5j")
+bar = NodePath("../HealthParent/HealthBar")
+MAX_HEALTH = 10
+
+[node name="selectbox" type="Panel" parent="."]
+visible = false
+offset_left = 27.0
+offset_top = -22.0
+offset_right = 71.0
+offset_bottom = 32.0
 rotation = 1.5708
-scale = Vector2(0.25, 0.25)
+theme_override_styles/panel = SubResource("StyleBoxFlat_ujj1i")
+
+[node name="SelectionComponent" type="Node2D" parent="." node_paths=PackedStringArray("selectbox", "collider", "healthbar")]
+script = ExtResource("4_aeidr")
+selectbox = NodePath("../selectbox")
+collider = NodePath("../CollisionShape2D")
+healthbar = NodePath("../HealthParent/HealthBar")
