@@ -77,14 +77,15 @@ libraries = {
 }
 
 [node name="HealthRemoteTransform" type="RemoteTransform2D" parent="."]
-remote_path = NodePath("../HealthParent")
+remote_path = NodePath("../HealthComponent")
 update_rotation = false
 
-[node name="HealthParent" type="Node2D" parent="."]
-top_level = true
+[node name="HealthComponent" type="Node2D" parent="." node_paths=PackedStringArray("health_bar")]
+script = ExtResource("3_yki5j")
+health_bar = NodePath("HealthBar")
+MAX_HEALTH = 10
 
-[node name="HealthBar" type="ProgressBar" parent="HealthParent"]
-visible = false
+[node name="HealthBar" type="ProgressBar" parent="HealthComponent"]
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
@@ -94,11 +95,6 @@ offset_right = 35.0
 offset_bottom = -29.0
 grow_horizontal = 2
 show_percentage = false
-
-[node name="HealthComponent" type="Node2D" parent="." node_paths=PackedStringArray("bar")]
-script = ExtResource("3_yki5j")
-bar = NodePath("../HealthParent/HealthBar")
-MAX_HEALTH = 10
 
 [node name="selectbox" type="Panel" parent="."]
 visible = false
@@ -113,4 +109,4 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_ujj1i")
 script = ExtResource("4_aeidr")
 selectbox = NodePath("../selectbox")
 collider = NodePath("../CollisionShape2D")
-healthbar = NodePath("../HealthParent/HealthBar")
+healthbar = NodePath("../HealthComponent/HealthBar")

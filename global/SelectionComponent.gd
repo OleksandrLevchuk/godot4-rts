@@ -19,4 +19,5 @@ func deselect():
 func set_selected(value:bool):
 	is_selected = value
 	selectbox.visible = value
-	healthbar.visible = value
+	if healthbar:
+		healthbar.visible = value

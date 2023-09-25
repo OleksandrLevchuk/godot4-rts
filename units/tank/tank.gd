@@ -12,25 +12,16 @@ var is_accelerating := false
 var is_decelerating := false
 var accel_mult := 0.0
 var accel_mult_eased := 0.0
-var minimap_id: int
 var destination: Vector2
 var elapsed := 0.0
 
 signal moved
 
+@onready var minimap_id : int = Game.get_new_minimap_id()
 
 func _ready():
 	$animation.speed_scale = 2.0
 	add_to_group('units', true)
-	minimap_id = Game.get_new_minimap_id()
-
-
-func select():
-	$SelectionComponent.select()
-
-
-func deselect():
-	$SelectionComponent.deselect()
 
 
 func _input(event):
@@ -74,6 +65,8 @@ func _physics_process(delta):
 	else:
 		moved.emit( minimap_id, position )
 		elapsed = 0.0
+
+#	if position.distance_to( destination ) < 100:
 
 	if position.distance_to( destination ) < 15: # we've arrived, let's stop
 		is_moving = false

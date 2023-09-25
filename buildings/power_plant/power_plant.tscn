@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://blhofuu2vpg2i"]
+[gd_scene load_steps=5 format=3 uid="uid://blhofuu2vpg2i"]
 
 [ext_resource type="Script" path="res://buildings/power_plant/power_plant.gd" id="1_tqosg"]
 [ext_resource type="Texture2D" uid="uid://dexosoiqcerpc" path="res://buildings/power_plant/powerplant.png" id="2_8g780"]
+[ext_resource type="Script" path="res://global/HealthComponent.gd" id="3_8sq7b"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_jqmm7"]
 radius = 54.0093
@@ -14,11 +15,11 @@ script = ExtResource("1_tqosg")
 position = Vector2(-3, -2)
 shape = SubResource("CircleShape2D_jqmm7")
 
-[node name="timer" type="Timer" parent="."]
+[node name="EnergyTimer" type="Timer" parent="."]
 wait_time = 0.3
 autostart = true
 
-[node name="bar" type="ProgressBar" parent="."]
+[node name="EnergyBar" type="ProgressBar" parent="."]
 offset_left = -70.0
 offset_top = -167.0
 offset_right = 78.0
@@ -32,4 +33,9 @@ position = Vector2(-13, -41)
 scale = Vector2(0.285, 0.266986)
 texture = ExtResource("2_8g780")
 
-[connection signal="timeout" from="timer" to="." method="_on_timer_timeout"]
+[node name="HealthComponent" type="Node2D" parent="."]
+script = ExtResource("3_8sq7b")
+
+[node name="GatherComponent" type="Node2D" parent="."]
+
+[connection signal="timeout" from="EnergyTimer" to="." method="_on_timer_timeout"]
