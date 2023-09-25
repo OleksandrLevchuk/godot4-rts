@@ -21,8 +21,8 @@ func _ready():
 
 func _process(delta):
 	var pan_input := Vector2( 
-		Input.get_axis("ui_left","ui_right"),
-		Input.get_axis("ui_up","ui_down"))
+		Input.get_axis("camera_pan_left","camera_pan_right"),
+		Input.get_axis("camera_pan_up","camera_pan_down"))
 	if pan_input.x or pan_input.y:
 		is_panning = true
 		pan_target = position + pan_input * PAN_SPEED
