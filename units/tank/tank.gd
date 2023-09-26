@@ -12,7 +12,8 @@ var is_accelerating := false
 var is_decelerating := false
 var accel_mult := 0.0
 var accel_mult_eased := 0.0
-var destination: Vector2
+var destination : Vector2
+var half_way : Vector2
 var elapsed := 0.0
 
 signal moved

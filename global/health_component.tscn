@@ -1,0 +1,27 @@
+[gd_scene load_steps=2 format=3 uid="uid://vn2pj1fllvl8"]
+
+[ext_resource type="Script" path="res://global/HealthComponent.gd" id="1_dbdpc"]
+
+[node name="HealthComponent" type="Node2D" node_paths=PackedStringArray("health_bar")]
+script = ExtResource("1_dbdpc")
+health_bar = NodePath("")
+MAX_HEALTH = 10
+
+[node name="HPBarRemoteTransform" type="RemoteTransform2D" parent="."]
+remote_path = NodePath("../HPBarParent")
+update_rotation = false
+
+[node name="HPBarParent" type="Node2D" parent="."]
+top_level = true
+
+[node name="HealthBar" type="ProgressBar" parent="HPBarParent"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -35.0
+offset_top = -37.0
+offset_right = 35.0
+offset_bottom = -29.0
+grow_horizontal = 2
+show_percentage = false
+metadata/_edit_use_anchors_ = true

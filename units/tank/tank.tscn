@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://units/tank/tank.gd" id="1_glmym"]
 [ext_resource type="Texture2D" uid="uid://nl6gqpbnjm8i" path="res://units/tank/tank_spritesheet.png" id="2_6hn61"]
-[ext_resource type="Script" path="res://global/HealthComponent.gd" id="3_yki5j"]
+[ext_resource type="PackedScene" uid="uid://vn2pj1fllvl8" path="res://global/health_component.tscn" id="3_g14mc"]
 [ext_resource type="Script" path="res://global/SelectionComponent.gd" id="4_aeidr"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_j1shc"]
@@ -76,26 +76,6 @@ libraries = {
 "": SubResource("AnimationLibrary_3hjh7")
 }
 
-[node name="HealthRemoteTransform" type="RemoteTransform2D" parent="."]
-remote_path = NodePath("../HealthComponent")
-update_rotation = false
-
-[node name="HealthComponent" type="Node2D" parent="." node_paths=PackedStringArray("health_bar")]
-script = ExtResource("3_yki5j")
-health_bar = NodePath("HealthBar")
-MAX_HEALTH = 10
-
-[node name="HealthBar" type="ProgressBar" parent="HealthComponent"]
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -35.0
-offset_top = -37.0
-offset_right = 35.0
-offset_bottom = -29.0
-grow_horizontal = 2
-show_percentage = false
-
 [node name="selectbox" type="Panel" parent="."]
 visible = false
 offset_left = 27.0
@@ -105,8 +85,9 @@ offset_bottom = 32.0
 rotation = 1.5708
 theme_override_styles/panel = SubResource("StyleBoxFlat_ujj1i")
 
-[node name="SelectionComponent" type="Node2D" parent="." node_paths=PackedStringArray("selectbox", "collider", "healthbar")]
+[node name="HealthComponent" parent="." instance=ExtResource("3_g14mc")]
+
+[node name="SelectionComponent" type="Node2D" parent="." node_paths=PackedStringArray("selectbox", "collider")]
 script = ExtResource("4_aeidr")
 selectbox = NodePath("../selectbox")
 collider = NodePath("../CollisionShape2D")
-healthbar = NodePath("../HealthComponent/HealthBar")
