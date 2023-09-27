@@ -26,7 +26,7 @@ func _process(delta):
 	if pan_input.x or pan_input.y:
 		is_panning = true
 		pan_target = position + pan_input * PAN_SPEED
-		print(pan_target)
+#		print(pan_target)
 	if is_panning:
 		position = position.lerp( pan_target, delta / EASING )
 		moved.emit(position)

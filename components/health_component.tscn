@@ -1,10 +1,9 @@
 [gd_scene load_steps=2 format=3 uid="uid://vn2pj1fllvl8"]
 
-[ext_resource type="Script" path="res://global/HealthComponent.gd" id="1_dbdpc"]
+[ext_resource type="Script" path="res://components/HealthComponent.gd" id="1_dbdpc"]
 
-[node name="HealthComponent" type="Node2D" node_paths=PackedStringArray("health_bar")]
+[node name="HealthComponent" type="Node2D"]
 script = ExtResource("1_dbdpc")
-health_bar = NodePath("")
 MAX_HEALTH = 10
 
 [node name="HPBarRemoteTransform" type="RemoteTransform2D" parent="."]

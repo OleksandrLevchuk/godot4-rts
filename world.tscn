@@ -75,6 +75,9 @@ rotation = 3.14159
 [node name="Camera" type="Camera2D" parent="."]
 script = ExtResource("6_rcps3")
 
+[node name="PowerPlant" parent="Camera" instance=ExtResource("7_h2bom")]
+position = Vector2(-303, -88)
+
 [node name="Buildings" type="Node2D" parent="."]
 script = ExtResource("7_tku4g")
 metadata/_edit_lock_ = true
@@ -82,9 +85,6 @@ metadata/_edit_lock_ = true
 [node name="Factory" parent="Buildings" instance=ExtResource("7_rgfsw")]
 position = Vector2(247, -102)
 input_pickable = true
-
-[node name="PowerPlant" parent="Buildings" instance=ExtResource("7_h2bom")]
-position = Vector2(-303, -88)
 
 [node name="Objects" type="Node2D" parent="."]
 

@@ -1,6 +1,6 @@
 extends Node2D
 
-var select_start :Vector2
+var select_start : Vector2
 var select_rectangle := RectangleShape2D.new()
 var selected :Array
 

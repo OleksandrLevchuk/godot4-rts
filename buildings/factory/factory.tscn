@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://bi4ni5ylf72jo"]
+[gd_scene load_steps=7 format=3 uid="uid://bi4ni5ylf72jo"]
 
 [ext_resource type="Script" path="res://buildings/factory/factory.gd" id="1_qv0e3"]
 [ext_resource type="Texture2D" uid="uid://dm47quii64nyl" path="res://buildings/factory/factory.png" id="2_ymupa"]
-[ext_resource type="Script" path="res://global/SelectionComponent.gd" id="3_css87"]
+[ext_resource type="PackedScene" uid="uid://bjgmnpjrh2kc7" path="res://components/selection_component.tscn" id="4_h03i7"]
+[ext_resource type="PackedScene" uid="uid://vn2pj1fllvl8" path="res://components/health_component.tscn" id="4_p76fd"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dl0cw"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -38,10 +39,12 @@ position = Vector2(3, 2)
 scale = Vector2(1.201, 0.898)
 shape = SubResource("CircleShape2D_nk277")
 
-[node name="SelectionComponent" type="Node2D" parent="." node_paths=PackedStringArray("selectbox", "collider")]
-script = ExtResource("3_css87")
-selectbox = NodePath("../selectbox")
+[node name="HealthComponent" parent="." instance=ExtResource("4_p76fd")]
+
+[node name="SelectionComponent" parent="." node_paths=PackedStringArray("main_sprite", "collider", "health_component") instance=ExtResource("4_h03i7")]
+main_sprite = NodePath("../Factory")
 collider = NodePath("../CollisionShape2D")
+health_component = NodePath("../HealthComponent")
 
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

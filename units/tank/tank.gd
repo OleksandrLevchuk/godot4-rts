@@ -13,28 +13,31 @@ var is_decelerating := false
 var accel_mult := 0.0
 var accel_mult_eased := 0.0
 var destination : Vector2
-var half_way : Vector2
+var breaking_distance : float
 var elapsed := 0.0
+
+@onready var animation := $AnimationPlayer
 
 signal moved
 
 @onready var minimap_id : int = Game.get_new_minimap_id()
 
 func _ready():
-	$animation.speed_scale = 2.0
+	animation.speed_scale = 2.0
 	add_to_group('units', true)
 
 
 func _input(event):
-	if $SelectionComponent.is_selected and event.is_action_released('right_click'):
+	if event.is_action_released('right_click') and $SelectionComponent.is_selected :
 		destination = get_global_mouse_position()
 		is_moving = true
 		is_turning = true
 		is_accelerating = accel_mult < 1
-		$animation.play('drive')
+		animation.play('drive')
 
 
 func _physics_process(delta):
+#	print(position)
 	if not is_moving: 
 		return
 
@@ -72,4 +75,4 @@ func _physics_process(delta):
 	if position.distance_to( destination ) < 15: # we've arrived, let's stop
 		is_moving = false
 		accel_mult = 0.0
-		$animation.stop()
+		animation.stop()

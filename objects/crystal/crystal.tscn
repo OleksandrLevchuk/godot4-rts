@@ -1,9 +1,9 @@
 [gd_scene load_steps=9 format=3 uid="uid://dgg0qggy2pu7o"]
 
 [ext_resource type="Texture2D" uid="uid://b2lerc7yoswd" path="res://objects/crystal/crystal.png" id="1_fpclo"]
-[ext_resource type="Script" path="res://objects/crystal/crystal.gd" id="1_txber"]
-[ext_resource type="Script" path="res://global/HealthComponent.gd" id="3_eq4d8"]
-[ext_resource type="Script" path="res://global/HitboxComponent.gd" id="4_pxn1h"]
+[ext_resource type="PackedScene" uid="uid://vn2pj1fllvl8" path="res://components/health_component.tscn" id="3_co7cq"]
+[ext_resource type="Script" path="res://components/HitboxComponent.gd" id="4_pxn1h"]
+[ext_resource type="PackedScene" uid="uid://bjgmnpjrh2kc7" path="res://components/selection_component.tscn" id="4_wf6y2"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_qwo5b"]
 size = Vector2(26, 16)
@@ -18,7 +18,6 @@ bg_color = Color(0.937255, 0.615686, 0.517647, 1)
 radius = 22.0
 
 [node name="crystal" type="StaticBody2D"]
-script = ExtResource("1_txber")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_qwo5b")
@@ -41,14 +40,17 @@ texture = ExtResource("1_fpclo")
 
 [node name="GatheringTimer" type="Timer" parent="."]
 
-[node name="HealthComponent" type="Node2D" parent="." node_paths=PackedStringArray("bar")]
-script = ExtResource("3_eq4d8")
-bar = NodePath("../HealthBar")
+[node name="HealthComponent" parent="." instance=ExtResource("3_co7cq")]
 
-[node name="HitboxComponent" type="Area2D" parent="." node_paths=PackedStringArray("timer", "health_component")]
-script = ExtResource("4_pxn1h")
-timer = NodePath("../GatheringTimer")
+[node name="SelectionComponent" parent="." node_paths=PackedStringArray("main_sprite", "collider", "health_component") instance=ExtResource("4_wf6y2")]
+main_sprite = NodePath("../Sprite2D")
+collider = NodePath("../CollisionShape2D")
 health_component = NodePath("../HealthComponent")
+
+[node name="HitboxComponent" type="Area2D" parent="."]
+script = ExtResource("4_pxn1h")
+timer = null
+health_component = null
 
 [node name="HitboxCollisionShape2D" type="CollisionShape2D" parent="HitboxComponent"]
 shape = SubResource("CircleShape2D_v5yx7")

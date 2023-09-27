@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://blhofuu2vpg2i"]
+[gd_scene load_steps=6 format=3 uid="uid://blhofuu2vpg2i"]
 
 [ext_resource type="Script" path="res://buildings/power_plant/power_plant.gd" id="1_tqosg"]
 [ext_resource type="Texture2D" uid="uid://dexosoiqcerpc" path="res://buildings/power_plant/powerplant.png" id="2_8g780"]
-[ext_resource type="Script" path="res://global/HealthComponent.gd" id="3_8sq7b"]
+[ext_resource type="PackedScene" uid="uid://vn2pj1fllvl8" path="res://components/health_component.tscn" id="3_nml48"]
+[ext_resource type="PackedScene" uid="uid://bjgmnpjrh2kc7" path="res://components/selection_component.tscn" id="4_bjegr"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_jqmm7"]
 radius = 54.0093
@@ -12,7 +13,8 @@ y_sort_enabled = true
 script = ExtResource("1_tqosg")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(-3, -2)
+position = Vector2(-4, 3)
+scale = Vector2(1.1, 0.8)
 shape = SubResource("CircleShape2D_jqmm7")
 
 [node name="EnergyTimer" type="Timer" parent="."]
@@ -33,9 +35,13 @@ position = Vector2(-13, -41)
 scale = Vector2(0.285, 0.266986)
 texture = ExtResource("2_8g780")
 
-[node name="HealthComponent" type="Node2D" parent="."]
-script = ExtResource("3_8sq7b")
-
 [node name="GatherComponent" type="Node2D" parent="."]
+
+[node name="HealthComponent" parent="." instance=ExtResource("3_nml48")]
+
+[node name="SelectionComponent" parent="." node_paths=PackedStringArray("main_sprite", "collider", "health_component") instance=ExtResource("4_bjegr")]
+main_sprite = NodePath("../Sprite2D")
+collider = NodePath("../CollisionShape2D")
+health_component = NodePath("../HealthComponent")
 
 [connection signal="timeout" from="EnergyTimer" to="." method="_on_timer_timeout"]
