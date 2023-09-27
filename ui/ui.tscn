@@ -5,7 +5,7 @@
 [ext_resource type="Script" path="res://ui/info.gd" id="2_4wqkh"]
 [ext_resource type="Script" path="res://ui/minimap_viewport.gd" id="5_1bgg6"]
 [ext_resource type="Script" path="res://ui/order_target.gd" id="5_dmycc"]
-[ext_resource type="Texture2D" uid="uid://cfd7f4gxy4adk" path="res://color.jpg" id="6_kctty"]
+[ext_resource type="Texture2D" uid="uid://bamblf1t5gppg" path="res://art/color.jpg" id="6_kctty"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7ojft"]
 bg_color = Color(1, 1, 1, 0.223529)

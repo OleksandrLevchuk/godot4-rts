@@ -14,13 +14,19 @@ signal selected
 signal deselected
 
 
-func _init():
-	if main_sprite:
-		print('texture size ', main_sprite.texture.get_size())
+func _ready():
+	get_parent().mouse_entered.connect(select)
+	get_parent().mouse_exited.connect(deselect)
+	var size = main_sprite.texture.get_size()
+	var new_scale = 0.1 + ( size.x + size.y ) / 5000
+	selectbox.scale.x = new_scale
+	selectbox.scale.y = new_scale
+
 	if health_component:
 		selected.connect(health_component._on_selected)
 		deselected.connect(health_component._on_deselected)
 
+#func _process(_delta):
 
 func select():
 	set_selected(true)

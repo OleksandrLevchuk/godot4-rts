@@ -1,7 +1,7 @@
 [gd_scene load_steps=13 format=3 uid="uid://byys03pyjar55"]
 
 [ext_resource type="Script" path="res://world.gd" id="1_45y3j"]
-[ext_resource type="Texture2D" uid="uid://cfd7f4gxy4adk" path="res://color.jpg" id="2_jphyv"]
+[ext_resource type="Texture2D" uid="uid://cfd7f4gxy4adk" path="res://art/color.jpg" id="2_8c15o"]
 [ext_resource type="Script" path="res://units/units.gd" id="3_5ktyg"]
 [ext_resource type="PackedScene" uid="uid://cxe80dasal4cw" path="res://units/tank/tank.tscn" id="3_it4u3"]
 [ext_resource type="PackedScene" uid="uid://b6qi0uh341w1n" path="res://ui/ui.tscn" id="4_n2fly"]
@@ -12,7 +12,7 @@
 [ext_resource type="PackedScene" uid="uid://dgg0qggy2pu7o" path="res://objects/crystal/crystal.tscn" id="10_0ecfo"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_tp1gr"]
-texture = ExtResource("2_jphyv")
+texture = ExtResource("2_8c15o")
 0:0/0 = 0
 1:0/0 = 0
 2:0/0 = 0
@@ -63,20 +63,10 @@ position = Vector2(283, 192)
 position = Vector2(451, 99)
 rotation = 3.14159
 
-[node name="Tank3" parent="Units" instance=ExtResource("3_it4u3")]
-position = Vector2(83, 246)
-
-[node name="Tank4" parent="Units" instance=ExtResource("3_it4u3")]
-position = Vector2(237, 105)
-rotation = 3.14159
-
 [node name="UI" parent="." instance=ExtResource("4_n2fly")]
 
 [node name="Camera" type="Camera2D" parent="."]
 script = ExtResource("6_rcps3")
-
-[node name="PowerPlant" parent="Camera" instance=ExtResource("7_h2bom")]
-position = Vector2(-303, -88)
 
 [node name="Buildings" type="Node2D" parent="."]
 script = ExtResource("7_tku4g")
@@ -86,18 +76,15 @@ metadata/_edit_lock_ = true
 position = Vector2(247, -102)
 input_pickable = true
 
+[node name="PowerPlant" parent="Buildings" instance=ExtResource("7_h2bom")]
+position = Vector2(-303, -88)
+
 [node name="Objects" type="Node2D" parent="."]
 
 [node name="Crystal" parent="Objects" instance=ExtResource("10_0ecfo")]
 
 [node name="Crystal2" parent="Objects" instance=ExtResource("10_0ecfo")]
 position = Vector2(410, -64)
-
-[node name="Crystal3" parent="Objects" instance=ExtResource("10_0ecfo")]
-position = Vector2(-137, -127)
-
-[node name="Crystal4" parent="Objects" instance=ExtResource("10_0ecfo")]
-position = Vector2(-175, 141)
 
 [connection signal="unit_moved" from="Units" to="UI" method="_on_unit_moved"]
 [connection signal="unit_spawned" from="Units" to="UI" method="_on_unit_spawned"]

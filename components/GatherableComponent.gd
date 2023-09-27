@@ -1,6 +1,7 @@
 extends Area2D
-class_name HitboxComponent
+class_name GatherableComponent
 
+@export_enum("Energy","Crystals","Credits") var type
 @export var timer : Timer
 @export var health_component : HealthComponent
 
@@ -10,6 +11,10 @@ var units_gathering := 0
 func damage( attack ):
 	if health_component:
 		health_component.damage(attack)
+
+
+#func _get_configuration_warnings():
+#	return ["test"]
 
 
 func _on_body_entered(body):

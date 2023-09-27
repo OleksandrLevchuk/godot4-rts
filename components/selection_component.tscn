@@ -1,16 +1,19 @@
 [gd_scene load_steps=3 format=3 uid="uid://bjgmnpjrh2kc7"]
 
 [ext_resource type="Script" path="res://components/SelectionComponent.gd" id="1_xte08"]
-[ext_resource type="Texture2D" uid="uid://c1kysnecy07ro" path="res://components/selection.png" id="2_k5wne"]
+[ext_resource type="Texture2D" uid="uid://dnfmc2twc6bws" path="res://art/selection.png" id="2_n6hh7"]
 
 [node name="SelectionComponent" type="Node2D"]
 script = ExtResource("1_xte08")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 visible = false
+modulate = Color(1, 1, 1, 0.501961)
 top_level = true
-texture = ExtResource("2_k5wne")
+position = Vector2(0, 63)
+texture = ExtResource("2_n6hh7")
 
 [node name="RemoteTransform2D" type="RemoteTransform2D" parent="."]
 remote_path = NodePath("../Sprite2D")
 update_rotation = false
+update_scale = false

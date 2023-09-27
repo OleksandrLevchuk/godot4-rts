@@ -50,6 +50,11 @@ _data = {
 motion_mode = 1
 script = ExtResource("1_glmym")
 
+[node name="SelectionComponent" parent="." node_paths=PackedStringArray("main_sprite", "collider", "health_component") instance=ExtResource("4_01hbr")]
+main_sprite = NodePath("../Sprite2D")
+collider = NodePath("../CollisionShape2D")
+health_component = NodePath("../HealthComponent")
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -0.125)
 rotation = 1.5708
@@ -68,10 +73,5 @@ libraries = {
 }
 
 [node name="HealthComponent" parent="." instance=ExtResource("3_g14mc")]
-
-[node name="SelectionComponent" parent="." node_paths=PackedStringArray("main_sprite", "collider", "health_component") instance=ExtResource("4_01hbr")]
-main_sprite = NodePath("../Sprite2D")
-collider = NodePath("../CollisionShape2D")
-health_component = NodePath("../HealthComponent")
 
 [node name="MovementComponent" type="Node2D" parent="."]
