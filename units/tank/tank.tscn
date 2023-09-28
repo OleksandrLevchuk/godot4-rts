@@ -55,6 +55,7 @@ script = ExtResource("1_glmym")
 main_sprite = NodePath("../Sprite2D")
 collider = NodePath("../CollisionShape2D")
 health_component = NodePath("../HealthComponent")
+is_movable = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -0.125)
