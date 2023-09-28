@@ -6,7 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://bjgmnpjrh2kc7" path="res://components/selection_component.tscn" id="4_wf6y2"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_qwo5b"]
-size = Vector2(26, 16)
+size = Vector2(26, 17)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_v5yx7"]
 radius = 22.0
@@ -20,10 +20,11 @@ collider = NodePath("../CollisionShape2D")
 health_component = NodePath("../HealthComponent")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 6.5)
 shape = SubResource("RectangleShape2D_qwo5b")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(0, -3)
+position = Vector2(0, 4)
 scale = Vector2(0.25, 0.25)
 texture = ExtResource("1_fpclo")
 
@@ -33,4 +34,5 @@ texture = ExtResource("1_fpclo")
 type = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="GatherableComponent"]
+position = Vector2(0, 7)
 shape = SubResource("CircleShape2D_v5yx7")

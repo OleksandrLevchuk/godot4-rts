@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://vn2pj1fllvl8"]
+[gd_scene load_steps=3 format=3 uid="uid://vn2pj1fllvl8"]
 
 [ext_resource type="Script" path="res://components/HealthComponent.gd" id="1_dbdpc"]
+[ext_resource type="Theme" uid="uid://ccb7csnxqndm6" path="res://ui/my_ui_theme.tres" id="2_yweqt"]
 
 [node name="HealthComponent" type="Node2D"]
 script = ExtResource("1_dbdpc")
@@ -22,5 +23,7 @@ offset_top = -37.0
 offset_right = 35.0
 offset_bottom = -29.0
 grow_horizontal = 2
+theme = ExtResource("2_yweqt")
+value = 100.0
 show_percentage = false
 metadata/_edit_use_anchors_ = true

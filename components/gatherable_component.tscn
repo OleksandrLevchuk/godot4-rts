@@ -1,12 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://bkvc3lm2vroly"]
+[gd_scene load_steps=3 format=3 uid="uid://bkvc3lm2vroly"]
 
 [ext_resource type="Script" path="res://components/GatherableComponent.gd" id="1_5sm7m"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1olry"]
-bg_color = Color(0.286275, 0.34902, 0.376471, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5s6e2"]
-bg_color = Color(0.937255, 0.615686, 0.517647, 1)
+[ext_resource type="Theme" uid="uid://ccb7csnxqndm6" path="res://ui/my_ui_theme.tres" id="2_g2u8h"]
 
 [node name="GatherableComponent" type="Area2D"]
 script = ExtResource("1_5sm7m")
@@ -18,8 +13,7 @@ offset_left = -23.0
 offset_top = -28.0
 offset_right = 23.0
 offset_bottom = -20.0
-theme_override_styles/background = SubResource("StyleBoxFlat_1olry")
-theme_override_styles/fill = SubResource("StyleBoxFlat_5s6e2")
+theme = ExtResource("2_g2u8h")
 max_value = 10.0
 value = 10.0
 show_percentage = false

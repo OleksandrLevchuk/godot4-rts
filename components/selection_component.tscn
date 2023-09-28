@@ -12,12 +12,18 @@ script = ExtResource("1_xte08")
 top_level = true
 
 [node name="MovableSprite" type="Sprite2D" parent="TransformParent"]
+visible = false
+position = Vector2(0, 8)
 texture = ExtResource("2_grlwk")
 
 [node name="HoverSprite" type="Sprite2D" parent="TransformParent"]
+visible = false
+position = Vector2(0, 8)
 texture = ExtResource("3_f3ykq")
 
 [node name="SelectionSprite" type="Sprite2D" parent="TransformParent"]
+visible = false
+position = Vector2(0, 8)
 texture = ExtResource("2_n6hh7")
 
 [node name="RemoteTransform2D" type="RemoteTransform2D" parent="."]
