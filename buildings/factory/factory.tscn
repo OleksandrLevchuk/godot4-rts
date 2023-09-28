@@ -9,7 +9,13 @@
 radius = 60.2993
 
 [node name="Factory" type="StaticBody2D"]
+input_pickable = true
 script = ExtResource("1_qv0e3")
+
+[node name="SelectionComponent" parent="." node_paths=PackedStringArray("main_sprite", "collider", "health_component") instance=ExtResource("4_h03i7")]
+main_sprite = NodePath("../Factory")
+collider = NodePath("../CollisionShape2D")
+health_component = NodePath("../HealthComponent")
 
 [node name="Factory" type="Sprite2D" parent="."]
 position = Vector2(4, -37)
@@ -22,11 +28,6 @@ scale = Vector2(1.201, 0.898)
 shape = SubResource("CircleShape2D_nk277")
 
 [node name="HealthComponent" parent="." instance=ExtResource("4_p76fd")]
-
-[node name="SelectionComponent" parent="." node_paths=PackedStringArray("main_sprite", "collider", "health_component") instance=ExtResource("4_h03i7")]
-main_sprite = NodePath("../Factory")
-collider = NodePath("../CollisionShape2D")
-health_component = NodePath("../HealthComponent")
 
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

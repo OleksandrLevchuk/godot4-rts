@@ -3,6 +3,7 @@
 *.ignored/
 *.import
 *.tmp
+*.ini
 *.psd
 *.clip
 *.spine

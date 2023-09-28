@@ -10,6 +10,12 @@ radius = 54.0093
 
 [node name="power_plant" type="StaticBody2D"]
 y_sort_enabled = true
+input_pickable = true
+
+[node name="SelectionComponent" parent="." node_paths=PackedStringArray("main_sprite", "collider", "health_component") instance=ExtResource("4_bjegr")]
+main_sprite = NodePath("../Sprite2D")
+collider = NodePath("../CollisionShape2D")
+health_component = NodePath("../HealthComponent")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-4, 3)
@@ -24,8 +30,3 @@ texture = ExtResource("2_8g780")
 [node name="GeneratorComponent" parent="." instance=ExtResource("2_4820p")]
 
 [node name="HealthComponent" parent="." instance=ExtResource("3_nml48")]
-
-[node name="SelectionComponent" parent="." node_paths=PackedStringArray("main_sprite", "collider", "health_component") instance=ExtResource("4_bjegr")]
-main_sprite = NodePath("../Sprite2D")
-collider = NodePath("../CollisionShape2D")
-health_component = NodePath("../HealthComponent")

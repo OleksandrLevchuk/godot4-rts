@@ -47,6 +47,7 @@ _data = {
 }
 
 [node name="tank" type="CharacterBody2D"]
+input_pickable = true
 motion_mode = 1
 script = ExtResource("1_glmym")
 

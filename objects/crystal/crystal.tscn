@@ -12,6 +12,7 @@ size = Vector2(26, 16)
 radius = 22.0
 
 [node name="crystal" type="StaticBody2D"]
+input_pickable = true
 
 [node name="SelectionComponent" parent="." node_paths=PackedStringArray("main_sprite", "collider", "health_component") instance=ExtResource("4_wf6y2")]
 main_sprite = NodePath("../Sprite2D")
