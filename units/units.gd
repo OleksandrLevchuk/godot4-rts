@@ -8,7 +8,7 @@ signal unit_moved
 
 func _ready():
 	for unit in get_children():
-		unit.moved.connect( _on_unit_moved )
+		unit.get_node("MovementComponent").moved.connect( _on_unit_moved )
 		unit_spawned.emit(unit.position)
 
 

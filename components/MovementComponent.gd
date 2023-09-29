@@ -2,7 +2,8 @@ extends Node2D
 class_name MovementComponent
 
 ## driving units can't strife sideways
-@export var is_driving : bool
+#@export var is_driving : bool
+@export_enum("Wheeled", "Legged") var movement_type : String
 ## pixels per frame i guess :D
 @export var MAX_SPEED : float
 ## seconds to reach max speed
@@ -28,15 +29,13 @@ var elapsed := 0.0
 
 @onready var parent := get_parent()
 
-signal moved
-
 
 func _ready():
 	TURN_RATE *= PI # because.
 
 
 func _input(event):
-	if event.is_action_released('right_click') and $SelectionComponent.is_selected :
+	if event.is_action_released('right_click') and selection.is_selected :
 		destination = get_global_mouse_position()
 		is_moving = true
 		is_turning = true
@@ -54,27 +53,30 @@ func _physics_process(delta):
 		if accel_percent > 1:
 			accel_percent = 1
 			is_accelerating = false
-		acceleration = Utils.curve( accel_percent, SPEED_CURVE )
+#		acceleration = Utils.curve( accel_percent, SPEED_CURVE )
+		acceleration = Vector2.ZERO.bezier_interpolate( 
+			SPEED_CURVE[0], SPEED_CURVE[1], Vector2.ONE, accel_percent ).y
 	elif is_decelerating:
 		accel_percent -= delta/ACCELERATION_TIME * 2 # break twice as fast
 
 	# currently, the tank will only turn once per order, 
 	# and will not recalculate it's agle if it's shifted by something
 	if is_turning:
-		var desired_angle = position.angle_to_point(destination)
-		var difference = asin( sin( desired_angle - rotation ) ) # this also works... less readable but probably faster
-		var angle_increase = TURN_RATE * delta * sign(difference) * acceleration**2
-		if abs(difference) > angle_increase: # turn gradually if we're facing off
+		var pos = parent.position
+		var current_angle = parent.rotation
+		var desired_angle = pos.angle_to_point(destination)
+		# this also works... less readable but probably faster
+		var difference = asin( sin( desired_angle - rotation ) ) 
+		var which_side = sign( difference )
+		# this is how much the tank can turn
+		var angle_increase = TURN_RATE * delta * acceleration**2
+		# turn gradually if we're facing off
+		parent.rotation = current_angle + angle_increase * which_side
+		if abs(difference) > angle_increase: 
 			rotation = wrap(rotation+angle_increase,-PI,PI) # rotates in the direction of the difference
 		else: # snap to the exact angle needed if we're near it, and stop turning
 			rotation = desired_angle
 			is_turning = false
-
-	if elapsed < REFRESH_RATE:
-		elapsed += delta
-	else:
-#		moved.emit( minimap_id, position )
-		elapsed = 0.0
 
 	if position.distance_to( destination ) < 15: # we've arrived, let's stop
 		is_moving = false

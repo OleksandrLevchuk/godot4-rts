@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://byys03pyjar55"]
+[gd_scene load_steps=19 format=3 uid="uid://byys03pyjar55"]
 
 [ext_resource type="Script" path="res://world.gd" id="1_45y3j"]
 [ext_resource type="Texture2D" uid="uid://cfd7f4gxy4adk" path="res://art/color.jpg" id="2_8c15o"]
@@ -11,6 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://bi4ni5ylf72jo" path="res://buildings/factory/factory.tscn" id="7_rgfsw"]
 [ext_resource type="Script" path="res://buildings/buildings.gd" id="7_tku4g"]
 [ext_resource type="Texture2D" uid="uid://c70jb0qiccqb2" path="res://art/spider.png" id="7_ypfoc"]
+[ext_resource type="Script" path="res://components/MinimapComponent.gd" id="8_oys77"]
 [ext_resource type="PackedScene" uid="uid://vn2pj1fllvl8" path="res://components/health_component.tscn" id="8_xmmwm"]
 [ext_resource type="Script" path="res://components/MovementComponent.gd" id="9_ra5ok"]
 [ext_resource type="PackedScene" uid="uid://dgg0qggy2pu7o" path="res://objects/crystal/crystal.tscn" id="10_0ecfo"]
@@ -92,9 +93,14 @@ texture = ExtResource("7_ypfoc")
 
 [node name="HealthComponent" parent="Units/Spider" instance=ExtResource("8_xmmwm")]
 
+[node name="MinimapComponent" type="Node2D" parent="Units/Spider" node_paths=PackedStringArray("ui_node")]
+script = ExtResource("8_oys77")
+minimap_marker_type = "Unit"
+is_moving = true
+ui_node = NodePath("../../../UI")
+
 [node name="MovementComponent" type="Node2D" parent="Units/Spider"]
 script = ExtResource("9_ra5ok")
-is_driving = true
 MAX_SPEED = 200.0
 ACCELERATION_TIME = 3.0
 
