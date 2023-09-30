@@ -1,6 +1,11 @@
 extends Label
 
+func _ready():
+	Game.update_ui.connect(update)
+	update()
+	
 func update():
+	# this rather hefty setup is handy for debugging, when there's a lot of lines
 	var dict = { 
 		crystals = Game.Crystals,
 		energy = Game.Energy,
@@ -8,4 +13,4 @@ func update():
 	var tempstr = ''
 	for key in dict:
 		tempstr += key + ': ' + str(dict[key]) + '\n'
-	text = tempstr # remove the trailing comma and line break
+	text = tempstr

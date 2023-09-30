@@ -89,6 +89,4 @@ position = Vector2(410, -64)
 [connection signal="unit_moved" from="Units" to="UI" method="_on_unit_moved"]
 [connection signal="unit_spawned" from="Units" to="UI" method="_on_unit_spawned"]
 [connection signal="ordered_unit_spawn" from="UI" to="Units" method="_on_ui_ordered_unit_spawn"]
-[connection signal="moved" from="Camera" to="UI" method="_on_camera_moved"]
-[connection signal="zoomed" from="Camera" to="UI" method="_on_camera_zoomed"]
 [connection signal="building_selected" from="Buildings" to="UI" method="_on_buildings_building_selected"]

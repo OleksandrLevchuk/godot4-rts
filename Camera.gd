@@ -16,6 +16,8 @@ signal zoomed
 
 
 func _ready():
+	moved.connect(Game.minimap._on_camera_moved)
+	zoomed.connect(Game.minimap._on_camera_zoomed)
 	moved.emit(position)
 	zoomed.emit(zoom)
 
