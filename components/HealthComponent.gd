@@ -6,6 +6,8 @@ class_name HealthComponent
 @export var MAX_HEALTH : int
 var health : int
 
+signal died
+
 
 func _ready():
 #	health_bar.max_value = MAX_HEALTH

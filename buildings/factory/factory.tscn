@@ -13,11 +13,11 @@ input_pickable = true
 script = ExtResource("1_qv0e3")
 
 [node name="SelectionComponent" parent="." node_paths=PackedStringArray("main_sprite", "collider", "health_component") instance=ExtResource("4_h03i7")]
-main_sprite = NodePath("../Factory")
+main_sprite = NodePath("../Sprite2D")
 collider = NodePath("../CollisionShape2D")
 health_component = NodePath("../HealthComponent")
 
-[node name="Factory" type="Sprite2D" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(4, -37)
 scale = Vector2(0.219033, 0.228855)
 texture = ExtResource("2_ymupa")

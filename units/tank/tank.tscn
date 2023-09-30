@@ -1,6 +1,5 @@
-[gd_scene load_steps=10 format=3 uid="uid://cxe80dasal4cw"]
+[gd_scene load_steps=9 format=3 uid="uid://cxe80dasal4cw"]
 
-[ext_resource type="Script" path="res://units/tank/tank.gd" id="1_glmym"]
 [ext_resource type="Texture2D" uid="uid://nl6gqpbnjm8i" path="res://units/tank/tank_spritesheet.png" id="2_6hn61"]
 [ext_resource type="PackedScene" uid="uid://vn2pj1fllvl8" path="res://components/health_component.tscn" id="3_g14mc"]
 [ext_resource type="PackedScene" uid="uid://bjgmnpjrh2kc7" path="res://components/selection_component.tscn" id="4_01hbr"]
@@ -50,13 +49,6 @@ _data = {
 [node name="tank" type="CharacterBody2D"]
 input_pickable = true
 motion_mode = 1
-script = ExtResource("1_glmym")
-
-[node name="SelectionComponent" parent="." node_paths=PackedStringArray("main_sprite", "collider", "health_component") instance=ExtResource("4_01hbr")]
-main_sprite = NodePath("../Sprite2D")
-collider = NodePath("../CollisionShape2D")
-health_component = NodePath("../HealthComponent")
-is_movable = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -0.125)
@@ -76,13 +68,16 @@ libraries = {
 "": SubResource("AnimationLibrary_3hjh7")
 }
 
+[node name="SelectionComponent" parent="." node_paths=PackedStringArray("main_sprite", "collider", "health_component") instance=ExtResource("4_01hbr")]
+main_sprite = NodePath("../Sprite2D")
+collider = NodePath("../CollisionShape2D")
+health_component = NodePath("../HealthComponent")
+is_movable = true
+
 [node name="HealthComponent" parent="." instance=ExtResource("3_g14mc")]
 
-[node name="MovementComponent" type="Node2D" parent="."]
+[node name="MovementComponent" type="Node2D" parent="." node_paths=PackedStringArray("selection")]
 script = ExtResource("5_hjtaw")
-is_driving = true
 MAX_SPEED = 200.0
 ACCELERATION_TIME = 3.0
-TURN_RATE = null
-REFRESH_RATE = null
-SPEED_CURVE = null
+selection = NodePath("../SelectionComponent")

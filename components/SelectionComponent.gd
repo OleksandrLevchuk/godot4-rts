@@ -18,7 +18,7 @@ signal deselected
 
 
 func _ready():
-	var size = main_sprite.texture.get_size()
+	var size = Vector2.ONE # main_sprite.texture.get_size()
 	var new_scale = 0.2 + ( size.x + size.y ) / 4000
 	for sprite in [select_sprite, hover_sprite, movable_sprite]:
 		sprite.visible = false

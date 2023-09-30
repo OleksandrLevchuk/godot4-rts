@@ -23,6 +23,11 @@ func move_marker(id, pos):
 	markers[id].position = pos
 
 
+func remove_marker(id, pos):
+	markers[id].queue_free()
+	markers[id] = null
+
+
 func move_camera(pos):
 	$camera.position = pos
 

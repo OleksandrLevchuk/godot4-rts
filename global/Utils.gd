@@ -31,3 +31,19 @@ static func curve( percent:float, points:Array ):
 # Rect2(start,end-start).abs() creates a proper rect, regardless where the points are
 # randf()*TAU-PI gives a random angle
 # velocity = Vector2( cos(rotation), sin(rotation) ) * MAX_SPEED
+
+
+static func area_is_free(origin, radius, unit_array):
+	var area = Rect2(origin,Vector2.ZERO).grow(radius)
+	for unit in unit_array:
+		if area.has_point(unit.position): return false
+	return true
+
+
+const AREA_SIZE = 50
+static func find_free_spot_at(area_center):
+	# prefetch these - we'll need to reuse them a lot in a loop
+	var unit_array = Game.get_tree().get_nodes_in_group('units')
+	for offset in INF: # to infinity and beyond!
+		var point = area_center + offset * Vector2.ONE * (randf()*2-1)
+		if area_is_free(point, AREA_SIZE, unit_array): return point

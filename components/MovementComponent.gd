@@ -13,7 +13,8 @@ class_name MovementComponent
 ## how often to update the minimap marker
 @export var REFRESH_RATE := 1.0
 ## these are bezier curve points
-@export var SPEED_CURVE := [ Vector2(0.0, 1.2), Vector2(0.2, 0.5) ]
+@export var SPEED_CURVE : Curve
+#@export var SPEED_CURVE := [ Vector2(0.0, 1.2), Vector2(0.2, 0.5) ]
 @export var animation : AnimationPlayer
 @export var selection : SelectionComponent
 
@@ -29,6 +30,9 @@ var elapsed := 0.0
 
 @onready var parent := get_parent()
 
+signal started_moving
+signal ended_moving
+
 
 func _ready():
 	TURN_RATE *= PI # because.
@@ -42,20 +46,21 @@ func _input(event):
 		is_accelerating = accel_percent < 1
 		animation.play('drive')
 
-
 func _physics_process(delta):
-	print(position,parent.position)
 	if not is_moving: 
 		return
-
 	if is_accelerating:
-		accel_percent += delta/ACCELERATION_TIME
-		if accel_percent > 1:
-			accel_percent = 1
+		elapsed += delta
+		if elapsed > ACCELERATION_TIME:
+			acceleration = 1.0
 			is_accelerating = false
+		else:
+			acceleration = SPEED_CURVE.sample_baked( elapsed/ACCELERATION_TIME * SPEED_CURVE.get_baked_length())
+		print(acceleration)
+
 #		acceleration = Utils.curve( accel_percent, SPEED_CURVE )
-		acceleration = Vector2.ZERO.bezier_interpolate( 
-			SPEED_CURVE[0], SPEED_CURVE[1], Vector2.ONE, accel_percent ).y
+#		acceleration = Vector2.ZERO.bezier_interpolate( 
+#			SPEED_CURVE[0], SPEED_CURVE[1], Vector2.ONE, accel_percent ).y
 	elif is_decelerating:
 		accel_percent -= delta/ACCELERATION_TIME * 2 # break twice as fast
 
@@ -82,6 +87,7 @@ func _physics_process(delta):
 		is_moving = false
 		accel_percent = 0.0
 		animation.stop()
+		set_process(false) # this code will disable this function!!!
 
 	parent.velocity = Vector2.RIGHT.rotated(rotation) * MAX_SPEED * acceleration
 	parent.move_and_slide()

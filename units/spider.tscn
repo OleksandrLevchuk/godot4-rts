@@ -1,0 +1,52 @@
+[gd_scene load_steps=7 format=3 uid="uid://ducmhyd7xkox5"]
+
+[ext_resource type="PackedScene" uid="uid://bjgmnpjrh2kc7" path="res://components/selection_component.tscn" id="1_lrks8"]
+[ext_resource type="PackedScene" uid="uid://vn2pj1fllvl8" path="res://components/health_component.tscn" id="3_h47g2"]
+[ext_resource type="Script" path="res://components/MinimapComponent.gd" id="4_brq43"]
+[ext_resource type="Script" path="res://components/MovementComponent.gd" id="5_des0h"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_j1shc"]
+size = Vector2(44, 53)
+
+[sub_resource type="Curve" id="Curve_7vhu4"]
+bake_resolution = 10
+_data = [Vector2(0.0031348, 0.0315789), 0.0, 10.6842, 0, 0, Vector2(0.166144, 0.715789), 0.907539, 0.907539, 0, 0, Vector2(1, 1), 0.4797, 0.0, 0, 0]
+point_count = 3
+metadata/_snap_count = 5
+
+[node name="Spider" type="CharacterBody2D"]
+position = Vector2(451, 99)
+rotation = 3.89383
+input_pickable = true
+motion_mode = 1
+
+[node name="SelectionComponent" parent="." node_paths=PackedStringArray("main_sprite", "collider", "health_component") instance=ExtResource("1_lrks8")]
+main_sprite = NodePath("../Sprite2D")
+collider = NodePath("../CollisionShape2D")
+health_component = NodePath("../HealthComponent")
+is_movable = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(3.05176e-05, -0.125061)
+rotation = 1.5708
+shape = SubResource("RectangleShape2D_j1shc")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(13, 0)
+rotation = 1.5708
+scale = Vector2(0.05, 0.05)
+
+[node name="HealthComponent" parent="." instance=ExtResource("3_h47g2")]
+
+[node name="MinimapComponent" type="Node2D" parent="."]
+script = ExtResource("4_brq43")
+minimap_marker_type = "Unit"
+is_moving = true
+
+[node name="MovementComponent" type="Node2D" parent="."]
+script = ExtResource("5_des0h")
+MAX_SPEED = 200.0
+ACCELERATION_TIME = 3.0
+SPEED_CURVE = SubResource("Curve_7vhu4")
+
+[connection signal="died" from="HealthComponent" to="MinimapComponent" method="_on_health_component_died"]
