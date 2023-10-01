@@ -1,6 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://ducmhyd7xkox5"]
+[gd_scene load_steps=8 format=3 uid="uid://ducmhyd7xkox5"]
 
 [ext_resource type="PackedScene" uid="uid://bjgmnpjrh2kc7" path="res://components/selection_component.tscn" id="1_lrks8"]
+[ext_resource type="Texture2D" uid="uid://dqplk114rn0f4" path="res://art/units/spider.png" id="2_rfqky"]
 [ext_resource type="PackedScene" uid="uid://vn2pj1fllvl8" path="res://components/health_component.tscn" id="3_h47g2"]
 [ext_resource type="Script" path="res://components/MinimapComponent.gd" id="4_brq43"]
 [ext_resource type="Script" path="res://components/MovementComponent.gd" id="5_des0h"]
@@ -24,7 +25,6 @@ motion_mode = 1
 main_sprite = NodePath("../Sprite2D")
 collider = NodePath("../CollisionShape2D")
 health_component = NodePath("../HealthComponent")
-is_movable = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(3.05176e-05, -0.125061)
@@ -35,6 +35,7 @@ shape = SubResource("RectangleShape2D_j1shc")
 position = Vector2(13, 0)
 rotation = 1.5708
 scale = Vector2(0.05, 0.05)
+texture = ExtResource("2_rfqky")
 
 [node name="HealthComponent" parent="." instance=ExtResource("3_h47g2")]
 
@@ -43,10 +44,10 @@ script = ExtResource("4_brq43")
 minimap_marker_type = "Unit"
 is_moving = true
 
-[node name="MovementComponent" type="Node2D" parent="."]
+[node name="MovementComponent" type="Node2D" parent="." node_paths=PackedStringArray("selection")]
 script = ExtResource("5_des0h")
-MAX_SPEED = 200.0
 ACCELERATION_TIME = 3.0
 SPEED_CURVE = SubResource("Curve_7vhu4")
+selection = NodePath("../SelectionComponent")
 
 [connection signal="died" from="HealthComponent" to="MinimapComponent" method="_on_health_component_died"]

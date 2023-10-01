@@ -59,7 +59,7 @@ script = ExtResource("3_5ktyg")
 
 [node name="Tank" parent="Units" instance=ExtResource("3_it4u3")]
 position = Vector2(283, 192)
-rotation = -1.01649
+rotation = -2.51676
 
 [node name="Spider" parent="Units" instance=ExtResource("5_su8b0")]
 
@@ -82,9 +82,10 @@ position = Vector2(-303, -88)
 [node name="Objects" type="Node2D" parent="."]
 
 [node name="Crystal" parent="Objects" instance=ExtResource("10_0ecfo")]
+position = Vector2(-175, 127)
 
 [node name="Crystal2" parent="Objects" instance=ExtResource("10_0ecfo")]
-position = Vector2(410, -64)
+position = Vector2(425, -70)
 
 [connection signal="unit_moved" from="Units" to="UI" method="_on_unit_moved"]
 [connection signal="unit_spawned" from="Units" to="UI" method="_on_unit_spawned"]

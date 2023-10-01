@@ -5,7 +5,7 @@ class_name SelectionComponent
 @export var collider : CollisionShape2D
 @export var health_component : HealthComponent
 ## just adds corners to the selection triangle visual
-@export var is_movable : bool
+@export var is_movable : bool = true
 
 @onready var select_sprite := $TransformParent/SelectionSprite
 @onready var hover_sprite := $TransformParent/HoverSprite

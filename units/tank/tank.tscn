@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://cxe80dasal4cw"]
+[gd_scene load_steps=11 format=3 uid="uid://cxe80dasal4cw"]
 
 [ext_resource type="Texture2D" uid="uid://nl6gqpbnjm8i" path="res://units/tank/tank_spritesheet.png" id="2_6hn61"]
 [ext_resource type="PackedScene" uid="uid://vn2pj1fllvl8" path="res://components/health_component.tscn" id="3_g14mc"]
@@ -47,6 +47,10 @@ _data = {
 "drive": SubResource("Animation_jhrpe")
 }
 
+[sub_resource type="Curve" id="Curve_0arpm"]
+_data = [Vector2(0, 0), 0.0, 13.3246, 0, 0, Vector2(0.15102, 0.736842), 0.644737, 0.644737, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 3
+
 [node name="tank" type="CharacterBody2D"]
 input_pickable = true
 motion_mode = 1
@@ -73,14 +77,13 @@ libraries = {
 main_sprite = NodePath("../Sprite2D")
 collider = NodePath("../CollisionShape2D")
 health_component = NodePath("../HealthComponent")
-is_movable = true
 
 [node name="HealthComponent" parent="." instance=ExtResource("3_g14mc")]
 
-[node name="MovementComponent" type="Node2D" parent="." node_paths=PackedStringArray("selection")]
+[node name="MovementComponent" type="Node2D" parent="." node_paths=PackedStringArray("animation", "selection")]
 script = ExtResource("5_hjtaw")
-MAX_SPEED = 200.0
-ACCELERATION_TIME = 3.0
+SPEED_CURVE = SubResource("Curve_0arpm")
+animation = NodePath("../AnimationPlayer")
 selection = NodePath("../SelectionComponent")
 
 [node name="MinimapComponent" type="Node2D" parent="."]
