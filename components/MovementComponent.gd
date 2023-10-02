@@ -9,7 +9,7 @@ class_name MovementComponent
 ## seconds to reach max speed
 @export var ACCEL_TIME : float = 1
 ## seconds to turn around at full speed
-@export var TURN_RATE : float = 3
+@export var TURN_RATE : float = 1
 ## how often to update the minimap marker
 @export var REFRESH_RATE : float = 1
 ## these are bezier curve points
@@ -29,6 +29,7 @@ var braking_distance : float = 0.0
 var elapsed := 0.0
 
 @onready var parent := get_parent()
+@onready var prev_pos : Vector2 = parent.position
 
 signal started_moving
 signal ended_moving
@@ -51,6 +52,7 @@ func _input(event):
 		is_turning = true
 		started_moving.emit()
 
+
 func _process(delta):
 	if not is_moving:
 		return
@@ -58,18 +60,26 @@ func _process(delta):
 	if is_accelerating: # braking counts as acceleration too!
 		elapsed += delta * ( -1 if is_braking else 1 )
 		speed_mult = clamp(0, SPEED_CURVE.sample_baked(elapsed/ACCEL_TIME), 1)
-		if speed_mult == 1:
-			is_accelerating = false
-		elif speed_mult == 0:
-			is_braking = false
-			is_turning = false
-			is_accelerating = false
-			is_moving = false
+		if is_braking:
+			if speed_mult == 0:
+				prev_pos = parent.position				
+				is_braking = false
+				is_moving = false
+				ended_moving.emit()
+		else:
+#			braking_distance = velocity.length() * ACCEL_TIME
+			braking_distance += parent.position.distance_to(prev_pos)
+			print(braking_distance)
+			prev_pos = parent.position
+			if speed_mult==1:
+				print("max speed reached")
+				is_accelerating = false
 		velocity = velocity.normalized() * MAX_SPEED * speed_mult
-		braking_distance = velocity.length() * ACCEL_TIME
 		parent.velocity = velocity
 		
 	if is_turning:
+		if velocity == Vector2.ZERO:
+			velocity = Vector2.RIGHT.rotated(parent.rotation) / 999
 		var facing: Vector2 = velocity.normalized()
 		var facing_wanted: Vector2 = (destination-parent.position).normalized()
 		var which_side: float = sign(facing.cross( facing_wanted ))
@@ -81,14 +91,14 @@ func _process(delta):
 		parent.rotation = velocity.angle()
 		parent.velocity = velocity
 		
-	var distance = parent.position.distance_to(destination)
-	print(distance)
-	if not is_braking and distance<braking_distance:
+	if not is_braking and parent.position.distance_to(destination)<braking_distance:
 		print('braking!')
+		braking_distance = 0.0
 		is_accelerating = true
 		is_braking = true
 		
 	parent.move_and_slide()
+
 
 '''
 	if not is_moving:

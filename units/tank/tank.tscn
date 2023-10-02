@@ -51,7 +51,7 @@ _data = {
 _data = [Vector2(0, 0), 0.0, 13.3246, 0, 0, Vector2(0.15102, 0.736842), 0.644737, 0.644737, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
 point_count = 3
 
-[node name="tank" type="CharacterBody2D"]
+[node name="Tank" type="CharacterBody2D"]
 input_pickable = true
 motion_mode = 1
 
