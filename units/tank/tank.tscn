@@ -82,6 +82,7 @@ health_component = NodePath("../HealthComponent")
 
 [node name="MovementComponent" type="Node2D" parent="." node_paths=PackedStringArray("animation", "selection")]
 script = ExtResource("5_hjtaw")
+ACCEL_TIME = 4.0
 SPEED_CURVE = SubResource("Curve_0arpm")
 animation = NodePath("../AnimationPlayer")
 selection = NodePath("../SelectionComponent")

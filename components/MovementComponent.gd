@@ -56,20 +56,21 @@ func _input(event):
 func _process(delta):
 	if not is_moving:
 		return
-		
+	
 	if is_accelerating: # braking counts as acceleration too!
 		elapsed += delta * ( -1 if is_braking else 1 )
-		speed_mult = clamp(0, SPEED_CURVE.sample_baked(elapsed/ACCEL_TIME), 1)
+		speed_mult = SPEED_CURVE.sample_baked(clamp(0,elapsed/ACCEL_TIME,1))
+		print('elapsed: ', elapsed, ', mult: ', speed_mult)
 		if is_braking:
-			if speed_mult == 0:
-				prev_pos = parent.position				
+			if elapsed < 0:
+				prev_pos = parent.position
 				is_braking = false
 				is_moving = false
 				ended_moving.emit()
 		else:
 #			braking_distance = velocity.length() * ACCEL_TIME
 			braking_distance += parent.position.distance_to(prev_pos)
-			print(braking_distance)
+			print('braking distance: ', braking_distance)
 			prev_pos = parent.position
 			if speed_mult==1:
 				print("max speed reached")

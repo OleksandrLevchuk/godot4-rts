@@ -61,7 +61,14 @@ script = ExtResource("3_5ktyg")
 position = Vector2(283, 192)
 rotation = -2.51676
 
+[node name="Tank2" parent="Units" instance=ExtResource("3_it4u3")]
+position = Vector2(-134, 235)
+rotation = -2.51676
+
 [node name="Spider" parent="Units" instance=ExtResource("5_su8b0")]
+
+[node name="Spider2" parent="Units" instance=ExtResource("5_su8b0")]
+position = Vector2(47, -114)
 
 [node name="UI" parent="." instance=ExtResource("4_n2fly")]
 
