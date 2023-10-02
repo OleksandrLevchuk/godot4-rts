@@ -8,25 +8,25 @@
 [node name="SelectionComponent" type="Node2D"]
 script = ExtResource("1_xte08")
 
-[node name="TransformParent" type="Node2D" parent="."]
+[node name="Transform" type="Node2D" parent="."]
 top_level = true
 
-[node name="MovableSprite" type="Sprite2D" parent="TransformParent"]
+[node name="Movable" type="Sprite2D" parent="Transform"]
 visible = false
 position = Vector2(0, 8)
 texture = ExtResource("2_grlwk")
 
-[node name="HoverSprite" type="Sprite2D" parent="TransformParent"]
+[node name="Hover" type="Sprite2D" parent="Transform"]
 visible = false
 position = Vector2(0, 8)
 texture = ExtResource("3_f3ykq")
 
-[node name="SelectionSprite" type="Sprite2D" parent="TransformParent"]
+[node name="Selection" type="Sprite2D" parent="Transform"]
 visible = false
 position = Vector2(0, 8)
 texture = ExtResource("4_itfqv")
 
 [node name="RemoteTransform2D" type="RemoteTransform2D" parent="."]
-remote_path = NodePath("../TransformParent")
+remote_path = NodePath("../Transform")
 update_rotation = false
 update_scale = false

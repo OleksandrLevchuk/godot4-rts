@@ -1,9 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://ducmhyd7xkox5"]
+[gd_scene load_steps=9 format=3 uid="uid://ducmhyd7xkox5"]
 
 [ext_resource type="PackedScene" uid="uid://bjgmnpjrh2kc7" path="res://components/selection_component.tscn" id="1_lrks8"]
 [ext_resource type="Texture2D" uid="uid://dqplk114rn0f4" path="res://art/units/spider.png" id="2_rfqky"]
 [ext_resource type="PackedScene" uid="uid://vn2pj1fllvl8" path="res://components/health_component.tscn" id="3_h47g2"]
 [ext_resource type="Script" path="res://components/MinimapComponent.gd" id="4_brq43"]
+[ext_resource type="Script" path="res://components/ControllerComponent.gd" id="5_a2td7"]
 [ext_resource type="Script" path="res://components/MovementComponent.gd" id="5_des0h"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_j1shc"]
@@ -43,6 +44,9 @@ health_component = NodePath("../HealthComponent")
 script = ExtResource("4_brq43")
 minimap_marker_type = "Unit"
 is_moving = true
+
+[node name="ControllerComponent" type="Node2D" parent="."]
+script = ExtResource("5_a2td7")
 
 [node name="MovementComponent" type="Node2D" parent="." node_paths=PackedStringArray("selection")]
 script = ExtResource("5_des0h")

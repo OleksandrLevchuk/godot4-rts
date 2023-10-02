@@ -3,13 +3,12 @@ class_name SelectionComponent
 
 @export var main_sprite : Sprite2D
 @export var collider : CollisionShape2D
-@export var health_component : HealthComponent
-## just adds corners to the selection triangle visual
-@export var is_movable : bool = true
 
-@onready var select_sprite := $TransformParent/SelectionSprite
-@onready var hover_sprite := $TransformParent/HoverSprite
-@onready var movable_sprite := $TransformParent/MovableSprite
+@onready var parent := get_parent()
+@onready var is_movable := parent.has_node('MovementComponent')
+@onready var select_sprite := $Transform/Selection
+@onready var hover_sprite := $Transform/Hover
+@onready var movable_sprite := $Transform/Movable # adds corners to selection
 
 var is_selected := false
 
@@ -19,26 +18,21 @@ signal deselected
 
 func _ready():
 	set_process_input(false)
+	# scale the selection sprites according to the main sprite size
 	var size = main_sprite.texture.get_size()
 	var new_scale = 0.2 + min( size.x, size.y ) / 4000
 	for sprite in [select_sprite, hover_sprite, movable_sprite]:
 		sprite.visible = false
 		sprite.scale = Vector2( new_scale, new_scale)
-		
-	get_parent().mouse_entered.connect(hover)
-	get_parent().mouse_exited.connect(unhover)
-
-	if health_component:
-		selected.connect(health_component._on_selected)
-		deselected.connect(health_component._on_deselected)
-
-
-func hover():
-	hover_sprite.visible = true
-
-
-func unhover():
-	hover_sprite.visible = false
+	# connect all the signals needed
+	parent.mouse_entered.connect(func():hover_sprite.visible=true)
+	parent.mouse_exited.connect(func():hover_sprite.visible=false)
+	if parent.has_node('ControllerComponent'):
+		selected.connect(parent.get_node('ControllerComponent')._on_selected)
+		deselected.connect(parent.get_node('ControllerComponent')._on_deselected)
+	if parent.has_node('HealthComponent'):
+		selected.connect(parent.get_node('HealthComponent')._on_selected)
+		deselected.connect(parent.get_node('HealthComponent')._on_deselected)
 
 
 func select():
