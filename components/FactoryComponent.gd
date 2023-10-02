@@ -1,4 +1,15 @@
-extends StaticBody2D
+extends Node2D
+class_name FactoryComponent
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(_delta):
+	pass
+
 
 #@onready var spawn_dialog := preload("res://ui/unit_spawn_dialog.tscn")
 #var is_hovered := false
@@ -16,11 +27,3 @@ extends StaticBody2D
 #		selected.emit(position, spawn_dialog)
 #	else:
 #		$selectbox.visible = false
-
-
-#func _on_mouse_exited():
-#	is_hovered = false
-
-
-#func _on_mouse_entered():
-#	is_hovered = true

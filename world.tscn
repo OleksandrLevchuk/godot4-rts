@@ -7,8 +7,8 @@
 [ext_resource type="PackedScene" uid="uid://b6qi0uh341w1n" path="res://ui/ui.tscn" id="4_n2fly"]
 [ext_resource type="PackedScene" uid="uid://ducmhyd7xkox5" path="res://units/spider.tscn" id="5_su8b0"]
 [ext_resource type="Script" path="res://camera.gd" id="6_rcps3"]
-[ext_resource type="PackedScene" uid="uid://blhofuu2vpg2i" path="res://buildings/power_plant/power_plant.tscn" id="7_h2bom"]
-[ext_resource type="PackedScene" uid="uid://bi4ni5ylf72jo" path="res://buildings/factory/factory.tscn" id="7_rgfsw"]
+[ext_resource type="PackedScene" uid="uid://blhofuu2vpg2i" path="res://buildings/power_plant.tscn" id="7_h2bom"]
+[ext_resource type="PackedScene" uid="uid://bi4ni5ylf72jo" path="res://buildings/factory.tscn" id="7_rgfsw"]
 [ext_resource type="Script" path="res://buildings/buildings.gd" id="7_tku4g"]
 [ext_resource type="PackedScene" uid="uid://dgg0qggy2pu7o" path="res://objects/crystal/crystal.tscn" id="10_0ecfo"]
 

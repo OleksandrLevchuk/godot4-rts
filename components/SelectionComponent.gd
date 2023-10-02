@@ -18,8 +18,9 @@ signal deselected
 
 
 func _ready():
-	var size = Vector2.ONE # main_sprite.texture.get_size()
-	var new_scale = 0.2 + ( size.x + size.y ) / 4000
+	set_process_input(false)
+	var size = main_sprite.texture.get_size()
+	var new_scale = 0.2 + min( size.x, size.y ) / 4000
 	for sprite in [select_sprite, hover_sprite, movable_sprite]:
 		sprite.visible = false
 		sprite.scale = Vector2( new_scale, new_scale)
@@ -30,8 +31,6 @@ func _ready():
 	if health_component:
 		selected.connect(health_component._on_selected)
 		deselected.connect(health_component._on_deselected)
-
-#func _process(_delta):
 
 
 func hover():

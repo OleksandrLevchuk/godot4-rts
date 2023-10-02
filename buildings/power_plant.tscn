@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://blhofuu2vpg2i"]
 
-[ext_resource type="Texture2D" uid="uid://dexosoiqcerpc" path="res://buildings/power_plant/powerplant.png" id="2_8g780"]
+[ext_resource type="Texture2D" uid="uid://p3lr8gy66yyc" path="res://art/buildings/powerplant.png" id="2_2sdc4"]
 [ext_resource type="PackedScene" uid="uid://dxvfwjy2ojs42" path="res://components/generator_component.tscn" id="2_4820p"]
 [ext_resource type="PackedScene" uid="uid://vn2pj1fllvl8" path="res://components/health_component.tscn" id="3_nml48"]
 [ext_resource type="PackedScene" uid="uid://bjgmnpjrh2kc7" path="res://components/selection_component.tscn" id="4_bjegr"]
@@ -17,6 +17,7 @@ input_pickable = true
 main_sprite = NodePath("../Sprite2D")
 collider = NodePath("../CollisionShape2D")
 health_component = NodePath("../HealthComponent")
+is_movable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-4, 3)
@@ -26,7 +27,7 @@ shape = SubResource("CircleShape2D_jqmm7")
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(-13, -41)
 scale = Vector2(0.285, 0.266986)
-texture = ExtResource("2_8g780")
+texture = ExtResource("2_2sdc4")
 
 [node name="GeneratorComponent" parent="." instance=ExtResource("2_4820p")]
 

@@ -42,17 +42,6 @@ func _ready():
 		ended_moving.connect(animation.stop)
 
 
-func _input(event):
-	if event.is_action_released('right_click') and selection.is_selected :
-		destination = get_global_mouse_position()
-		print(destination)
-		is_braking = false
-		is_moving = true
-		is_accelerating = true
-		is_turning = true
-		started_moving.emit()
-
-
 func _process(delta):
 	if not is_moving:
 		return

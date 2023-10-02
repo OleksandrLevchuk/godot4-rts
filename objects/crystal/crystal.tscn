@@ -15,11 +15,6 @@ radius = 22.0
 [node name="crystal" type="StaticBody2D"]
 input_pickable = true
 
-[node name="SelectionComponent" parent="." node_paths=PackedStringArray("main_sprite", "collider", "health_component") instance=ExtResource("4_wf6y2")]
-main_sprite = NodePath("../Sprite2D")
-collider = NodePath("../CollisionShape2D")
-health_component = NodePath("../HealthComponent")
-
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 6.5)
 shape = SubResource("RectangleShape2D_qwo5b")
@@ -28,6 +23,12 @@ shape = SubResource("RectangleShape2D_qwo5b")
 position = Vector2(0, 4)
 scale = Vector2(0.25, 0.25)
 texture = ExtResource("1_fpclo")
+
+[node name="SelectionComponent" parent="." node_paths=PackedStringArray("main_sprite", "collider", "health_component") instance=ExtResource("4_wf6y2")]
+main_sprite = NodePath("../Sprite2D")
+collider = NodePath("../CollisionShape2D")
+health_component = NodePath("../HealthComponent")
+is_movable = false
 
 [node name="HealthComponent" parent="." instance=ExtResource("3_co7cq")]
 

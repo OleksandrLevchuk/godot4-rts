@@ -1,10 +1,12 @@
-[gd_scene load_steps=11 format=3 uid="uid://cxe80dasal4cw"]
+[gd_scene load_steps=13 format=3 uid="uid://cxe80dasal4cw"]
 
 [ext_resource type="Texture2D" uid="uid://nl6gqpbnjm8i" path="res://units/tank/tank_spritesheet.png" id="2_6hn61"]
 [ext_resource type="PackedScene" uid="uid://vn2pj1fllvl8" path="res://components/health_component.tscn" id="3_g14mc"]
 [ext_resource type="PackedScene" uid="uid://bjgmnpjrh2kc7" path="res://components/selection_component.tscn" id="4_01hbr"]
 [ext_resource type="Script" path="res://components/MovementComponent.gd" id="5_hjtaw"]
 [ext_resource type="Script" path="res://components/MinimapComponent.gd" id="5_hloq4"]
+[ext_resource type="Script" path="res://components/AttackComponent.gd" id="6_yj2vk"]
+[ext_resource type="Script" path="res://components/ControllerComponent.gd" id="7_si3uo"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_j1shc"]
 size = Vector2(44, 53)
@@ -91,3 +93,9 @@ selection = NodePath("../SelectionComponent")
 script = ExtResource("5_hloq4")
 minimap_marker_type = "Unit"
 is_moving = true
+
+[node name="AttackComponent" type="Node2D" parent="."]
+script = ExtResource("6_yj2vk")
+
+[node name="ControllerComponent" type="Node2D" parent="."]
+script = ExtResource("7_si3uo")
