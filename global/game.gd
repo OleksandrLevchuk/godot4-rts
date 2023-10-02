@@ -14,7 +14,3 @@ var Energy := 0:
 	set(x):
 		Energy = x
 		update_ui.emit()
-
-
-func connect_to_minimap( unit ) -> int:
-	return minimap.add_marker( unit )

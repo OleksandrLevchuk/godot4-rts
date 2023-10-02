@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://tq46vowam2m5"]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Unit" type="Polygon2D" parent="."]
+visible = false
+polygon = PackedVector2Array(-13, -12, 14, -12, 4, 11, -4, 11)
+
+[node name="Object" type="Polygon2D" parent="."]
+visible = false
+polygon = PackedVector2Array(0, -9, 9, 9, 0, 8, -8, 9)
+
+[node name="Building" type="Polygon2D" parent="."]
+visible = false
+polygon = PackedVector2Array(-6, -18, 6, -18, 18, 14, -18, 14)

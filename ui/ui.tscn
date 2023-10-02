@@ -1,10 +1,11 @@
-[gd_scene load_steps=11 format=3 uid="uid://b6qi0uh341w1n"]
+[gd_scene load_steps=12 format=3 uid="uid://b6qi0uh341w1n"]
 
 [ext_resource type="Script" path="res://ui/selectbox.gd" id="1_k21uh"]
 [ext_resource type="Script" path="res://ui/ui.gd" id="1_noydw"]
 [ext_resource type="Script" path="res://ui/info.gd" id="2_4wqkh"]
 [ext_resource type="Script" path="res://ui/minimap.gd" id="5_1bgg6"]
 [ext_resource type="Script" path="res://ui/order_target.gd" id="5_dmycc"]
+[ext_resource type="PackedScene" uid="uid://tq46vowam2m5" path="res://ui/minimap_marker.tscn" id="6_cqrwj"]
 [ext_resource type="Texture2D" uid="uid://bvkfpoh3hpp10" path="res://art/color.jpg" id="6_kctty"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7ojft"]
@@ -88,6 +89,7 @@ handle_input_locally = false
 size = Vector2i(280, 280)
 render_target_update_mode = 4
 script = ExtResource("5_1bgg6")
+minimap_marker = ExtResource("6_cqrwj")
 
 [node name="TileMap" type="TileMap" parent="Minimap/Viewport"]
 visible = false

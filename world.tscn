@@ -64,7 +64,6 @@ rotation = -2.51676
 [node name="Spider" parent="Units" instance=ExtResource("5_su8b0")]
 
 [node name="UI" parent="." instance=ExtResource("4_n2fly")]
-visible = false
 
 [node name="Camera" type="Camera2D" parent="."]
 script = ExtResource("6_rcps3")
