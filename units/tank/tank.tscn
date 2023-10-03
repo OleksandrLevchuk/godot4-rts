@@ -80,7 +80,6 @@ main_sprite = NodePath("../Sprite2D")
 collider = NodePath("../CollisionShape2D")
 
 [node name="HealthComponent" parent="." instance=ExtResource("3_g14mc")]
-MAX_HEALTH = 5
 
 [node name="MovementComponent" type="Node2D" parent="." node_paths=PackedStringArray("animation", "selection")]
 script = ExtResource("5_hjtaw")

@@ -4,7 +4,7 @@ const ZOOM_MIN := 0.5
 const ZOOM_MAX := 3.0
 const ZOOM_SPEED := 8.0
 const EASING := 0.4 #how many secons it takes for camera to zoom and pan
-const PAN_SPEED := 80.0 #pixels(?) per second
+const PAN_SPEED := 160.0 #pixels(?) per second
 
 var is_panning := false
 var is_zooming := false
@@ -25,7 +25,7 @@ func _process(delta):
 	var pan_input := Vector2( 
 		Input.get_axis("camera_pan_left","camera_pan_right"),
 		Input.get_axis("camera_pan_up","camera_pan_down"))
-	if pan_input.x or pan_input.y:
+	if not pan_input==Vector2.ZERO:
 		is_panning = true
 		pan_target = position + pan_input * PAN_SPEED
 #		print(pan_target)
@@ -47,7 +47,7 @@ func _process(delta):
 
 
 func _input(_event:InputEvent):
-	var zoom_direction := Input.get_axis('wheel_up', 'wheel_down')
+	var zoom_direction := Input.get_axis('wheel_down', 'wheel_up')
 	if not zoom_direction: return
 	zoom_factor += zoom_factor ** 1.5 * zoom_direction * ZOOM_SPEED * 0.01
 	zoom_factor = clamp(zoom_factor, ZOOM_MIN, ZOOM_MAX)

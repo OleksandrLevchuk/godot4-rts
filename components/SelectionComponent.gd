@@ -35,11 +35,13 @@ func _ready():
 
 
 func select():
+	add_to_group('selected')
 	set_selected(true)
 	selected.emit()
 
 
 func deselect():
+	remove_from_group('selected')
 	set_selected(false)
 	deselected.emit()
 

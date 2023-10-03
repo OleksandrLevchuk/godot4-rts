@@ -13,11 +13,9 @@ radius = 54.0093
 y_sort_enabled = true
 input_pickable = true
 
-[node name="SelectionComponent" parent="." node_paths=PackedStringArray("main_sprite", "collider", "health_component") instance=ExtResource("4_bjegr")]
+[node name="SelectionComponent" parent="." node_paths=PackedStringArray("main_sprite", "collider") instance=ExtResource("4_bjegr")]
 main_sprite = NodePath("../Sprite2D")
 collider = NodePath("../CollisionShape2D")
-health_component = NodePath("../HealthComponent")
-is_movable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-4, 3)
@@ -32,6 +30,7 @@ texture = ExtResource("2_2sdc4")
 [node name="GeneratorComponent" parent="." instance=ExtResource("2_4820p")]
 
 [node name="HealthComponent" parent="." instance=ExtResource("3_nml48")]
+position = Vector2(18, -26)
 
 [node name="MinimapComponent" type="Node2D" parent="."]
 script = ExtResource("5_uwhgu")
