@@ -15,7 +15,7 @@ func _ready():
 	health = MAX_HEALTH
 
 
-func damage( dmg ):
+func take_damage( dmg ):
 	health -= dmg
 	create_tween().tween_property( health_bar, 'value', health, 0.5 )
 	if health <= 0:

@@ -5,7 +5,7 @@ func _ready():
 	update()
 	
 func update():
-	# this rather hefty setup is handy for debugging, when there's a lot of lines
+	# this hefty setup is handy for debugging, when there's a lot of lines
 	var dict = { 
 		crystals = Game.Crystals,
 		energy = Game.Energy,

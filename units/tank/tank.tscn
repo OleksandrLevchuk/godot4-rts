@@ -75,10 +75,9 @@ libraries = {
 "": SubResource("AnimationLibrary_3hjh7")
 }
 
-[node name="SelectionComponent" parent="." node_paths=PackedStringArray("main_sprite", "collider", "health_component") instance=ExtResource("4_01hbr")]
+[node name="SelectionComponent" parent="." node_paths=PackedStringArray("main_sprite", "collider") instance=ExtResource("4_01hbr")]
 main_sprite = NodePath("../Sprite2D")
 collider = NodePath("../CollisionShape2D")
-health_component = NodePath("../HealthComponent")
 
 [node name="HealthComponent" parent="." instance=ExtResource("3_g14mc")]
 

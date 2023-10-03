@@ -9,9 +9,14 @@ signal attacked
 
 
 func attack():
+	print("attacking this ", target)
 	attacked.emit(DAMAGE)
+	get_tree().create_timer(COOLDOWN).timeout.connect(attack)
 
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
+func _on_ordered_to_attack( unit ):
+	print("ordered to attack this ", unit)
+	if unit==target: return
+	target = unit
+	attacked.connect(target.get_node("HealthComponent").take_damage)
+	attack()

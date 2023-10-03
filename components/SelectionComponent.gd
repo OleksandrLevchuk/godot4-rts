@@ -17,7 +17,6 @@ signal deselected
 
 
 func _ready():
-	set_process_input(false)
 	# scale the selection sprites according to the main sprite size
 	var size = main_sprite.texture.get_size()
 	var new_scale = 0.2 + min( size.x, size.y ) / 4000
