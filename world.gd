@@ -16,7 +16,7 @@ func _input(event:InputEvent):
 		var query := PhysicsShapeQueryParameters2D.new()
 		query.set_shape(select_rectangle)
 		query.transform = Transform2D( 0, (select_end+select_start)/2)
-		for unit in selected:
+		for unit in 'selected_units':
 			if unit.collider.has_node("SelectionComponent"):
 				unit.collider.get_node("SelectionComponent").deselect()
 		selected = get_world_2d().direct_space_state.intersect_shape(query)

@@ -26,9 +26,9 @@ func _input(event):
 			query.position = get_global_mouse_position()
 			var targets = get_world_2d().direct_space_state.intersect_point(query)
 			for unit in targets:
-				if unit.collider.has_node("HealthComponent"):
+				if unit.collider.has_node("HealthComponent") and (unit.collider!=get_parent()):
 					ordered_to_attack.emit(unit.collider)
-					return 
+					return # if a unit is found - attack, if not - move
 		ordered_to_move.emit(get_global_mouse_position())
 
 

@@ -80,6 +80,7 @@ main_sprite = NodePath("../Sprite2D")
 collider = NodePath("../CollisionShape2D")
 
 [node name="HealthComponent" parent="." instance=ExtResource("3_g14mc")]
+MAX_HEALTH = 5
 
 [node name="MovementComponent" type="Node2D" parent="." node_paths=PackedStringArray("animation", "selection")]
 script = ExtResource("5_hjtaw")
@@ -93,7 +94,7 @@ script = ExtResource("5_hloq4")
 minimap_marker_type = "Unit"
 is_moving = true
 
-[node name="AttackComponent" type="Node2D" parent="."]
+[node name="AttackComponent" type="Timer" parent="."]
 script = ExtResource("6_yj2vk")
 
 [node name="ControllerComponent" type="Node2D" parent="."]

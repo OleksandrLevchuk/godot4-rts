@@ -5,7 +5,6 @@
 
 [node name="HealthComponent" type="Node2D"]
 script = ExtResource("1_dbdpc")
-MAX_HEALTH = 10
 
 [node name="HPBarRemoteTransform" type="RemoteTransform2D" parent="."]
 remote_path = NodePath("../HPBarParent")
@@ -23,6 +22,7 @@ offset_top = -37.0
 offset_right = 35.0
 offset_bottom = -29.0
 grow_horizontal = 2
+scale = Vector2(1, 0.2)
 theme = ExtResource("2_yweqt")
 value = 100.0
 show_percentage = false

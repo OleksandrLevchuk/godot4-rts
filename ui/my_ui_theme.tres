@@ -4,4 +4,5 @@
 bg_color = Color(0, 1, 0.75, 1)
 
 [resource]
+ProgressBar/constants/outline_size = 1
 ProgressBar/styles/fill = SubResource("StyleBoxFlat_k1kx3")
