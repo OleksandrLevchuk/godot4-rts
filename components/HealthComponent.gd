@@ -1,40 +1,33 @@
-extends Node2D
+extends ProgressBar
 class_name HealthComponent
 
-@export var MAX_HEALTH : float = 5
-
-@onready var bars := $Bars
-@onready var bar1 := $Bars/Bar1
-@onready var bar2 := $Bars/Bar2
-var health : float
+@onready var bar_bg := %BackgroundBar
 
 signal died
 
 
 func _ready():
-	health = MAX_HEALTH
-	bar1.max_value = MAX_HEALTH
-	bar2.max_value = MAX_HEALTH
-	bar1.value = MAX_HEALTH
-	bar2.value = MAX_HEALTH
-	bars.visible = false
+	bar_bg.max_value = max_value
+	value = max_value
+	bar_bg.value = value
+	visible = false
 
 
 func take_damage( dmg ):
-	bars.visible=true
-	get_tree().create_timer(3).timeout.connect(func():bars.visible=false)
-	health -= dmg
-	bar1.value = health
-	create_tween().tween_property( bar2, 'value', health, 0.5 )
-	if health <= 0:
+	visible=true
+	get_tree().create_timer(3).timeout.connect(func(): visible=false)
+	value -= dmg
+	create_tween().tween_property( bar_bg, 'value', value, 0.5 ).set_trans(Tween.TRANS_CUBIC)
+#	tween.set_ease(Tween.EASE_IN)
+	if value <= 0:
 		died.emit()
 		await get_tree().create_timer(1).timeout
 		get_parent().queue_free()
 
 
 func _on_selected():
-	bars.visible = true
+	visible = true
 
 
 func _on_deselected():
-	bars.visible = false
+	visible = false

@@ -1,20 +1,13 @@
-[gd_scene load_steps=9 format=3 uid="uid://ducmhyd7xkox5"]
+[gd_scene load_steps=7 format=3 uid="uid://ducmhyd7xkox5"]
 
 [ext_resource type="PackedScene" uid="uid://bjgmnpjrh2kc7" path="res://components/selection_component.tscn" id="1_lrks8"]
 [ext_resource type="Texture2D" uid="uid://dqplk114rn0f4" path="res://art/units/spider.png" id="2_rfqky"]
 [ext_resource type="PackedScene" uid="uid://vn2pj1fllvl8" path="res://components/health_component.tscn" id="3_h47g2"]
 [ext_resource type="Script" path="res://components/MinimapComponent.gd" id="4_brq43"]
 [ext_resource type="Script" path="res://components/ControllerComponent.gd" id="5_a2td7"]
-[ext_resource type="Script" path="res://components/MovementComponent.gd" id="5_des0h"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_j1shc"]
 size = Vector2(44, 53)
-
-[sub_resource type="Curve" id="Curve_7vhu4"]
-bake_resolution = 10
-_data = [Vector2(0, 0.0421052), 0.0, 13.1132, 0, 0, Vector2(0.225166, 0.926316), 0.244534, 0.244534, 0, 0, Vector2(1, 1), 0.135274, 0.0, 0, 0]
-point_count = 3
-metadata/_snap_count = 5
 
 [node name="Spider" type="CharacterBody2D"]
 position = Vector2(451, 99)
@@ -33,25 +26,23 @@ rotation = 1.5708
 scale = Vector2(0.05, 0.05)
 texture = ExtResource("2_rfqky")
 
-[node name="SelectionComponent" parent="." node_paths=PackedStringArray("main_sprite", "collider", "health_component") instance=ExtResource("1_lrks8")]
+[node name="SelectionComponent" parent="." node_paths=PackedStringArray("main_sprite", "collider") instance=ExtResource("1_lrks8")]
+unique_name_in_owner = true
 main_sprite = NodePath("../Sprite2D")
 collider = NodePath("../CollisionShape2D")
-health_component = NodePath("../HealthComponent")
 
 [node name="HealthComponent" parent="." instance=ExtResource("3_h47g2")]
+unique_name_in_owner = true
 
 [node name="MinimapComponent" type="Node2D" parent="."]
+unique_name_in_owner = true
 script = ExtResource("4_brq43")
 minimap_marker_type = "Unit"
 is_moving = true
+minimap_update_rate = null
 
 [node name="ControllerComponent" type="Node2D" parent="."]
+unique_name_in_owner = true
 script = ExtResource("5_a2td7")
-
-[node name="MovementComponent" type="Node2D" parent="." node_paths=PackedStringArray("selection")]
-script = ExtResource("5_des0h")
-MAX_SPEED = 100.0
-SPEED_CURVE = SubResource("Curve_7vhu4")
-selection = NodePath("../SelectionComponent")
 
 [connection signal="died" from="HealthComponent" to="MinimapComponent" method="_on_health_component_died"]

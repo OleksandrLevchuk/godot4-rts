@@ -5,28 +5,23 @@
 [ext_resource type="Texture2D" uid="uid://qcigjiljgq78" path="res://art/ui/selection_hover.png" id="3_f3ykq"]
 [ext_resource type="Texture2D" uid="uid://djvn0nhvqrcgw" path="res://art/ui/selection.png" id="4_itfqv"]
 
-[node name="SelectionComponent" type="Node2D"]
+[node name="SelectionComponent" type="Node2D" node_paths=PackedStringArray("select_sprite", "hover_sprite", "movable_sprite")]
 script = ExtResource("1_xte08")
+select_sprite = NodePath("Selection")
+hover_sprite = NodePath("Hover")
+movable_sprite = NodePath("Movable")
 
-[node name="Transform" type="Node2D" parent="."]
-top_level = true
-
-[node name="Movable" type="Sprite2D" parent="Transform"]
+[node name="Movable" type="Sprite2D" parent="."]
 visible = false
 position = Vector2(0, 8)
 texture = ExtResource("2_grlwk")
 
-[node name="Hover" type="Sprite2D" parent="Transform"]
+[node name="Hover" type="Sprite2D" parent="."]
 visible = false
 position = Vector2(0, 8)
 texture = ExtResource("3_f3ykq")
 
-[node name="Selection" type="Sprite2D" parent="Transform"]
+[node name="Selection" type="Sprite2D" parent="."]
 visible = false
 position = Vector2(0, 8)
 texture = ExtResource("4_itfqv")
-
-[node name="RemoteTransform2D" type="RemoteTransform2D" parent="."]
-remote_path = NodePath("../Transform")
-update_rotation = false
-update_scale = false

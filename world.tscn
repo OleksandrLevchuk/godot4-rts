@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://byys03pyjar55"]
+[gd_scene load_steps=13 format=3 uid="uid://byys03pyjar55"]
 
 [ext_resource type="Script" path="res://world.gd" id="1_45y3j"]
 [ext_resource type="Texture2D" uid="uid://bvkfpoh3hpp10" path="res://art/color.jpg" id="2_8c15o"]
@@ -9,7 +9,6 @@
 [ext_resource type="Script" path="res://camera.gd" id="6_rcps3"]
 [ext_resource type="PackedScene" uid="uid://blhofuu2vpg2i" path="res://buildings/power_plant.tscn" id="7_h2bom"]
 [ext_resource type="PackedScene" uid="uid://bi4ni5ylf72jo" path="res://buildings/factory.tscn" id="7_rgfsw"]
-[ext_resource type="Script" path="res://buildings/buildings.gd" id="7_tku4g"]
 [ext_resource type="PackedScene" uid="uid://dgg0qggy2pu7o" path="res://objects/crystal/crystal.tscn" id="10_0ecfo"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_tp1gr"]
@@ -56,13 +55,10 @@ layer_0/tile_data = PackedInt32Array(262139, 1, 0, 262138, 1, 0, 262142, 1, 0, 2
 [node name="Units" type="Node2D" parent="."]
 y_sort_enabled = true
 script = ExtResource("3_5ktyg")
+metadata/_edit_lock_ = true
 
 [node name="Tank" parent="Units" instance=ExtResource("3_it4u3")]
-position = Vector2(283, 192)
-rotation = -2.51676
-
-[node name="Tank2" parent="Units" instance=ExtResource("3_it4u3")]
-position = Vector2(-134, 235)
+position = Vector2(259, 207)
 rotation = -2.51676
 
 [node name="Spider" parent="Units" instance=ExtResource("5_su8b0")]
@@ -76,7 +72,6 @@ position = Vector2(47, -114)
 script = ExtResource("6_rcps3")
 
 [node name="Buildings" type="Node2D" parent="."]
-script = ExtResource("7_tku4g")
 metadata/_edit_lock_ = true
 
 [node name="Factory" parent="Buildings" instance=ExtResource("7_rgfsw")]
@@ -96,4 +91,3 @@ position = Vector2(425, -70)
 [connection signal="unit_moved" from="Units" to="UI" method="_on_unit_moved"]
 [connection signal="unit_spawned" from="Units" to="UI" method="_on_unit_spawned"]
 [connection signal="ordered_unit_spawn" from="UI" to="Units" method="_on_ui_ordered_unit_spawn"]
-[connection signal="building_selected" from="Buildings" to="UI" method="_on_buildings_building_selected"]

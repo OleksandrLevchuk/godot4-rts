@@ -9,7 +9,7 @@ func add_marker(unit):
 	var marker = minimap_marker.instantiate()
 	get_node(unit.minimap_marker_type + 's').add_child( marker )
 	marker.get_node(unit.minimap_marker_type).visible = true
-	if unit.is_moving:
+	if unit.can_move:
 		unit.moved.connect(marker.set_position)
 	unit.died.connect(marker.queue_free)
 	marker.position = unit.get_parent().position

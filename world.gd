@@ -18,5 +18,5 @@ func _input(event:InputEvent):
 		query.set_shape(select_rectangle)
 		query.transform = Transform2D( 0, (select_end+select_start)/2)
 		for unit in get_world_2d().direct_space_state.intersect_shape(query):
-			if unit.collider.has_node("SelectionComponent"):
-				unit.collider.get_node('SelectionComponent').select()
+			if unit.collider.has_node("%SelectionComponent"):
+				unit.collider.get_node('%SelectionComponent').select()
