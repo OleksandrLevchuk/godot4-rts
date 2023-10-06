@@ -67,8 +67,10 @@ rotation = -2.51676
 position = Vector2(47, -114)
 
 [node name="UI" parent="." instance=ExtResource("4_n2fly")]
+unique_name_in_owner = true
 
 [node name="Camera" type="Camera2D" parent="."]
+unique_name_in_owner = true
 script = ExtResource("6_rcps3")
 
 [node name="Buildings" type="Node2D" parent="."]

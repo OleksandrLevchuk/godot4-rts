@@ -1,4 +1,4 @@
-extends Node2D
+extends Timer
 class_name MovementComponent
 
 ## driving units can't strife sideways
@@ -20,31 +20,29 @@ var speed_mult := 0.0
 var braking_distance : float = 0.0
 var elapsed := 0.0
 
-@onready var parent := get_parent()
+@onready var parent := get_owner()
 @onready var prev_pos : Vector2 = parent.position
 
 signal started_moving
+signal map_moved
 signal stopped_moving
 
 
 func _ready():
-	position = get_owner().position
-	velocity = Vector2.ONE.rotated(parent.rotation)
+	timeout.connect(func():map_moved.emit(parent.position))
 	if has_node("%AnimationPlayer"):
 		started_moving.connect(func():%AnimationPlayer.play('drive'))
 		stopped_moving.connect(%AnimationPlayer.stop)
-
-
-func _physics_process(_delta):
-	print(position)
+	velocity = Vector2.ONE.rotated(parent.rotation)
 
 
 func _process(delta):
-	if is_accelerating: # braking counts as acceleration too!
+	if is_accelerating:
 		elapsed += delta
 		if elapsed > ACCEL_TIME:
 			is_accelerating = false
 		braking_distance += parent.position.distance_to(prev_pos)
+		print(braking_distance)
 		prev_pos = parent.position
 		speed_mult = SPEED_CURVE.sample_baked(elapsed/ACCEL_TIME)
 		velocity = velocity.normalized() * MAX_SPEED * speed_mult
@@ -56,6 +54,8 @@ func _process(delta):
 			is_braking = false
 			set_process(false)
 			stopped_moving.emit()
+			map_moved.emit(parent.position)
+			stop()
 		speed_mult = SPEED_CURVE.sample_baked(elapsed/ACCEL_TIME)
 		velocity = velocity.normalized() * MAX_SPEED * speed_mult
 		parent.velocity = velocity
@@ -70,19 +70,19 @@ func _process(delta):
 		if facing.dot(facing_wanted) > facing.dot(velocity.normalized()):
 			is_turning = false
 			velocity = facing_wanted * velocity.length()
-			print("the needed angle is reached")
 		parent.rotation = velocity.angle()
 		parent.velocity = velocity
 		
 	if not is_braking and parent.position.distance_to(destination)<braking_distance:
 		braking_distance = 0.0
-		is_accelerating = true
+		is_accelerating = false
 		is_braking = true
 		
 	parent.move_and_slide()
 
 
 func _on_ordered_to_move(dest):
+	start()
 	set_process(true)
 	destination = dest
 	is_braking = false

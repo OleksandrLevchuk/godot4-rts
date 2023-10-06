@@ -2,7 +2,7 @@ extends Node
 
 signal update_ui
 
-@onready var minimap := get_tree().get_root().get_node("/root/World/UI").get_node("Minimap/Viewport")
+@onready var minimap := get_tree().get_root().get_node("/root/World/UI").get_node("%Minimap")
 
 
 var Crystals := 0: 

@@ -76,16 +76,11 @@ libraries = {
 "": SubResource("AnimationLibrary_3hjh7")
 }
 
-[node name="MovementComponent" type="Node2D" parent="."]
+[node name="MovementComponent" type="Timer" parent="."]
 unique_name_in_owner = true
 script = ExtResource("5_hjtaw")
 ACCEL_TIME = 4.0
 SPEED_CURVE = SubResource("Curve_0arpm")
-
-[node name="MinimapComponent" type="Node2D" parent="."]
-unique_name_in_owner = true
-script = ExtResource("5_hloq4")
-minimap_marker_type = "Unit"
 
 [node name="AttackComponent" type="Timer" parent="."]
 unique_name_in_owner = true
@@ -109,3 +104,8 @@ unique_name_in_owner = true
 remote_path = NodePath("../ui")
 update_rotation = false
 update_scale = false
+
+[node name="MinimapComponent" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("5_hloq4")
+minimap_marker_type = "Unit"

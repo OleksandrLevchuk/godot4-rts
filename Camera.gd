@@ -4,7 +4,8 @@ const ZOOM_MIN := 0.5
 const ZOOM_MAX := 3.0
 const ZOOM_SPEED := 8.0
 const EASING := 0.4 #how many secons it takes for camera to zoom and pan
-const PAN_SPEED := 160.0 #pixels(?) per second
+const PAN_SPEED := 200.0 #pixels(?) per second
+const MAP_ZOOM_MULTIPLIER := 0.1
 
 var is_panning := false
 var is_zooming := false
@@ -16,10 +17,11 @@ signal zoomed
 
 
 func _ready():
-	moved.connect(Game.minimap._on_camera_moved)
-	zoomed.connect(Game.minimap._on_camera_zoomed)
+	moved.connect(Game.minimap.get_node("%Camera").set_position)
 	moved.emit(position)
-	zoomed.emit(zoom)
+	zoomed.connect(Game.minimap.get_node("%Camera").set_zoom)
+	zoomed.emit(zoom * MAP_ZOOM_MULTIPLIER)
+
 
 func _process(delta):
 	var pan_input := Vector2( 
@@ -28,7 +30,6 @@ func _process(delta):
 	if not pan_input==Vector2.ZERO:
 		is_panning = true
 		pan_target = position + pan_input * PAN_SPEED
-#		print(pan_target)
 	if is_panning:
 		position = position.lerp( pan_target, delta / EASING )
 		moved.emit(position)
@@ -41,7 +42,7 @@ func _process(delta):
 		zoom = Vector2.ONE * zoom_factor #snap to the precise zoom value
 		is_zooming = false #this section is kinda lame idk
 	#nudge camera back to cursor by the amount it slid away while zooming
-	zoomed.emit(zoom)
+	zoomed.emit(zoom * MAP_ZOOM_MULTIPLIER)
 	position = position.lerp(get_global_mouse_position(),zoom.x/zoom_before-1)
 	
 
