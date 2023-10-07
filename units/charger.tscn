@@ -6,7 +6,7 @@
 [ext_resource type="Script" path="res://components/MovementComponent.gd" id="4_6at7s"]
 [ext_resource type="PackedScene" uid="uid://vn2pj1fllvl8" path="res://components/health_component.tscn" id="5_f6crt"]
 [ext_resource type="PackedScene" uid="uid://bjgmnpjrh2kc7" path="res://components/selection_component.tscn" id="6_s4dwm"]
-[ext_resource type="Script" path="res://components/GathererComponent.gd" id="7_raiom"]
+[ext_resource type="Script" path="res://components/GatherComponent.gd" id="7_ypx46"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mlkuo"]
 size = Vector2(35.9999, 31)
@@ -67,8 +67,11 @@ unique_name_in_owner = true
 main_sprite = NodePath("../../Sprite2D")
 collider = NodePath("../../CollisionShape2D")
 
-[node name="GathererComponent" type="ProgressBar" parent="RotationPreserver"]
+[node name="GatherComponent" type="ProgressBar" parent="RotationPreserver"]
 unique_name_in_owner = true
 offset_right = 4.0
 offset_bottom = 27.0
-script = ExtResource("7_raiom")
+script = ExtResource("7_ypx46")
+type = "Energy"
+AMOUNT_GATHERED = null
+GATHER_TIME = null

@@ -1,16 +1,13 @@
-[gd_scene load_steps=8 format=3 uid="uid://dgg0qggy2pu7o"]
+[gd_scene load_steps=7 format=3 uid="uid://dgg0qggy2pu7o"]
 
 [ext_resource type="Texture2D" uid="uid://b2lerc7yoswd" path="res://objects/crystal/crystal.png" id="1_fpclo"]
 [ext_resource type="PackedScene" uid="uid://vn2pj1fllvl8" path="res://components/health_component.tscn" id="3_co7cq"]
-[ext_resource type="PackedScene" uid="uid://bkvc3lm2vroly" path="res://components/gatherable_component.tscn" id="4_igoxl"]
 [ext_resource type="PackedScene" uid="uid://bjgmnpjrh2kc7" path="res://components/selection_component.tscn" id="4_wf6y2"]
+[ext_resource type="Script" path="res://components/ResourceComponent.gd" id="5_kui6d"]
 [ext_resource type="Script" path="res://components/MinimapComponent.gd" id="5_qysvx"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_qwo5b"]
 size = Vector2(26, 17)
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_v5yx7"]
-radius = 22.0
 
 [node name="crystal" type="StaticBody2D"]
 input_pickable = true
@@ -32,13 +29,11 @@ collider = NodePath("../CollisionShape2D")
 [node name="HealthComponent" parent="." instance=ExtResource("3_co7cq")]
 unique_name_in_owner = true
 
-[node name="GatherableComponent" parent="." instance=ExtResource("4_igoxl")]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="GatherableComponent"]
-position = Vector2(0, 7)
-shape = SubResource("CircleShape2D_v5yx7")
-
 [node name="MinimapComponent" type="Node2D" parent="."]
 unique_name_in_owner = true
 script = ExtResource("5_qysvx")
 minimap_marker_type = "Object"
+
+[node name="ResourceComponent" type="ProgressBar" parent="."]
+unique_name_in_owner = true
+script = ExtResource("5_kui6d")
