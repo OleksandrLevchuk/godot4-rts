@@ -12,16 +12,13 @@ hover_sprite = NodePath("Hover")
 movable_sprite = NodePath("Movable")
 
 [node name="Movable" type="Sprite2D" parent="."]
-visible = false
 position = Vector2(0, 8)
 texture = ExtResource("2_grlwk")
 
 [node name="Hover" type="Sprite2D" parent="."]
-visible = false
 position = Vector2(0, 8)
 texture = ExtResource("3_f3ykq")
 
 [node name="Selection" type="Sprite2D" parent="."]
-visible = false
 position = Vector2(0, 8)
 texture = ExtResource("4_itfqv")

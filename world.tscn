@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://byys03pyjar55"]
+[gd_scene load_steps=14 format=3 uid="uid://byys03pyjar55"]
 
 [ext_resource type="Script" path="res://world.gd" id="1_45y3j"]
 [ext_resource type="Texture2D" uid="uid://bvkfpoh3hpp10" path="res://art/color.jpg" id="2_8c15o"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://cxe80dasal4cw" path="res://units/tank/tank.tscn" id="3_it4u3"]
 [ext_resource type="PackedScene" uid="uid://b6qi0uh341w1n" path="res://ui/ui.tscn" id="4_n2fly"]
 [ext_resource type="PackedScene" uid="uid://ducmhyd7xkox5" path="res://units/spider.tscn" id="5_su8b0"]
+[ext_resource type="PackedScene" uid="uid://kmowuurw5r3j" path="res://units/charger.tscn" id="6_lc1rm"]
 [ext_resource type="Script" path="res://camera.gd" id="6_rcps3"]
 [ext_resource type="PackedScene" uid="uid://blhofuu2vpg2i" path="res://buildings/power_plant.tscn" id="7_h2bom"]
 [ext_resource type="PackedScene" uid="uid://bi4ni5ylf72jo" path="res://buildings/factory.tscn" id="7_rgfsw"]
@@ -63,8 +64,7 @@ rotation = -2.51676
 
 [node name="Spider" parent="Units" instance=ExtResource("5_su8b0")]
 
-[node name="Spider2" parent="Units" instance=ExtResource("5_su8b0")]
-position = Vector2(47, -114)
+[node name="Charger" parent="Units" instance=ExtResource("6_lc1rm")]
 
 [node name="UI" parent="." instance=ExtResource("4_n2fly")]
 unique_name_in_owner = true

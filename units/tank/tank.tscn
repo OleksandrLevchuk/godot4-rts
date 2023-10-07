@@ -91,6 +91,7 @@ unique_name_in_owner = true
 script = ExtResource("7_si3uo")
 
 [node name="ui" type="Node2D" parent="."]
+top_level = true
 
 [node name="SelectionComponent" parent="ui" node_paths=PackedStringArray("main_sprite", "collider") instance=ExtResource("4_01hbr")]
 unique_name_in_owner = true

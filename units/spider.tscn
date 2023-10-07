@@ -1,48 +1,70 @@
-[gd_scene load_steps=7 format=3 uid="uid://ducmhyd7xkox5"]
+[gd_scene load_steps=10 format=3 uid="uid://ducmhyd7xkox5"]
 
 [ext_resource type="PackedScene" uid="uid://bjgmnpjrh2kc7" path="res://components/selection_component.tscn" id="1_lrks8"]
 [ext_resource type="Texture2D" uid="uid://dqplk114rn0f4" path="res://art/units/spider.png" id="2_rfqky"]
 [ext_resource type="PackedScene" uid="uid://vn2pj1fllvl8" path="res://components/health_component.tscn" id="3_h47g2"]
 [ext_resource type="Script" path="res://components/MinimapComponent.gd" id="4_brq43"]
 [ext_resource type="Script" path="res://components/ControllerComponent.gd" id="5_a2td7"]
+[ext_resource type="Script" path="res://components/AttackComponent.gd" id="6_dvh2m"]
+[ext_resource type="Script" path="res://components/MovementComponent.gd" id="7_5fi3n"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_j1shc"]
 size = Vector2(44, 53)
 
+[sub_resource type="Curve" id="Curve_oes56"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.11465, 0.663158), 1.10175, 1.10175, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 3
+
 [node name="Spider" type="CharacterBody2D"]
-position = Vector2(451, 99)
-rotation = 3.89383
 input_pickable = true
 motion_mode = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(3.05176e-05, -0.125061)
-rotation = 1.5708
+rotation = 1.57079
 shape = SubResource("RectangleShape2D_j1shc")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(13, 0)
-rotation = 1.5708
+position = Vector2(16, 0)
+rotation = 1.57232
 scale = Vector2(0.05, 0.05)
 texture = ExtResource("2_rfqky")
-
-[node name="SelectionComponent" parent="." node_paths=PackedStringArray("main_sprite", "collider") instance=ExtResource("1_lrks8")]
-unique_name_in_owner = true
-main_sprite = NodePath("../Sprite2D")
-collider = NodePath("../CollisionShape2D")
-
-[node name="HealthComponent" parent="." instance=ExtResource("3_h47g2")]
-unique_name_in_owner = true
 
 [node name="MinimapComponent" type="Node2D" parent="."]
 unique_name_in_owner = true
 script = ExtResource("4_brq43")
 minimap_marker_type = "Unit"
-is_moving = true
-minimap_update_rate = null
 
 [node name="ControllerComponent" type="Node2D" parent="."]
 unique_name_in_owner = true
 script = ExtResource("5_a2td7")
 
-[connection signal="died" from="HealthComponent" to="MinimapComponent" method="_on_health_component_died"]
+[node name="AttackComponent" type="Timer" parent="."]
+unique_name_in_owner = true
+script = ExtResource("6_dvh2m")
+
+[node name="MovementComponent" type="Timer" parent="."]
+unique_name_in_owner = true
+script = ExtResource("7_5fi3n")
+SPEED_CURVE = SubResource("Curve_oes56")
+
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="."]
+remote_path = NodePath("../RotationPreserver")
+update_rotation = false
+update_scale = false
+
+[node name="RotationPreserver" type="Node2D" parent="."]
+top_level = true
+
+[node name="HealthComponent" parent="RotationPreserver" instance=ExtResource("3_h47g2")]
+unique_name_in_owner = true
+anchors_preset = 8
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -44.0
+offset_bottom = -36.0
+grow_vertical = 2
+
+[node name="SelectionComponent" parent="RotationPreserver" node_paths=PackedStringArray("main_sprite", "collider") instance=ExtResource("1_lrks8")]
+unique_name_in_owner = true
+main_sprite = NodePath("../../Sprite2D")
+collider = NodePath("../../CollisionShape2D")

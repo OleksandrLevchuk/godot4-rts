@@ -24,21 +24,21 @@ position = Vector2(0, 4)
 scale = Vector2(0.25, 0.25)
 texture = ExtResource("1_fpclo")
 
-[node name="SelectionComponent" parent="." node_paths=PackedStringArray("main_sprite", "collider", "health_component") instance=ExtResource("4_wf6y2")]
+[node name="SelectionComponent" parent="." node_paths=PackedStringArray("main_sprite", "collider") instance=ExtResource("4_wf6y2")]
+unique_name_in_owner = true
 main_sprite = NodePath("../Sprite2D")
 collider = NodePath("../CollisionShape2D")
-health_component = NodePath("../HealthComponent")
-is_movable = false
 
 [node name="HealthComponent" parent="." instance=ExtResource("3_co7cq")]
+unique_name_in_owner = true
 
 [node name="GatherableComponent" parent="." instance=ExtResource("4_igoxl")]
-type = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="GatherableComponent"]
 position = Vector2(0, 7)
 shape = SubResource("CircleShape2D_v5yx7")
 
 [node name="MinimapComponent" type="Node2D" parent="."]
+unique_name_in_owner = true
 script = ExtResource("5_qysvx")
 minimap_marker_type = "Object"

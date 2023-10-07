@@ -1,0 +1,74 @@
+[gd_scene load_steps=10 format=3 uid="uid://kmowuurw5r3j"]
+
+[ext_resource type="Texture2D" uid="uid://by1mcm26ip7ik" path="res://art/units/charger.png" id="1_rrdi4"]
+[ext_resource type="Script" path="res://components/MinimapComponent.gd" id="2_ofido"]
+[ext_resource type="Script" path="res://components/ControllerComponent.gd" id="3_gi18y"]
+[ext_resource type="Script" path="res://components/MovementComponent.gd" id="4_6at7s"]
+[ext_resource type="PackedScene" uid="uid://vn2pj1fllvl8" path="res://components/health_component.tscn" id="5_f6crt"]
+[ext_resource type="PackedScene" uid="uid://bjgmnpjrh2kc7" path="res://components/selection_component.tscn" id="6_s4dwm"]
+[ext_resource type="Script" path="res://components/GathererComponent.gd" id="7_raiom"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mlkuo"]
+size = Vector2(35.9999, 31)
+
+[sub_resource type="Curve" id="Curve_oes56"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.11465, 0.663158), 1.10175, 1.10175, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[node name="Charger" type="CharacterBody2D"]
+position = Vector2(47, -114)
+input_pickable = true
+motion_mode = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0.500023, 0)
+rotation = 1.57079
+shape = SubResource("RectangleShape2D_mlkuo")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+rotation = 1.57232
+scale = Vector2(0.05, 0.05)
+texture = ExtResource("1_rrdi4")
+
+[node name="MinimapComponent" type="Node2D" parent="."]
+unique_name_in_owner = true
+script = ExtResource("2_ofido")
+minimap_marker_type = "Unit"
+
+[node name="ControllerComponent" type="Node2D" parent="."]
+unique_name_in_owner = true
+script = ExtResource("3_gi18y")
+
+[node name="MovementComponent" type="Timer" parent="."]
+unique_name_in_owner = true
+script = ExtResource("4_6at7s")
+SPEED_CURVE = SubResource("Curve_oes56")
+
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="."]
+remote_path = NodePath("../RotationPreserver")
+update_rotation = false
+update_scale = false
+
+[node name="RotationPreserver" type="Node2D" parent="."]
+top_level = true
+position = Vector2(47, -114)
+
+[node name="HealthComponent" parent="RotationPreserver" instance=ExtResource("5_f6crt")]
+unique_name_in_owner = true
+anchors_preset = 8
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -44.0
+offset_bottom = -36.0
+grow_vertical = 2
+
+[node name="SelectionComponent" parent="RotationPreserver" node_paths=PackedStringArray("main_sprite", "collider") instance=ExtResource("6_s4dwm")]
+unique_name_in_owner = true
+main_sprite = NodePath("../../Sprite2D")
+collider = NodePath("../../CollisionShape2D")
+
+[node name="GathererComponent" type="ProgressBar" parent="RotationPreserver"]
+unique_name_in_owner = true
+offset_right = 4.0
+offset_bottom = 27.0
+script = ExtResource("7_raiom")
