@@ -2,28 +2,19 @@ extends ProgressBar
 class_name ResourceComponent
 
 @export_enum("Energy") var type : String
-@export var 
+@export var RESOURCE_MAX := 10
 
-@onready var timer := %Timer
+var resource_left := RESOURCE_MAX
 
 signal depleted
-signal resource_given
 
 
-func _on_body_entered(body):
-	if not body.has_node('%GathererComponent'): return
-	print('entered ', body)
-		timer.start()
-	units_gathering += 1
-
-
-func _on_body_exited(body):
-	if not body.has_node('%GathererComponent'): return
-	units_gathering -= 1
-	if units_gathering == 0:
-		timer.stop()
-
-
-func _on_gather(amount, callback):
-	resource_left
-	pass
+func _on_gather( amount: int, callback: Callable):
+	if resource_left>amount:
+		resource_left -= amount
+	else:
+		amount = resource_left
+		resource_left = 0
+		depleted.emit()
+	callback.call(amount)
+	create_tween().tween_property(self,'value',resource_left,0.5)

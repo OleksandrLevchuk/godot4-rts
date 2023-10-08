@@ -20,6 +20,8 @@ var speed_mult := 0.0
 var braking_distance : float = 0.0
 var elapsed := 0.0
 
+@export var line : Line2D = find_child('Line2D')
+@onready var debug: bool = true if line else false
 @onready var parent := get_owner()
 @onready var prev_pos : Vector2 = parent.position
 
@@ -29,6 +31,7 @@ signal stopped_moving
 
 
 func _ready():
+	print(parent, ' has the line: ', debug)
 	timeout.connect(func():map_moved.emit(parent.position))
 	if has_node("%AnimationPlayer"):
 		started_moving.connect(func():%AnimationPlayer.play('drive'))

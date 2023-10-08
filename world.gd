@@ -1,7 +1,6 @@
 extends Node2D
 
 var select_start : Vector2
-var select_rectangle := RectangleShape2D.new()
 
 
 func _input(event:InputEvent):
@@ -13,10 +12,6 @@ func _input(event:InputEvent):
 		for unit in get_tree().get_nodes_in_group('selected'):
 			unit.deselect()
 		var select_end := get_global_mouse_position()
-		select_rectangle.extents = abs(select_end - select_start) / 2
-		var query := PhysicsShapeQueryParameters2D.new()
-		query.set_shape(select_rectangle)
-		query.transform = Transform2D( 0, (select_end+select_start)/2)
-		for unit in get_world_2d().direct_space_state.intersect_shape(query):
+		for unit in Utils.units_in_rect(get_world_2d(),select_start,select_end):
 			if unit.collider.has_node("%SelectionComponent"):
 				unit.collider.get_node('%SelectionComponent').select()

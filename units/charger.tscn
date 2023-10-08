@@ -16,7 +16,6 @@ _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.11465, 0.663158), 1.10175, 1.1
 point_count = 3
 
 [node name="Charger" type="CharacterBody2D"]
-position = Vector2(47, -114)
 input_pickable = true
 motion_mode = 1
 
@@ -39,10 +38,16 @@ minimap_marker_type = "Unit"
 unique_name_in_owner = true
 script = ExtResource("3_gi18y")
 
-[node name="MovementComponent" type="Timer" parent="."]
+[node name="MovementComponent" type="Timer" parent="." node_paths=PackedStringArray("line")]
 unique_name_in_owner = true
 script = ExtResource("4_6at7s")
 SPEED_CURVE = SubResource("Curve_oes56")
+line = NodePath("Line2D")
+
+[node name="Line2D" type="Line2D" parent="MovementComponent"]
+top_level = true
+position = Vector2(104, -104)
+points = PackedVector2Array(40, -20, -37, -1)
 
 [node name="RemoteTransform2D" type="RemoteTransform2D" parent="."]
 remote_path = NodePath("../RotationPreserver")
@@ -51,7 +56,6 @@ update_scale = false
 
 [node name="RotationPreserver" type="Node2D" parent="."]
 top_level = true
-position = Vector2(47, -114)
 
 [node name="HealthComponent" parent="RotationPreserver" instance=ExtResource("5_f6crt")]
 unique_name_in_owner = true
@@ -69,9 +73,17 @@ collider = NodePath("../../CollisionShape2D")
 
 [node name="GatherComponent" type="ProgressBar" parent="RotationPreserver"]
 unique_name_in_owner = true
-offset_right = 4.0
-offset_bottom = 27.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -35.0
+offset_top = -41.0
+offset_right = 35.0
+offset_bottom = -37.0
+grow_horizontal = 2
+grow_vertical = 2
+show_percentage = false
 script = ExtResource("7_ypx46")
 type = "Energy"
-AMOUNT_GATHERED = null
-GATHER_TIME = null
