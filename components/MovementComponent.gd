@@ -10,29 +10,30 @@ class_name MovementComponent
 @export var TURN_RATE : float = 1
 @export var MINIMAP_UPDATE_RATE : float = 1
 @export var SPEED_CURVE : Curve
+@export var DEBUG: bool = true 
 
 var is_turning := false
 var is_accelerating := false
 var is_braking := false
-var velocity : Vector2
-var destination : Vector2
+var velocity: Vector2
+var destination: Vector2
 var speed_mult := 0.0
 var braking_distance : float = 0.0
 var elapsed := 0.0
+var velo := preload("res://components/VelocityCalc.gd").new()
 
-@export var line : Line2D = find_child('Line2D')
-@onready var debug: bool = true if line else false
+@onready var line: Line2D = Line2D.new()
 @onready var parent := get_owner()
-@onready var prev_pos : Vector2 = parent.position
+@onready var prev_pos: Vector2 = parent.position
 
 signal started_moving
-signal map_moved
+signal minimap_updated
 signal stopped_moving
 
 
 func _ready():
-	print(parent, ' has the line: ', debug)
-	timeout.connect(func():map_moved.emit(parent.position))
+	velo.halted.connect(_on_halted)
+	timeout.connect(func():minimap_updated.emit(parent.position))
 	if has_node("%AnimationPlayer"):
 		started_moving.connect(func():%AnimationPlayer.play('drive'))
 		stopped_moving.connect(%AnimationPlayer.stop)
@@ -40,47 +41,8 @@ func _ready():
 
 
 func _process(delta):
-	if is_accelerating:
-		elapsed += delta
-		if elapsed > ACCEL_TIME:
-			is_accelerating = false
-		braking_distance += parent.position.distance_to(prev_pos)
-		print(braking_distance)
-		prev_pos = parent.position
-		speed_mult = SPEED_CURVE.sample_baked(elapsed/ACCEL_TIME)
-		velocity = velocity.normalized() * MAX_SPEED * speed_mult
-		parent.velocity = velocity
-
-	elif is_braking:
-		elapsed -= delta
-		if elapsed < 0:
-			is_braking = false
-			set_process(false)
-			stopped_moving.emit()
-			map_moved.emit(parent.position)
-			stop()
-		speed_mult = SPEED_CURVE.sample_baked(elapsed/ACCEL_TIME)
-		velocity = velocity.normalized() * MAX_SPEED * speed_mult
-		parent.velocity = velocity
-
-	if is_turning:
-		if velocity == Vector2.ZERO:
-			velocity = Vector2.RIGHT.rotated(parent.rotation) / 999
-		var facing: Vector2 = velocity.normalized()
-		var facing_wanted: Vector2 = (destination-parent.position).normalized()
-		var which_side: float = sign(facing.cross( facing_wanted ))
-		velocity = velocity.rotated(delta/TURN_RATE * PI * which_side)
-		if facing.dot(facing_wanted) > facing.dot(velocity.normalized()):
-			is_turning = false
-			velocity = facing_wanted * velocity.length()
-		parent.rotation = velocity.angle()
-		parent.velocity = velocity
-		
-	if not is_braking and parent.position.distance_to(destination)<braking_distance:
-		braking_distance = 0.0
-		is_accelerating = false
-		is_braking = true
-		
+	parent.velocity = velo.calc(parent.position, parent.velocity, delta)
+	parent.rotation = parent.velocity.angle()
 	parent.move_and_slide()
 
 
@@ -92,3 +54,10 @@ func _on_ordered_to_move(dest):
 	is_accelerating = true
 	is_turning = true
 	started_moving.emit()
+
+
+func _on_halted():
+	stop() # stop the minimap update timer
+	minimap_updated.emit(parent.position) # update the minimap one last time
+	set_process(false) # stop the _process method
+	stopped_moving.emit() # notify subscribers, e.g. gather or attack components

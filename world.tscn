@@ -63,8 +63,10 @@ position = Vector2(259, 207)
 rotation = -2.51676
 
 [node name="Spider" parent="Units" instance=ExtResource("5_su8b0")]
+position = Vector2(56, -160)
 
 [node name="Charger" parent="Units" instance=ExtResource("6_lc1rm")]
+position = Vector2(228, 61)
 
 [node name="UI" parent="." instance=ExtResource("4_n2fly")]
 unique_name_in_owner = true

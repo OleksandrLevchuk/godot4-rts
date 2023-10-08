@@ -38,16 +38,10 @@ minimap_marker_type = "Unit"
 unique_name_in_owner = true
 script = ExtResource("3_gi18y")
 
-[node name="MovementComponent" type="Timer" parent="." node_paths=PackedStringArray("line")]
+[node name="MovementComponent" type="Timer" parent="."]
 unique_name_in_owner = true
 script = ExtResource("4_6at7s")
 SPEED_CURVE = SubResource("Curve_oes56")
-line = NodePath("Line2D")
-
-[node name="Line2D" type="Line2D" parent="MovementComponent"]
-top_level = true
-position = Vector2(104, -104)
-points = PackedVector2Array(40, -20, -37, -1)
 
 [node name="RemoteTransform2D" type="RemoteTransform2D" parent="."]
 remote_path = NodePath("../RotationPreserver")
