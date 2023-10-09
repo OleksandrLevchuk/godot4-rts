@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://cxe80dasal4cw"]
+[gd_scene load_steps=12 format=3 uid="uid://cxe80dasal4cw"]
 
 [ext_resource type="Texture2D" uid="uid://nl6gqpbnjm8i" path="res://units/tank/tank_spritesheet.png" id="2_6hn61"]
 [ext_resource type="PackedScene" uid="uid://vn2pj1fllvl8" path="res://components/health_component.tscn" id="3_g14mc"]
@@ -49,10 +49,6 @@ _data = {
 "drive": SubResource("Animation_jhrpe")
 }
 
-[sub_resource type="Curve" id="Curve_0arpm"]
-_data = [Vector2(0, 0), 0.0, 13.3246, 0, 0, Vector2(0.15102, 0.736842), 0.644737, 0.644737, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
-point_count = 3
-
 [node name="Tank" type="CharacterBody2D"]
 input_pickable = true
 motion_mode = 1
@@ -79,8 +75,6 @@ libraries = {
 [node name="MovementComponent" type="Timer" parent="."]
 unique_name_in_owner = true
 script = ExtResource("5_hjtaw")
-ACCEL_TIME = 4.0
-SPEED_CURVE = SubResource("Curve_0arpm")
 
 [node name="AttackComponent" type="Timer" parent="."]
 unique_name_in_owner = true
