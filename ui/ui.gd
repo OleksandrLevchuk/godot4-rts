@@ -1,6 +1,7 @@
 extends CanvasLayer
 
 var is_dialog_up := false
+
 signal ordered_unit_spawn
 
 
