@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://blhofuu2vpg2i"]
+[gd_scene load_steps=7 format=3 uid="uid://c4rtxdqoh4sdo"]
 
 [ext_resource type="Texture2D" uid="uid://p3lr8gy66yyc" path="res://art/buildings/powerplant.png" id="2_2sdc4"]
 [ext_resource type="PackedScene" uid="uid://dxvfwjy2ojs42" path="res://components/generator_component.tscn" id="2_4820p"]
@@ -9,13 +9,9 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_jqmm7"]
 radius = 54.0093
 
-[node name="power_plant" type="StaticBody2D"]
+[node name="PowerPlant" type="StaticBody2D"]
 y_sort_enabled = true
 input_pickable = true
-
-[node name="SelectionComponent" parent="." node_paths=PackedStringArray("main_sprite", "collider") instance=ExtResource("4_bjegr")]
-main_sprite = NodePath("../Sprite2D")
-collider = NodePath("../CollisionShape2D")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-4, 3)
@@ -27,11 +23,20 @@ position = Vector2(-13, -41)
 scale = Vector2(0.285, 0.266986)
 texture = ExtResource("2_2sdc4")
 
+[node name="SelectionComponent" parent="." instance=ExtResource("4_bjegr")]
+unique_name_in_owner = true
+
 [node name="GeneratorComponent" parent="." instance=ExtResource("2_4820p")]
+unique_name_in_owner = true
 
 [node name="HealthComponent" parent="." instance=ExtResource("3_nml48")]
-position = Vector2(18, -26)
+unique_name_in_owner = true
+offset_left = 18.0
+offset_top = -26.0
+offset_right = 88.0
+offset_bottom = 1.0
 
 [node name="MinimapComponent" type="Node2D" parent="."]
+unique_name_in_owner = true
 script = ExtResource("5_uwhgu")
 minimap_marker_type = "Building"

@@ -1,14 +1,13 @@
 extends Node2D
 class_name SelectionComponent
 
-@export var main_sprite : Sprite2D
-@export var collider : CollisionShape2D
-@export_category('Inner')
-@export var select_sprite : Sprite2D
-@export var hover_sprite : Sprite2D
-@export var movable_sprite : Sprite2D # adds corners to selection
+@onready var select_sprite : Sprite2D = $Selection
+@onready var hover_sprite : Sprite2D = $Hover
+@onready var movable_sprite : Sprite2D = $Movable
 
 @onready var parent := get_owner()
+@onready var main_sprite : Sprite2D = parent.get_node('Sprite2D')
+@onready var collider : CollisionShape2D = parent.get_node('CollisionShape2D')
 @onready var can_move := parent.has_node('%MovementComponent')
 
 var is_selected := false
@@ -20,6 +19,7 @@ signal deselected
 func _ready():
 #	print(parent)
 	# scale the selection sprites according to the main sprite size
+#	var size = Vector2( 0.5, 0.5 )
 	var size = main_sprite.texture.get_size()
 	var new_scale = 0.2 + min( size.x, size.y ) / 4000
 	for sprite in [select_sprite, hover_sprite, movable_sprite]:

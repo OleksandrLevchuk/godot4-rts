@@ -44,14 +44,14 @@ script = ExtResource("4_6at7s")
 SPEED_CURVE = SubResource("Curve_oes56")
 
 [node name="RemoteTransform2D" type="RemoteTransform2D" parent="."]
-remote_path = NodePath("../RotationPreserver")
+remote_path = NodePath("../don\'t rotate these")
 update_rotation = false
 update_scale = false
 
-[node name="RotationPreserver" type="Node2D" parent="."]
+[node name="don\'t rotate these" type="Node2D" parent="."]
 top_level = true
 
-[node name="HealthComponent" parent="RotationPreserver" instance=ExtResource("5_f6crt")]
+[node name="HealthComponent" parent="don\'t rotate these" instance=ExtResource("5_f6crt")]
 unique_name_in_owner = true
 anchors_preset = 8
 anchor_top = 0.5
@@ -60,12 +60,10 @@ offset_top = -44.0
 offset_bottom = -36.0
 grow_vertical = 2
 
-[node name="SelectionComponent" parent="RotationPreserver" node_paths=PackedStringArray("main_sprite", "collider") instance=ExtResource("6_s4dwm")]
+[node name="SelectionComponent" parent="don\'t rotate these" instance=ExtResource("6_s4dwm")]
 unique_name_in_owner = true
-main_sprite = NodePath("../../Sprite2D")
-collider = NodePath("../../CollisionShape2D")
 
-[node name="GatherComponent" type="ProgressBar" parent="RotationPreserver"]
+[node name="GatherComponent" type="ProgressBar" parent="don\'t rotate these"]
 unique_name_in_owner = true
 anchors_preset = 8
 anchor_left = 0.5

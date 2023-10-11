@@ -60,7 +60,7 @@ func calc(delta):
 			velocity = facing * MAX_SPEED
 			is_accelerating = false
 		braking_distance = elapsed/ACCEL_TIME * MAX_SPEED * ACCEL_TIME * 0.5
-		print(braking_distance)
+		print(elapsed, ACCEL_TIME, MAX_SPEED, braking_distance)
 
 	elif is_braking:
 		elapsed -= delta

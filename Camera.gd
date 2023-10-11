@@ -54,3 +54,7 @@ func _input(_event:InputEvent):
 	zoom_factor = clamp(zoom_factor, ZOOM_MIN, ZOOM_MAX)
 	if abs(zoom.x-zoom_factor) < 0.01: return
 	is_zooming = true
+
+
+func _on_units_draw():
+	pass # Replace with function body.

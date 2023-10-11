@@ -12,10 +12,6 @@ radius = 60.2993
 [node name="Factory" type="StaticBody2D"]
 input_pickable = true
 
-[node name="SelectionComponent" parent="." node_paths=PackedStringArray("main_sprite", "collider") instance=ExtResource("4_h03i7")]
-main_sprite = NodePath("../Sprite2D")
-collider = NodePath("../CollisionShape2D")
-
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(4, -37)
 scale = Vector2(0.219033, 0.228855)
@@ -26,12 +22,20 @@ position = Vector2(3, 2)
 scale = Vector2(1.201, 0.898)
 shape = SubResource("CircleShape2D_nk277")
 
+[node name="SelectionComponent" parent="." instance=ExtResource("4_h03i7")]
+unique_name_in_owner = true
+
 [node name="HealthComponent" parent="." instance=ExtResource("4_p76fd")]
-position = Vector2(-39, -37)
+unique_name_in_owner = true
+offset_left = -39.0
+offset_right = 31.0
+offset_bottom = -10.0
 
 [node name="MinimapComponent" type="Node2D" parent="."]
+unique_name_in_owner = true
 script = ExtResource("5_rxhcq")
 minimap_marker_type = "Building"
 
 [node name="FactoryComponent" type="Node2D" parent="."]
+unique_name_in_owner = true
 script = ExtResource("6_wt3bj")

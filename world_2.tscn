@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://c6fuucp6k7gtm"]
+
+[ext_resource type="PackedScene" uid="uid://cxe80dasal4cw" path="res://scenes/units/tank.tscn" id="1_xdqbe"]
+[ext_resource type="PackedScene" uid="uid://b6qi0uh341w1n" path="res://ui/ui.tscn" id="2_4wpwq"]
+
+[node name="World2" type="Node2D"]
+
+[node name="Tank" parent="." instance=ExtResource("1_xdqbe")]
+
+[node name="UI" parent="." instance=ExtResource("2_4wpwq")]
+unique_name_in_owner = true

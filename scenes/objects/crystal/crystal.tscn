@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://dgg0qggy2pu7o"]
 
-[ext_resource type="Texture2D" uid="uid://b2lerc7yoswd" path="res://objects/crystal/crystal.png" id="1_fpclo"]
+[ext_resource type="Texture2D" uid="uid://b2lerc7yoswd" path="res://scenes/objects/crystal/crystal.png" id="1_fpclo"]
 [ext_resource type="PackedScene" uid="uid://vn2pj1fllvl8" path="res://components/health_component.tscn" id="3_co7cq"]
 [ext_resource type="PackedScene" uid="uid://bjgmnpjrh2kc7" path="res://components/selection_component.tscn" id="4_wf6y2"]
 [ext_resource type="Script" path="res://components/ResourceComponent.gd" id="5_kui6d"]

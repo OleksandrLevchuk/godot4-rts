@@ -1,10 +1,10 @@
 [gd_scene load_steps=12 format=3 uid="uid://cxe80dasal4cw"]
 
-[ext_resource type="Texture2D" uid="uid://nl6gqpbnjm8i" path="res://units/tank/tank_spritesheet.png" id="2_6hn61"]
+[ext_resource type="Texture2D" uid="uid://68ha12iw5bk2" path="res://art/units/tank/tank_spritesheet.png" id="1_1njmy"]
 [ext_resource type="PackedScene" uid="uid://vn2pj1fllvl8" path="res://components/health_component.tscn" id="3_g14mc"]
 [ext_resource type="PackedScene" uid="uid://bjgmnpjrh2kc7" path="res://components/selection_component.tscn" id="4_01hbr"]
-[ext_resource type="Script" path="res://components/MovementComponent.gd" id="5_hjtaw"]
 [ext_resource type="Script" path="res://components/MinimapComponent.gd" id="5_hloq4"]
+[ext_resource type="Script" path="res://components/MovementComponent.gd" id="6_ygtp5"]
 [ext_resource type="Script" path="res://components/AttackComponent.gd" id="6_yj2vk"]
 [ext_resource type="Script" path="res://components/ControllerComponent.gd" id="7_si3uo"]
 
@@ -54,15 +54,17 @@ input_pickable = true
 motion_mode = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+unique_name_in_owner = true
 position = Vector2(0, -0.125)
 rotation = 1.5708
 shape = SubResource("RectangleShape2D_j1shc")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+unique_name_in_owner = true
 position = Vector2(13, 0)
 rotation = 1.5708
 scale = Vector2(0.25, 0.25)
-texture = ExtResource("2_6hn61")
+texture = ExtResource("1_1njmy")
 hframes = 4
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
@@ -71,10 +73,6 @@ speed_scale = 2.0
 libraries = {
 "": SubResource("AnimationLibrary_3hjh7")
 }
-
-[node name="MovementComponent" type="Timer" parent="."]
-unique_name_in_owner = true
-script = ExtResource("5_hjtaw")
 
 [node name="AttackComponent" type="Timer" parent="."]
 unique_name_in_owner = true
@@ -87,10 +85,8 @@ script = ExtResource("7_si3uo")
 [node name="ui" type="Node2D" parent="."]
 top_level = true
 
-[node name="SelectionComponent" parent="ui" node_paths=PackedStringArray("main_sprite", "collider") instance=ExtResource("4_01hbr")]
+[node name="SelectionComponent" parent="ui" instance=ExtResource("4_01hbr")]
 unique_name_in_owner = true
-main_sprite = NodePath("../../Sprite2D")
-collider = NodePath("../../CollisionShape2D")
 
 [node name="HealthComponent" parent="ui" instance=ExtResource("3_g14mc")]
 unique_name_in_owner = true
@@ -104,3 +100,7 @@ update_scale = false
 unique_name_in_owner = true
 script = ExtResource("5_hloq4")
 minimap_marker_type = "Unit"
+
+[node name="MovementComponent" type="Timer" parent="."]
+unique_name_in_owner = true
+script = ExtResource("6_ygtp5")

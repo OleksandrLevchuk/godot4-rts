@@ -1,4 +1,5 @@
-var VelocityCalc = preload("res://components/VelocityCalc.gd")
+var VelocityCalc = preload("res://components/movement/VelocityCalculator.gd")
+#var dot_maker = preload("res://components/movement/Dot.gd").new()
 var velo: RefCounted
 var line: Line2D
 var dots: Node2D
@@ -28,6 +29,6 @@ func draw( unit, dest ):
 	while velocity != Vector2.ZERO:
 		velocity = velo.calc(delta)
 		point += velocity * delta
-		line.add_child( Dot.make( point ) )
 		line.add_point( point )
+#		line.add_child( dot_maker.make( point ) )
 	print("drawign ended")

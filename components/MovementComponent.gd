@@ -12,8 +12,8 @@ class_name MovementComponent
 var is_moving: bool = false
 
 @onready var parent := get_owner()
-@onready var line: RefCounted = preload("res://components/Trajectory.gd").new(self)
-@onready var velo: RefCounted = preload("res://components/VelocityCalc.gd").new(self)
+#@onready var line: RefCounted = preload("res://components/movement/Trajectory.gd").new(self)
+@onready var velocity_calculator: RefCounted = preload("res://components/movement/VelocityCalculator.gd").new(self)
 
 signal arrived
 signal map_updated
@@ -21,13 +21,15 @@ signal map_updated
 
 func _ready():
 	set_process(false)
-	velo.arrived.connect(_on_arrived)
+	velocity_calculator.arrived.connect(_on_arrived)
 
 
 func _process(delta):
-	parent.velocity = velo.calc(delta)
-	if parent.velocity != Vector2.ZERO:
-		parent.rotation = parent.velocity.angle()
+	velocity_calculator.calculate(delta)
+	parent.velocity = velocity_calculator.velocity
+	parent.rotation = velocity_calculator.rotation
+#	if parent.velocity != Vector2.ZERO:
+#		parent.rotation = parent.velocity.angle()
 	parent.move_and_slide()
 
 
@@ -39,7 +41,7 @@ func _on_arrived():
 
 
 func _on_ordered_to_move( dest ):
-	velo.start( self, dest )
-	line.draw( self, dest )
+	velocity_calculator.start( self, dest )
+#	line.draw( self, dest )
 	set_process( true )
 	start() # the minimap update timer

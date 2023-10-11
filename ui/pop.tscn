@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://dqf8ck43oiyp2"]
 
-[ext_resource type="Script" path="res://buildings/pop.gd" id="1_ekbav"]
+[ext_resource type="Script" path="res://scenes/buildings/pop.gd" id="1_ekbav"]
 
 [node name="pop" type="Label"]
 modulate = Color(1, 1, 1, 0.913725)
