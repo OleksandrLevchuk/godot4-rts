@@ -15,6 +15,7 @@ var is_moving: bool = false
 #@onready var line: RefCounted = preload("res://components/movement/Trajectory.gd").new(self)
 @onready var velocity_calculator: RefCounted = preload("res://components/movement/VelocityCalculator.gd").new(self)
 
+signal departed
 signal arrived
 signal map_updated
 
@@ -27,20 +28,20 @@ func _ready():
 func _process(delta):
 	velocity_calculator.calculate(delta)
 	parent.velocity = velocity_calculator.velocity
-	parent.rotation = velocity_calculator.rotation
-#	if parent.velocity != Vector2.ZERO:
-#		parent.rotation = parent.velocity.angle()
+	parent.rotation = velocity_calculator.facing.angle()
 	parent.move_and_slide()
 
 
 func _on_arrived():
-	print('arrived')
+	print(self, ' arrived')
 	arrived.emit()
 	set_process(false)
 	stop() # the minimap update timer
 
 
 func _on_ordered_to_move( dest ):
+	print(self, ' departed')
+	departed.emit()
 	velocity_calculator.start( self, dest )
 #	line.draw( self, dest )
 	set_process( true )

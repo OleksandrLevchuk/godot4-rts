@@ -1,9 +1,9 @@
 extends Node2D
 class_name ControllerComponent
 
+@onready var can_move: bool = has_node('%MovementComponent')
 @onready var can_attack: bool = has_node('%AttackComponent')
 @onready var can_gather: bool = has_node('%GatherComponent')
-@onready var can_move: bool = has_node('%MovementComponent')
 
 signal ordered_to_move
 signal ordered_to_attack

@@ -17,9 +17,13 @@ signal deselected
 
 
 func _ready():
+	if can_move: # if unit is movable, prevent selection from rotating
+		top_level = true # detach unit from inheriting parent transform
+		# then sync it's position back upon movement
+		%MovementComponent.departed.connect(func(): set_process(true))
+		%MovementComponent.arrived.connect(func(): set_process(false))
 #	print(parent)
 	# scale the selection sprites according to the main sprite size
-#	var size = Vector2( 0.5, 0.5 )
 	var size = main_sprite.texture.get_size()
 	var new_scale = 0.2 + min( size.x, size.y ) / 4000
 	for sprite in [select_sprite, hover_sprite, movable_sprite]:
@@ -34,6 +38,10 @@ func _ready():
 	if has_node('%HealthComponent'):
 		selected.connect(%HealthComponent._on_selected)
 		deselected.connect(%HealthComponent._on_deselected)
+
+
+func _process(_delta): # sync the position of the select box with it's parent
+	position = parent.position
 
 
 func select():
@@ -53,3 +61,9 @@ func set_selected(value:bool):
 	select_sprite.visible = value
 	if can_move:
 		movable_sprite.visible = value
+
+
+func _on_movement_departed():
+	# this is a roundabout way of forcing the ui not to rotate with the unit
+	set_process(true)
+

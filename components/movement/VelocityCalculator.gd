@@ -1,7 +1,6 @@
 var MAX_SPEED: float
 var ACCEL_TIME: float
 var TURN_RATE: float
-var SPEED_CURVE: Curve
 
 var position: Vector2
 var destination: Vector2
@@ -23,11 +22,13 @@ func _init( unit ):
 	MAX_SPEED = unit.MAX_SPEED
 	ACCEL_TIME = unit.ACCEL_TIME
 	TURN_RATE = unit.TURN_RATE
-	SPEED_CURVE = unit.SPEED_CURVE
 
 
 func start( unit, dest ):
+	
 	position = unit.parent.position
+	print( 'position ', position )
+	print( 'parent pos ', unit.position)
 	destination = dest
 	velocity = unit.parent.velocity
 	if velocity.is_zero_approx():
@@ -39,7 +40,7 @@ func start( unit, dest ):
 	is_moving = true
 
 
-func calc(delta):
+func calculate(delta):
 	if is_turning:
 		var facing_wanted: Vector2 = (destination-position).normalized()
 		# cross product sign is positive for clock-wise angles

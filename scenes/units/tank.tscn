@@ -82,19 +82,8 @@ script = ExtResource("6_yj2vk")
 unique_name_in_owner = true
 script = ExtResource("7_si3uo")
 
-[node name="ui" type="Node2D" parent="."]
-top_level = true
-
-[node name="SelectionComponent" parent="ui" instance=ExtResource("4_01hbr")]
+[node name="SelectionComponent" parent="." instance=ExtResource("4_01hbr")]
 unique_name_in_owner = true
-
-[node name="HealthComponent" parent="ui" instance=ExtResource("3_g14mc")]
-unique_name_in_owner = true
-
-[node name="RemoteTransform2D" type="RemoteTransform2D" parent="."]
-remote_path = NodePath("../ui")
-update_rotation = false
-update_scale = false
 
 [node name="MinimapComponent" type="Node" parent="."]
 unique_name_in_owner = true
@@ -104,3 +93,6 @@ minimap_marker_type = "Unit"
 [node name="MovementComponent" type="Timer" parent="."]
 unique_name_in_owner = true
 script = ExtResource("6_ygtp5")
+
+[node name="HealthComponent" parent="." instance=ExtResource("3_g14mc")]
+unique_name_in_owner = true
