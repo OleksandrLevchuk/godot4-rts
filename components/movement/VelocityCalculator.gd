@@ -25,10 +25,7 @@ func _init( unit ):
 
 
 func start( unit, dest ):
-	
 	position = unit.parent.position
-	print( 'position ', position )
-	print( 'parent pos ', unit.position)
 	destination = dest
 	velocity = unit.parent.velocity
 	if velocity.is_zero_approx():

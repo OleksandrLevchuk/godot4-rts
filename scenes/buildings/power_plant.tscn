@@ -29,14 +29,15 @@ unique_name_in_owner = true
 [node name="GeneratorComponent" parent="." instance=ExtResource("2_4820p")]
 unique_name_in_owner = true
 
-[node name="HealthComponent" parent="." instance=ExtResource("3_nml48")]
-unique_name_in_owner = true
-offset_left = 18.0
-offset_top = -26.0
-offset_right = 88.0
-offset_bottom = 1.0
-
 [node name="MinimapComponent" type="Node2D" parent="."]
 unique_name_in_owner = true
 script = ExtResource("5_uwhgu")
 minimap_marker_type = "Building"
+
+[node name="HealthComponent" parent="." instance=ExtResource("3_nml48")]
+anchors_preset = 0
+anchor_left = 0.0
+anchor_right = 0.0
+offset_left = 0.0
+offset_right = 70.0
+grow_horizontal = 1

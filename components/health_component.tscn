@@ -17,11 +17,9 @@ var health : int:
 
 signal died
 
-
 func _ready():
 	died.connect( func(): 
-		await get_tree().create_timer(1000).timeout 
-		get_owner().queue_free 
+		get_tree().create_timer(1000).timeout.connect(get_owner().queue_free)
 	)
 	max_value = MAX_HEALTH
 	value = MAX_HEALTH
@@ -33,6 +31,7 @@ func _ready():
 		# then sync it's position back upon movement
 		%MovementComponent.departed.connect(func(): set_process(true))
 		%MovementComponent.arrived.connect(func(): set_process(false))
+	$TemporaryVisible.timeout.connect(_on_temporary_visibility_end)
 
 
 func _process(_delta): # sync the position of the select box with it's parent
@@ -40,8 +39,8 @@ func _process(_delta): # sync the position of the select box with it's parent
 
 
 func take_damage( dmg ):
+	$TemporaryVisible.start()
 	visible=true
-	get_tree().create_timer(3).timeout.connect(func(): visible=false)
 	health -= dmg
 	print(\"%s lost %s hit points, %s left.\" % [self.get_owner(), dmg, health])
 	if health <= 0:
@@ -54,59 +53,68 @@ func _on_selected():
 
 func _on_deselected():
 	visible = false
+
+
+func _on_temporary_visibility_end():
+	if not %SelectionComponent.is_selected:
+		visible = false
 "
 
 [sub_resource type="GDScript" id="GDScript_574ft"]
 script/source = "extends Line2D
 
 var is_healing: bool = false
-var value: float
+var health: float
+var prev_health: float
 var left: float:
 	set(x):
 		left = x
-		points[0].x = value * 70
-		
+		points[0].x = health * 70
+
 var right: float:
 	set(x):
 		right = x
-		points[1].x = value * 70
-		
+		points[1].x = health * 70
+
 @export var EASE_TIME: float = 2
 var elapsed: float
 
 
 func _ready():
+	%Ease.timeout.connect(func(): 
+		visible = true
+		set_process(false)
+	)
 	left = 0
 	right = 70
 
 
-func _process(delta):
-	elapsed += delta
-	if elapsed>EASE_TIME:
-		visible = false
-		set_process(false)
-	if is_healing:
-		left += 1
-	else:
-		right -= 1
+func _process(_delta):
+	right = lerp( health, prev_health, %Ease.time_left / %Ease.wait_time )
 
 
 func animate_to( new_value ):
 	visible = true
-	elapsed = 0
-	if new_value>value:
-		right = new_value
+	%Ease.start()
+	if new_value>health:
 		is_healing = true
+		right = new_value
 	else:
 		left = new_value
-	value = new_value
+	prev_health = health
+	health = new_value
 	set_process(true)
 "
 
 [node name="HealthComponent" type="ProgressBar"]
-offset_right = 70.0
-offset_bottom = 4.0
-scale = Vector2(1, 0.5)
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -611.0
+offset_top = -32.0
+offset_right = -541.0
+offset_bottom = -28.0
+grow_horizontal = 2
 theme = ExtResource("2_yweqt")
 value = 80.0
 show_percentage = false
@@ -114,7 +122,15 @@ script = SubResource("GDScript_ht1wh")
 metadata/_edit_use_anchors_ = true
 
 [node name="Line2D" type="Line2D" parent="."]
-position = Vector2(0, 2)
+position = Vector2(0, 6)
 points = PackedVector2Array(0, 0, 70, 0)
 width = 4.0
 script = SubResource("GDScript_574ft")
+
+[node name="TemporaryVisible" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+
+[node name="Ease" type="Timer" parent="."]
+unique_name_in_owner = true
+one_shot = true
