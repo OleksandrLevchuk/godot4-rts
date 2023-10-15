@@ -43,10 +43,27 @@ unique_name_in_owner = true
 script = ExtResource("4_6at7s")
 SPEED_CURVE = SubResource("Curve_oes56")
 
-[node name="SelectionComponent" parent="." instance=ExtResource("6_s4dwm")]
-unique_name_in_owner = true
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="."]
+remote_path = NodePath("../UIParent")
+update_rotation = false
+update_scale = false
 
-[node name="GatherComponent" type="ProgressBar" parent="."]
+[node name="UIParent" type="Node2D" parent="."]
+top_level = true
+
+[node name="HealthComponent" parent="UIParent" instance=ExtResource("5_f6crt")]
+unique_name_in_owner = true
+anchors_preset = 0
+anchor_left = 0.0
+anchor_right = 0.0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 70.0
+offset_bottom = 4.0
+grow_horizontal = 1
+pivot_offset = Vector2(52, 6)
+
+[node name="GatherComponent" type="ProgressBar" parent="UIParent"]
 unique_name_in_owner = true
 anchors_preset = 8
 anchor_left = 0.5
@@ -59,12 +76,10 @@ offset_right = 35.0
 offset_bottom = -37.0
 grow_horizontal = 2
 grow_vertical = 2
+value = 70.0
 show_percentage = false
 script = ExtResource("7_ypx46")
 type = "Energy"
 
-[node name="HealthComponent" parent="." instance=ExtResource("5_f6crt")]
-offset_left = 0.0
-offset_top = 0.0
-offset_right = 70.0
-offset_bottom = 4.0
+[node name="SelectionComponent" parent="UIParent" instance=ExtResource("6_s4dwm")]
+unique_name_in_owner = true

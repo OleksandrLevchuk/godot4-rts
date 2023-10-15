@@ -1,10 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://bi4ni5ylf72jo"]
+[gd_scene load_steps=7 format=3 uid="uid://bi4ni5ylf72jo"]
 
 [ext_resource type="Texture2D" uid="uid://d0w7iciwtcmi8" path="res://art/buildings/factory.png" id="2_7d3pt"]
 [ext_resource type="PackedScene" uid="uid://bjgmnpjrh2kc7" path="res://components/selection_component.tscn" id="4_h03i7"]
 [ext_resource type="PackedScene" uid="uid://vn2pj1fllvl8" path="res://components/health_component.tscn" id="4_p76fd"]
 [ext_resource type="Script" path="res://components/MinimapComponent.gd" id="5_rxhcq"]
-[ext_resource type="PackedScene" uid="uid://dce2yeixem12g" path="res://components/test_component.tscn" id="6_2t0ke"]
 [ext_resource type="Script" path="res://components/FactoryComponent.gd" id="6_wt3bj"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_nk277"]
@@ -37,11 +36,11 @@ script = ExtResource("6_wt3bj")
 
 [node name="HealthComponent" parent="." instance=ExtResource("4_p76fd")]
 unique_name_in_owner = true
-offset_left = -35.0
-offset_top = -64.0
-offset_right = 35.0
-offset_bottom = -60.0
-
-[node name="TestComponent" parent="." instance=ExtResource("6_2t0ke")]
-unique_name_in_owner = true
-script = null
+anchors_preset = 0
+anchor_left = 0.0
+anchor_right = 0.0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 70.0
+offset_bottom = 4.0
+grow_horizontal = 1

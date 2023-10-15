@@ -47,14 +47,9 @@ unique_name_in_owner = true
 script = ExtResource("7_5fi3n")
 SPEED_CURVE = SubResource("Curve_oes56")
 
-[node name="HealthComponent" parent="." instance=ExtResource("3_h47g2")]
-unique_name_in_owner = true
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_top = -44.0
-offset_bottom = -36.0
-grow_vertical = 2
-
 [node name="SelectionComponent" parent="." instance=ExtResource("1_lrks8")]
 unique_name_in_owner = true
+
+[node name="HealthComponent" parent="." instance=ExtResource("3_h47g2")]
+unique_name_in_owner = true
+MAX_HEALTH = null

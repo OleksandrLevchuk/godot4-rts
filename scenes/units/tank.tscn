@@ -96,7 +96,3 @@ script = ExtResource("6_ygtp5")
 
 [node name="HealthComponent" parent="." instance=ExtResource("3_g14mc")]
 unique_name_in_owner = true
-offset_left = -35.0
-offset_top = -40.0
-offset_right = 35.0
-offset_bottom = -36.0

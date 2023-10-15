@@ -14,7 +14,6 @@ position = Vector2(0, 8)
 texture = ExtResource("2_grlwk")
 
 [node name="Hover" type="Sprite2D" parent="."]
-visible = false
 position = Vector2(0, 8)
 texture = ExtResource("3_f3ykq")
 

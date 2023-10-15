@@ -1,136 +1,170 @@
-[gd_scene load_steps=4 format=3 uid="uid://vn2pj1fllvl8"]
+[gd_scene load_steps=6 format=3 uid="uid://vn2pj1fllvl8"]
 
 [ext_resource type="Theme" uid="uid://ccb7csnxqndm6" path="res://ui/my_ui_theme.tres" id="2_yweqt"]
 
-[sub_resource type="GDScript" id="GDScript_ht1wh"]
-script/source = "extends ProgressBar
-class_name HealthComponent
+[sub_resource type="GDScript" id="GDScript_30ktc"]
+script/source = "extends Node2D
 
-@export var MAX_HEALTH: int = 20
-
-@onready var animation := $Line2D
-var health : int:
-	set(x):
-		health = x
-		value = x
-		animation.animate_to( float(x) / float(MAX_HEALTH) )
+var is_temporary_visible: bool = false
+var is_selected: bool = false
+@export var MAX_HEALTH: float = 3
+@onready var health: float = MAX_HEALTH
 
 signal died
 
+
 func _ready():
-	died.connect( func(): 
-		get_tree().create_timer(1000).timeout.connect(get_owner().queue_free)
-	)
-	max_value = MAX_HEALTH
-	value = MAX_HEALTH
-	health = MAX_HEALTH
-	visible = false
-	####################
-	if has_node(\"%MovementComponent\"): # if unit is movable, prevent rotation
-		top_level = true # detach component from inheriting parent transform
-		# then sync it's position back upon movement
-		%MovementComponent.departed.connect(func(): set_process(true))
-		%MovementComponent.arrived.connect(func(): set_process(false))
+	%HPBar.max_value = MAX_HEALTH
+	%HPBar.value = MAX_HEALTH
+	# when a unit takes damage, display the hp bar temporarily
 	$TemporaryVisible.timeout.connect(_on_temporary_visibility_end)
-
-
-func _process(_delta): # sync the position of the select box with it's parent
-	position = get_owner().position
+	# upon dying, wait a little before removing the unit
+	died.connect(func():
+		get_tree().create_timer(3).timeout.connect(get_owner().queue_free)
+	)
 
 
 func take_damage( dmg ):
 	$TemporaryVisible.start()
-	visible=true
-	health -= dmg
-	print(\"%s lost %s hit points, %s left.\" % [self.get_owner(), dmg, health])
+	visible = true
+	is_temporary_visible = true
+	health = max( health - dmg, 0 )
+	%HPBar.value = health
+	# the line works in percentages, between 0 and 1
+	%Line.animate_to( health / MAX_HEALTH )
+	print(\"%s lost %s hit points, %s left.\" % [get_owner(), dmg, health])
 	if health <= 0:
 		died.emit()
 
 
+func _on_temporary_visibility_end():
+	is_temporary_visible = false
+	if health == 0:
+		queue_free()
+	if not is_selected:
+		visible = false
+
+
 func _on_selected():
+	is_selected = true
 	visible = true
 
 
 func _on_deselected():
-	visible = false
-
-
-func _on_temporary_visibility_end():
-	if not %SelectionComponent.is_selected:
+	is_selected = false
+	if not is_temporary_visible:
 		visible = false
+"
+
+[sub_resource type="GDScript" id="GDScript_aifk4"]
+script/source = "extends Node2D
+# if this unit is movable, make the UI parent top level
+# in order to keep ui elements from rotating with the unit
+
+
+func _ready():
+	if get_owner().has_node(\"%MovementComponent\"):
+		top_level = true
 "
 
 [sub_resource type="GDScript" id="GDScript_574ft"]
 script/source = "extends Line2D
 
-var is_healing: bool = false
-var health: float
-var prev_health: float
+var anchor_id: int = 1 # 0 for left side point of the curve
+var health: float = 1
+var prev_health: float = 1
+
 var left: float:
 	set(x):
 		left = x
-		points[0].x = health * 70
+		points[0].x = x * size
 
 var right: float:
 	set(x):
 		right = x
-		points[1].x = health * 70
+		points[1].x = x * size
 
-@export var EASE_TIME: float = 2
-var elapsed: float
+@onready var size: int = %HPBar.get_size().x
 
 
 func _ready():
-	%Ease.timeout.connect(func(): 
-		visible = true
+	set_process(false)
+	$Ease.timeout.connect(func(): 
+		visible = false
 		set_process(false)
 	)
-	left = 0
-	right = 70
+	left = 1
+	right = 1
 
 
 func _process(_delta):
-	right = lerp( health, prev_health, %Ease.time_left / %Ease.wait_time )
+	points[anchor_id].x = size * lerp( health, prev_health, $Ease.time_left/$Ease.wait_time )
 
 
 func animate_to( new_value ):
+	print('animating to ', new_value)
 	visible = true
-	%Ease.start()
-	if new_value>health:
-		is_healing = true
-		right = new_value
-	else:
-		left = new_value
+	$Ease.start()
+	if new_value>health: # it's healing
+		anchor_id = 0 # so, left point gets animated
+		right = new_value # while right stays fixed
+	else: # it's damage
+		anchor_id = 1 # right point gets animated
+		left = new_value # while left stays fixed
 	prev_health = health
 	health = new_value
 	set_process(true)
 "
 
-[node name="HealthComponent" type="ProgressBar"]
+[sub_resource type="GDScript" id="GDScript_thyfq"]
+script/source = "extends RemoteTransform2D
+# if this unit is stationary, this node is useless, so delete it
+
+
+func _ready():
+	if not get_owner().has_node(\"%MovementComponent\"):
+		queue_free()
+"
+
+[node name="HealthComponent" type="Node2D"]
+script = SubResource("GDScript_30ktc")
+
+[node name="TemporaryVisible" type="Timer" parent="."]
+wait_time = 2.445
+one_shot = true
+
+[node name="UIParent" type="Node2D" parent="."]
+script = SubResource("GDScript_aifk4")
+
+[node name="HPBar" type="ProgressBar" parent="UIParent"]
+unique_name_in_owner = true
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -611.0
+offset_left = -35.0
 offset_top = -32.0
-offset_right = -541.0
+offset_right = 35.0
 offset_bottom = -28.0
 grow_horizontal = 2
 theme = ExtResource("2_yweqt")
 value = 80.0
 show_percentage = false
-script = SubResource("GDScript_ht1wh")
 metadata/_edit_use_anchors_ = true
 
-[node name="Line2D" type="Line2D" parent="."]
-position = Vector2(0, 6)
+[node name="Line" type="Line2D" parent="UIParent/HPBar"]
+unique_name_in_owner = true
+visible = false
+position = Vector2(0, 2)
 points = PackedVector2Array(0, 0, 70, 0)
 width = 4.0
 script = SubResource("GDScript_574ft")
 
-[node name="TemporaryVisible" type="Timer" parent="."]
-wait_time = 3.0
+[node name="Ease" type="Timer" parent="UIParent/HPBar/Line"]
+wait_time = 0.734
 one_shot = true
 
-[node name="Ease" type="Timer" parent="."]
-unique_name_in_owner = true
-one_shot = true
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="."]
+remote_path = NodePath("../UIParent")
+update_rotation = false
+update_scale = false
+script = SubResource("GDScript_thyfq")
