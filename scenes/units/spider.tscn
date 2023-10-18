@@ -34,10 +34,6 @@ unique_name_in_owner = true
 script = ExtResource("4_brq43")
 minimap_marker_type = "Unit"
 
-[node name="ControllerComponent" type="Node2D" parent="."]
-unique_name_in_owner = true
-script = ExtResource("5_a2td7")
-
 [node name="AttackComponent" type="Timer" parent="."]
 unique_name_in_owner = true
 script = ExtResource("6_dvh2m")
@@ -53,3 +49,7 @@ unique_name_in_owner = true
 [node name="HealthComponent" parent="." instance=ExtResource("3_h47g2")]
 unique_name_in_owner = true
 MAX_HEALTH = null
+
+[node name="ControllerComponent" type="Node2D" parent="."]
+unique_name_in_owner = true
+script = ExtResource("5_a2td7")

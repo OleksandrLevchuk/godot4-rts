@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://cjl74u827soth"]
+
+[ext_resource type="Script" path="res://components/MovementComponent.gd" id="1_fdl8a"]
+
+[node name="MovementComponent" type="Timer"]
+script = ExtResource("1_fdl8a")

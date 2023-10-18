@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://cxe80dasal4cw"]
+[gd_scene load_steps=16 format=3 uid="uid://cxe80dasal4cw"]
 
 [ext_resource type="Texture2D" uid="uid://68ha12iw5bk2" path="res://art/units/tank/tank_spritesheet.png" id="1_1njmy"]
 [ext_resource type="PackedScene" uid="uid://vn2pj1fllvl8" path="res://components/health_component.tscn" id="3_g14mc"]
@@ -6,7 +6,10 @@
 [ext_resource type="Script" path="res://components/MinimapComponent.gd" id="5_hloq4"]
 [ext_resource type="Script" path="res://components/MovementComponent.gd" id="6_ygtp5"]
 [ext_resource type="Script" path="res://components/AttackComponent.gd" id="6_yj2vk"]
+[ext_resource type="Texture2D" uid="uid://dlpvnbe1aatqp" path="res://art/units/parts/battery.png" id="7_6avmq"]
 [ext_resource type="Script" path="res://components/ControllerComponent.gd" id="7_si3uo"]
+[ext_resource type="Texture2D" uid="uid://ccgeyl8jg7lyt" path="res://art/units/parts/glow.png" id="8_or4ah"]
+[ext_resource type="Texture2D" uid="uid://yoseowf0t8iu" path="res://art/units/parts/turret_1.png" id="10_b6v5c"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_j1shc"]
 size = Vector2(44, 53)
@@ -49,6 +52,9 @@ _data = {
 "drive": SubResource("Animation_jhrpe")
 }
 
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_3o5e3"]
+blend_mode = 1
+
 [node name="Tank" type="CharacterBody2D"]
 input_pickable = true
 motion_mode = 1
@@ -74,14 +80,6 @@ libraries = {
 "": SubResource("AnimationLibrary_3hjh7")
 }
 
-[node name="AttackComponent" type="Timer" parent="."]
-unique_name_in_owner = true
-script = ExtResource("6_yj2vk")
-
-[node name="ControllerComponent" type="Node2D" parent="."]
-unique_name_in_owner = true
-script = ExtResource("7_si3uo")
-
 [node name="SelectionComponent" parent="." instance=ExtResource("4_01hbr")]
 unique_name_in_owner = true
 
@@ -96,3 +94,30 @@ script = ExtResource("6_ygtp5")
 
 [node name="HealthComponent" parent="." instance=ExtResource("3_g14mc")]
 unique_name_in_owner = true
+
+[node name="ControllerComponent" type="Node2D" parent="."]
+unique_name_in_owner = true
+script = ExtResource("7_si3uo")
+
+[node name="BatteryComponent" type="Sprite2D" parent="."]
+position = Vector2(-19, 0)
+scale = Vector2(0.125, 0.125)
+texture = ExtResource("7_6avmq")
+
+[node name="Glow" type="Sprite2D" parent="BatteryComponent"]
+self_modulate = Color(1, 1, 1, 0.501961)
+material = SubResource("CanvasItemMaterial_3o5e3")
+texture = ExtResource("8_or4ah")
+
+[node name="AttackComponent" type="Node2D" parent="."]
+position = Vector2(9, 0)
+
+[node name="Cooldown" type="Timer" parent="AttackComponent"]
+unique_name_in_owner = true
+script = ExtResource("6_yj2vk")
+
+[node name="Sprite2D" type="Sprite2D" parent="AttackComponent"]
+position = Vector2(10, 0)
+rotation = 1.5708
+scale = Vector2(0.125, 0.125)
+texture = ExtResource("10_b6v5c")

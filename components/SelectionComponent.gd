@@ -1,14 +1,14 @@
 extends Node2D
 class_name SelectionComponent
 
-@onready var select_sprite : Sprite2D = $Selection
-@onready var hover_sprite : Sprite2D = $Hover
-@onready var movable_sprite : Sprite2D = $Movable
+@onready var select_sprite: Sprite2D = $UIParent/Selection
+@onready var hover_sprite: Sprite2D = $UIParent/Hover
+@onready var movable_sprite: Sprite2D = $UIParent/Movable
 
 @onready var parent := get_owner()
-@onready var main_sprite : Sprite2D = parent.get_node('Sprite2D')
-@onready var collider : CollisionShape2D = parent.get_node('CollisionShape2D')
-@onready var can_move := parent.has_node('%MovementComponent')
+@onready var main_sprite: Sprite2D = parent.get_node('Sprite2D')
+@onready var collider: CollisionShape2D = parent.get_node('CollisionShape2D')
+@onready var can_move: bool = parent.has_node('%MovementComponent')
 
 var is_selected := false
 

@@ -1,23 +1,51 @@
-[gd_scene load_steps=5 format=3 uid="uid://bjgmnpjrh2kc7"]
+[gd_scene load_steps=7 format=3 uid="uid://bjgmnpjrh2kc7"]
 
 [ext_resource type="Script" path="res://components/SelectionComponent.gd" id="1_xte08"]
 [ext_resource type="Texture2D" uid="uid://clk8yu3ieipe2" path="res://art/ui/selection_movable.png" id="2_grlwk"]
 [ext_resource type="Texture2D" uid="uid://qcigjiljgq78" path="res://art/ui/selection_hover.png" id="3_f3ykq"]
 [ext_resource type="Texture2D" uid="uid://djvn0nhvqrcgw" path="res://art/ui/selection.png" id="4_itfqv"]
 
+[sub_resource type="GDScript" id="GDScript_w0yho"]
+script/source = "extends Node2D
+
+
+func _ready():
+	if get_owner().has_node('%MovementComponent'):
+		top_level = true
+"
+
+[sub_resource type="GDScript" id="GDScript_fvmd6"]
+script/source = "extends RemoteTransform2D
+
+
+# delete this node if the unit isn't ever gonna move
+func _ready():
+	if not get_owner().has_node('%MovementComponent'):
+		queue_free()
+"
+
 [node name="SelectionComponent" type="Node2D"]
 script = ExtResource("1_xte08")
 
-[node name="Movable" type="Sprite2D" parent="."]
+[node name="UIParent" type="Node2D" parent="."]
+script = SubResource("GDScript_w0yho")
+
+[node name="Movable" type="Sprite2D" parent="UIParent"]
 visible = false
 position = Vector2(0, 8)
 texture = ExtResource("2_grlwk")
 
-[node name="Hover" type="Sprite2D" parent="."]
+[node name="Hover" type="Sprite2D" parent="UIParent"]
 position = Vector2(0, 8)
 texture = ExtResource("3_f3ykq")
 
-[node name="Selection" type="Sprite2D" parent="."]
+[node name="Selection" type="Sprite2D" parent="UIParent"]
 visible = false
 position = Vector2(0, 8)
 texture = ExtResource("4_itfqv")
+
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="."]
+remote_path = NodePath("../UIParent")
+update_rotation = false
+update_scale = false
+script = SubResource("GDScript_fvmd6")
