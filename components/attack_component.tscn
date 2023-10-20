@@ -1,0 +1,89 @@
+[gd_scene load_steps=4 format=3 uid="uid://cmu5q72wauwkk"]
+
+[ext_resource type="Texture2D" uid="uid://yoseowf0t8iu" path="res://art/units/parts/turret_1.png" id="1_r24ut"]
+
+[sub_resource type="GDScript" id="GDScript_f82ki"]
+script/source = "extends Node2D
+
+@export var DAMAGE : int = 2
+var target : Node
+@onready var unit: Node = get_owner()
+signal attacked
+
+
+func _ready():
+	%Cooldown.timeout.connect(attack)
+
+
+#func _process(_delta):
+#	print(position)
+
+
+func attack():
+	print(\"attacking this \", target)
+	attacked.emit( DAMAGE )
+	%BulletTrace.shoot( unit.position.distance_to( target.position ) )
+
+
+func _on_ordered_to_attack( new_target ):
+	print(\"ordered to attack this \", new_target )
+	if target == new_target: return # prevents attack cd exploit, but only on single unit
+	if target: # that is, if we've already been attacking a different target
+		attacked.disconnect(target.get_node(\"%HealthComponent\")._on_attacked)
+		target.get_node('%HealthComponent').died.disconnect(_on_target_died)
+	target = new_target
+	attacked.connect(target.get_node(\"%HealthComponent\")._on_attacked)
+	target.get_node('%HealthComponent').died.connect(_on_target_died)
+	attack()
+	%Cooldown.start()
+
+
+func _on_target_died():
+	target.get_node('%HealthComponent').died.disconnect(_on_target_died)
+	attacked.disconnect(target.get_node(\"%HealthComponent\")._on_attacked)
+	target = null
+	%Cooldown.stop()
+"
+
+[sub_resource type="GDScript" id="GDScript_qhcju"]
+script/source = "extends Line2D
+
+@export var FRAMES_DURATION: int = 4
+
+var frames_left: int
+
+
+func shoot( distance: float ):
+	frames_left = FRAMES_DURATION
+#	points[0] = origin
+	points[1].x = distance
+	visible = true
+	set_process(true)
+
+
+func _process( _delta ):
+	frames_left -= 1
+	if frames_left == 0:
+		set_process(false)
+		visible = false
+"
+
+[node name="AttackComponent" type="Node2D"]
+script = SubResource("GDScript_f82ki")
+
+[node name="Cooldown" type="Timer" parent="."]
+unique_name_in_owner = true
+
+[node name="TurretSprite" type="Sprite2D" parent="."]
+unique_name_in_owner = true
+rotation = 1.5708
+scale = Vector2(0.125, 0.125)
+texture = ExtResource("1_r24ut")
+offset = Vector2(0, -100)
+
+[node name="BulletTrace" type="Line2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(45, -3)
+points = PackedVector2Array(54, 0, 0, 0)
+width = 2.0
+script = SubResource("GDScript_qhcju")

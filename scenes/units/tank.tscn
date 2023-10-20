@@ -1,59 +1,16 @@
-[gd_scene load_steps=16 format=3 uid="uid://cxe80dasal4cw"]
+[gd_scene load_steps=10 format=3 uid="uid://cxe80dasal4cw"]
 
 [ext_resource type="Texture2D" uid="uid://68ha12iw5bk2" path="res://art/units/tank/tank_spritesheet.png" id="1_1njmy"]
 [ext_resource type="PackedScene" uid="uid://vn2pj1fllvl8" path="res://components/health_component.tscn" id="3_g14mc"]
 [ext_resource type="PackedScene" uid="uid://bjgmnpjrh2kc7" path="res://components/selection_component.tscn" id="4_01hbr"]
+[ext_resource type="PackedScene" uid="uid://cjl74u827soth" path="res://components/movement_component.tscn" id="4_5ahks"]
 [ext_resource type="Script" path="res://components/MinimapComponent.gd" id="5_hloq4"]
-[ext_resource type="Script" path="res://components/MovementComponent.gd" id="6_ygtp5"]
-[ext_resource type="Script" path="res://components/AttackComponent.gd" id="6_yj2vk"]
-[ext_resource type="Texture2D" uid="uid://dlpvnbe1aatqp" path="res://art/units/parts/battery.png" id="7_6avmq"]
 [ext_resource type="Script" path="res://components/ControllerComponent.gd" id="7_si3uo"]
-[ext_resource type="Texture2D" uid="uid://ccgeyl8jg7lyt" path="res://art/units/parts/glow.png" id="8_or4ah"]
-[ext_resource type="Texture2D" uid="uid://yoseowf0t8iu" path="res://art/units/parts/turret_1.png" id="10_b6v5c"]
+[ext_resource type="PackedScene" uid="uid://dkx3wjx7hsci4" path="res://components/battery_component.tscn" id="8_pesic"]
+[ext_resource type="PackedScene" uid="uid://cmu5q72wauwkk" path="res://components/attack_component.tscn" id="9_nvvw3"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_j1shc"]
 size = Vector2(44, 53)
-
-[sub_resource type="Animation" id="Animation_66ek5"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [0]
-}
-
-[sub_resource type="Animation" id="Animation_jhrpe"]
-resource_name = "drive"
-length = 0.4
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 1,
-"values": [0, 1, 2, 3]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_3hjh7"]
-_data = {
-"RESET": SubResource("Animation_66ek5"),
-"drive": SubResource("Animation_jhrpe")
-}
-
-[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_3o5e3"]
-blend_mode = 1
 
 [node name="Tank" type="CharacterBody2D"]
 input_pickable = true
@@ -73,13 +30,6 @@ scale = Vector2(0.25, 0.25)
 texture = ExtResource("1_1njmy")
 hframes = 4
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-unique_name_in_owner = true
-speed_scale = 2.0
-libraries = {
-"": SubResource("AnimationLibrary_3hjh7")
-}
-
 [node name="SelectionComponent" parent="." instance=ExtResource("4_01hbr")]
 unique_name_in_owner = true
 
@@ -88,9 +38,8 @@ unique_name_in_owner = true
 script = ExtResource("5_hloq4")
 minimap_marker_type = "Unit"
 
-[node name="MovementComponent" type="Timer" parent="."]
+[node name="MovementComponent" parent="." instance=ExtResource("4_5ahks")]
 unique_name_in_owner = true
-script = ExtResource("6_ygtp5")
 
 [node name="HealthComponent" parent="." instance=ExtResource("3_g14mc")]
 unique_name_in_owner = true
@@ -99,25 +48,8 @@ unique_name_in_owner = true
 unique_name_in_owner = true
 script = ExtResource("7_si3uo")
 
-[node name="BatteryComponent" type="Sprite2D" parent="."]
-position = Vector2(-19, 0)
-scale = Vector2(0.125, 0.125)
-texture = ExtResource("7_6avmq")
-
-[node name="Glow" type="Sprite2D" parent="BatteryComponent"]
-self_modulate = Color(1, 1, 1, 0.501961)
-material = SubResource("CanvasItemMaterial_3o5e3")
-texture = ExtResource("8_or4ah")
-
-[node name="AttackComponent" type="Node2D" parent="."]
-position = Vector2(9, 0)
-
-[node name="Cooldown" type="Timer" parent="AttackComponent"]
+[node name="AttackComponent" parent="." instance=ExtResource("9_nvvw3")]
 unique_name_in_owner = true
-script = ExtResource("6_yj2vk")
+position = Vector2(7, 0)
 
-[node name="Sprite2D" type="Sprite2D" parent="AttackComponent"]
-position = Vector2(10, 0)
-rotation = 1.5708
-scale = Vector2(0.125, 0.125)
-texture = ExtResource("10_b6v5c")
+[node name="BatteryComponent" parent="." instance=ExtResource("8_pesic")]

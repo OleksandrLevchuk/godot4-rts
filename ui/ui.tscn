@@ -1,12 +1,32 @@
 [gd_scene load_steps=12 format=3 uid="uid://b6qi0uh341w1n"]
 
 [ext_resource type="Script" path="res://ui/selectbox.gd" id="1_k21uh"]
-[ext_resource type="Script" path="res://ui/ui.gd" id="1_noydw"]
 [ext_resource type="Script" path="res://ui/info.gd" id="2_4wqkh"]
 [ext_resource type="Script" path="res://ui/minimap.gd" id="5_1bgg6"]
-[ext_resource type="Script" path="res://ui/order_target.gd" id="5_dmycc"]
 [ext_resource type="PackedScene" uid="uid://tq46vowam2m5" path="res://ui/minimap_marker.tscn" id="6_cqrwj"]
 [ext_resource type="Texture2D" uid="uid://bvkfpoh3hpp10" path="res://art/color.jpg" id="6_kctty"]
+
+[sub_resource type="GDScript" id="GDScript_a5hhy"]
+script/source = "extends CanvasLayer
+
+var is_dialog_up := false
+
+signal ordered_unit_spawn
+
+
+func _on_buildings_building_selected(pos:Vector2, dialog_scene:Resource):
+	if is_dialog_up: return
+	is_dialog_up = true
+	var dialog = dialog_scene.instantiate()
+	dialog.spawn_pos = pos
+	add_child( dialog )
+#	dialog.spawn_unit.connect(func(pos):spawn_unit.emit(pos))
+#	dialog.close_dialog.connect(func():is_dialog_up = false)
+
+
+func _on_dialog_spawn_unit( pos ):
+	ordered_unit_spawn.emit(pos)
+"
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7ojft"]
 bg_color = Color(1, 1, 1, 0.223529)
@@ -14,6 +34,10 @@ border_width_left = 1
 border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
+
+[sub_resource type="GDScript" id="GDScript_2lv6c"]
+script/source = "extends Node2D
+"
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_svi1x"]
 bg_color = Color(0.313726, 0.466667, 0.631373, 1)
@@ -50,7 +74,7 @@ texture = ExtResource("6_kctty")
 sources/1 = SubResource("TileSetAtlasSource_tp1gr")
 
 [node name="UI" type="CanvasLayer"]
-script = ExtResource("1_noydw")
+script = SubResource("GDScript_a5hhy")
 
 [node name="selectbox" type="Panel" parent="."]
 theme_override_styles/panel = SubResource("StyleBoxFlat_7ojft")
@@ -70,7 +94,7 @@ horizontal_alignment = 2
 script = ExtResource("2_4wqkh")
 
 [node name="order_target" type="Node2D" parent="."]
-script = ExtResource("5_dmycc")
+script = SubResource("GDScript_2lv6c")
 metadata/_edit_lock_ = true
 
 [node name="minimap_bg" type="Panel" parent="."]

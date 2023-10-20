@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://c4rtxdqoh4sdo"]
+[gd_scene load_steps=8 format=3 uid="uid://c4rtxdqoh4sdo"]
 
 [ext_resource type="Texture2D" uid="uid://p3lr8gy66yyc" path="res://art/buildings/powerplant.png" id="2_2sdc4"]
 [ext_resource type="PackedScene" uid="uid://dxvfwjy2ojs42" path="res://components/generator_component.tscn" id="2_4820p"]
@@ -8,6 +8,22 @@
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_jqmm7"]
 radius = 54.0093
+
+[sub_resource type="GDScript" id="GDScript_fkavq"]
+script/source = "extends Node2D
+
+@export var pop : Resource
+
+@onready var bar := $ProgressBar
+@onready var timer := $Timer
+
+func _on_timer_timeout():
+	if bar.value == bar.max_value:
+		Game.Energy += 1
+		bar.value = 0
+		add_child( pop.instantiate() )
+	create_tween().tween_property(bar, 'value', bar.value+1, timer.wait_time)
+"
 
 [node name="PowerPlant" type="StaticBody2D"]
 y_sort_enabled = true
@@ -28,6 +44,7 @@ unique_name_in_owner = true
 
 [node name="GeneratorComponent" parent="." instance=ExtResource("2_4820p")]
 unique_name_in_owner = true
+script = SubResource("GDScript_fkavq")
 
 [node name="MinimapComponent" type="Node2D" parent="."]
 unique_name_in_owner = true
@@ -35,9 +52,4 @@ script = ExtResource("5_uwhgu")
 minimap_marker_type = "Building"
 
 [node name="HealthComponent" parent="." instance=ExtResource("3_nml48")]
-anchors_preset = 0
-anchor_left = 0.0
-anchor_right = 0.0
-offset_left = 0.0
-offset_right = 70.0
-grow_horizontal = 1
+unique_name_in_owner = true

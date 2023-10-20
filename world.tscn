@@ -1,14 +1,29 @@
-[gd_scene load_steps=12 format=3 uid="uid://byys03pyjar55"]
+[gd_scene load_steps=9 format=3 uid="uid://byys03pyjar55"]
 
-[ext_resource type="Script" path="res://world.gd" id="1_45y3j"]
 [ext_resource type="Texture2D" uid="uid://bvkfpoh3hpp10" path="res://art/color.jpg" id="2_8c15o"]
 [ext_resource type="PackedScene" uid="uid://b6qi0uh341w1n" path="res://ui/ui.tscn" id="4_n2fly"]
-[ext_resource type="PackedScene" uid="uid://bi4ni5ylf72jo" path="res://scenes/buildings/factory.tscn" id="5_8eflp"]
 [ext_resource type="PackedScene" uid="uid://c4rtxdqoh4sdo" path="res://scenes/buildings/power_plant.tscn" id="6_a12nu"]
-[ext_resource type="Script" path="res://camera.gd" id="6_rcps3"]
-[ext_resource type="PackedScene" uid="uid://kmowuurw5r3j" path="res://scenes/units/charger.tscn" id="7_yccan"]
-[ext_resource type="PackedScene" uid="uid://ducmhyd7xkox5" path="res://scenes/units/spider.tscn" id="8_xrhtt"]
 [ext_resource type="PackedScene" uid="uid://cxe80dasal4cw" path="res://scenes/units/tank.tscn" id="9_vqrtk"]
+
+[sub_resource type="GDScript" id="GDScript_ag33l"]
+script/source = "extends Node2D
+
+var select_start : Vector2
+
+
+func _input(event:InputEvent):
+	if event.is_action_pressed(\"quit\"):
+		get_tree().quit()
+	elif event.is_action_pressed(\"left_click\"):
+		select_start = get_global_mouse_position()
+	elif event.is_action_released('left_click'):
+		for unit in get_tree().get_nodes_in_group('selected'):
+			unit.deselect()
+		var select_end := get_global_mouse_position()
+		for unit in Utils.units_in_rect(get_world_2d(),select_start,select_end):
+			if unit.collider.has_node(\"%SelectionComponent\"):
+				unit.collider.get_node('%SelectionComponent').select()
+"
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_tp1gr"]
 texture = ExtResource("2_8c15o")
@@ -41,9 +56,72 @@ texture = ExtResource("2_8c15o")
 [sub_resource type="TileSet" id="TileSet_qtvp7"]
 sources/1 = SubResource("TileSetAtlasSource_tp1gr")
 
+[sub_resource type="GDScript" id="GDScript_cysgo"]
+script/source = "extends Camera2D
+
+const ZOOM_MIN := 0.5
+const ZOOM_MAX := 3.0
+const ZOOM_SPEED := 8.0
+const EASING := 0.4 #how many secons it takes for camera to zoom and pan
+const PAN_SPEED := 200.0 #pixels(?) per second
+const MAP_ZOOM_MULTIPLIER := 0.1
+
+var is_panning := false
+var is_zooming := false
+var pan_target :Vector2
+var zoom_factor := 1.0
+
+signal moved
+signal zoomed
+
+
+func _ready():
+	moved.connect(Game.minimap.get_node(\"%Camera\").set_position)
+	moved.emit(position)
+	zoomed.connect(Game.minimap.get_node(\"%Camera\").set_zoom)
+	zoomed.emit(zoom * MAP_ZOOM_MULTIPLIER)
+
+
+func _process(delta):
+	var pan_input := Vector2( 
+		Input.get_axis(\"camera_pan_left\",\"camera_pan_right\"),
+		Input.get_axis(\"camera_pan_up\",\"camera_pan_down\"))
+	if not pan_input==Vector2.ZERO:
+		is_panning = true
+		pan_target = position + pan_input * PAN_SPEED
+	if is_panning:
+		position = position.lerp( pan_target, delta / EASING )
+		moved.emit(position)
+		if position.distance_to(pan_target) < 2 : is_panning = false
+		
+	if not is_zooming: return
+	var zoom_before = zoom.x #save it for position calculation later
+	zoom = zoom.lerp( zoom_factor * Vector2.ONE, delta / EASING ) #never ends
+	if abs(zoom.x-zoom_factor) < 0.001: #hence, force it to end
+		zoom = Vector2.ONE * zoom_factor #snap to the precise zoom value
+		is_zooming = false #this section is kinda lame idk
+	#nudge camera back to cursor by the amount it slid away while zooming
+	zoomed.emit(zoom * MAP_ZOOM_MULTIPLIER)
+	position = position.lerp(get_global_mouse_position(),zoom.x/zoom_before-1)
+	
+
+
+func _input(_event:InputEvent):
+	var zoom_direction := Input.get_axis('wheel_down', 'wheel_up')
+	if not zoom_direction: return
+	zoom_factor += zoom_factor ** 1.5 * zoom_direction * ZOOM_SPEED * 0.01
+	zoom_factor = clamp(zoom_factor, ZOOM_MIN, ZOOM_MAX)
+	if abs(zoom.x-zoom_factor) < 0.01: return
+	is_zooming = true
+
+
+func _on_units_draw():
+	pass # Replace with function body.
+"
+
 [node name="World" type="Node2D"]
 y_sort_enabled = true
-script = ExtResource("1_45y3j")
+script = SubResource("GDScript_ag33l")
 
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = SubResource("TileSet_qtvp7")
@@ -56,19 +134,10 @@ unique_name_in_owner = true
 
 [node name="Camera" type="Camera2D" parent="."]
 unique_name_in_owner = true
-script = ExtResource("6_rcps3")
-
-[node name="Factory" parent="." instance=ExtResource("5_8eflp")]
-position = Vector2(348, 31)
+script = SubResource("GDScript_cysgo")
 
 [node name="PowerPlant" parent="." instance=ExtResource("6_a12nu")]
 position = Vector2(-135, -90)
 
-[node name="Charger" parent="." instance=ExtResource("7_yccan")]
-position = Vector2(277, -106)
-
-[node name="Spider" parent="." instance=ExtResource("8_xrhtt")]
-position = Vector2(-136, 87)
-
 [node name="Tank" parent="." instance=ExtResource("9_vqrtk")]
-position = Vector2(145, -105)
+position = Vector2(135, -183)
