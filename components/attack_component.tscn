@@ -5,7 +5,7 @@
 [sub_resource type="GDScript" id="GDScript_f82ki"]
 script/source = "extends Node2D
 
-@export var DAMAGE : int = 2
+@export var DAMAGE : int = 5
 var target : Node
 @onready var unit: Node = get_owner()
 signal attacked
@@ -20,13 +20,13 @@ func _ready():
 
 
 func attack():
-	print(\"attacking this \", target)
+	print(unit, \" attacks \", target)
 	attacked.emit( DAMAGE )
-	%BulletTrace.shoot( unit.position.distance_to( target.position ) )
+#	%BulletTrace.shoot( unit.position.distance_to( target.position ) )
 
 
 func _on_ordered_to_attack( new_target ):
-	print(\"ordered to attack this \", new_target )
+	print( unit, \" was ordered to attack \", new_target )
 	if target == new_target: return # prevents attack cd exploit, but only on single unit
 	if target: # that is, if we've already been attacking a different target
 		attacked.disconnect(target.get_node(\"%HealthComponent\")._on_attacked)
@@ -34,15 +34,17 @@ func _on_ordered_to_attack( new_target ):
 	target = new_target
 	attacked.connect(target.get_node(\"%HealthComponent\")._on_attacked)
 	target.get_node('%HealthComponent').died.connect(_on_target_died)
-	attack()
 	%Cooldown.start()
+	attack()
 
 
 func _on_target_died():
+	print( unit, ' killed ', target )
 	target.get_node('%HealthComponent').died.disconnect(_on_target_died)
 	attacked.disconnect(target.get_node(\"%HealthComponent\")._on_attacked)
 	target = null
 	%Cooldown.stop()
+	print(%Cooldown, ' is stopped? ', %Cooldown.is_stopped())
 "
 
 [sub_resource type="GDScript" id="GDScript_qhcju"]
@@ -83,6 +85,7 @@ offset = Vector2(0, -100)
 
 [node name="BulletTrace" type="Line2D" parent="."]
 unique_name_in_owner = true
+visible = false
 position = Vector2(45, -3)
 points = PackedVector2Array(54, 0, 0, 0)
 width = 2.0

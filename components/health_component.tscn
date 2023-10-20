@@ -17,7 +17,7 @@ func _ready():
 	%HPBar.max_value = MAX_HEALTH
 	%HPBar.value = MAX_HEALTH
 	# when a unit takes damage, display the hp bar temporarily
-	$TemporaryVisible.timeout.connect(_on_temporary_visibility_end)
+	$TemporaryVisibilityTimer.timeout.connect(_on_temporary_visibility_end)
 	# upon dying, wait a little before removing the unit
 	died.connect(func():
 		get_tree().create_timer(3).timeout.connect(get_owner().queue_free)
@@ -25,7 +25,7 @@ func _ready():
 
 
 func _on_attacked( dmg ):
-	$TemporaryVisible.start()
+	$TemporaryVisibilityTimer.start()
 	visible = true
 	is_temporary_visible = true
 	health = max( health - dmg, 0 )
@@ -129,7 +129,7 @@ func animate_to( new_value ):
 [node name="HealthComponent" type="Node2D"]
 script = SubResource("GDScript_30ktc")
 
-[node name="TemporaryVisible" type="Timer" parent="."]
+[node name="TemporaryVisibilityTimer" type="Timer" parent="."]
 wait_time = 2.445
 one_shot = true
 
