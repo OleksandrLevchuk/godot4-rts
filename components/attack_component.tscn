@@ -15,16 +15,6 @@ func _ready():
 	%Cooldown.timeout.connect(attack)
 
 
-#func _process(_delta):
-#	print(position)
-
-
-func attack():
-	print(unit, \" attacks \", target)
-	attacked.emit( DAMAGE )
-#	%BulletTrace.shoot( unit.position.distance_to( target.position ) )
-
-
 func _on_ordered_to_attack( new_target ):
 	print( unit, \" was ordered to attack \", new_target )
 	if target == new_target: return # prevents attack cd exploit, but only on single unit
@@ -34,8 +24,28 @@ func _on_ordered_to_attack( new_target ):
 	target = new_target
 	attacked.connect(target.get_node(\"%HealthComponent\")._on_attacked)
 	target.get_node('%HealthComponent').died.connect(_on_target_died)
+	start_aiming()
+
+
+func start_aiming():
+	%AimCalculator.aimed.connect(_on_aimed)
+	set_process(true)
+
+
+func _process(delta):
+	rotation = %AimCalculator.calculate()
+
+
+func _on_aimed():
+	set_process(false)
 	%Cooldown.start()
 	attack()
+
+
+func attack():
+	print(unit, \" attacks \", target)
+	attacked.emit( DAMAGE )
+	%BulletTrace.shoot( unit.position.distance_to( target.position ) )
 
 
 func _on_target_died():
@@ -44,7 +54,6 @@ func _on_target_died():
 	attacked.disconnect(target.get_node(\"%HealthComponent\")._on_attacked)
 	target = null
 	%Cooldown.stop()
-	print(%Cooldown, ' is stopped? ', %Cooldown.is_stopped())
 "
 
 [sub_resource type="GDScript" id="GDScript_qhcju"]

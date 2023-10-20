@@ -1,9 +1,11 @@
 # Godot 4+ specific ignores
 .godot/
-*.ignored/
 *.import
 *.tmp
+##############
+*.ignored/
 *.ini
 *.psd
 *.clip
 *.spine
+*.ignored.*

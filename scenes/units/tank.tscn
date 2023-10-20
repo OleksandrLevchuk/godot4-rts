@@ -53,3 +53,4 @@ unique_name_in_owner = true
 position = Vector2(7, 0)
 
 [node name="BatteryComponent" parent="." instance=ExtResource("8_pesic")]
+unique_name_in_owner = true
