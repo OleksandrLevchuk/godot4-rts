@@ -5,16 +5,17 @@
 [ext_resource type="Texture2D" uid="uid://djvn0nhvqrcgw" path="res://art/ui/selection.png" id="4_itfqv"]
 
 [sub_resource type="GDScript" id="GDScript_76i5d"]
-script/source = "extends Node2D
+script/source = "extends BaseComponent
 
 @onready var select_sprite: Sprite2D = $UIParent/Selection
 @onready var hover_sprite: Sprite2D = $UIParent/Hover
 @onready var movable_sprite: Sprite2D = $UIParent/Movable
 
-@onready var parent := get_owner()
-@onready var main_sprite: Sprite2D = parent.get_node('Sprite2D')
-@onready var collider: CollisionShape2D = parent.get_node('CollisionShape2D')
-@onready var can_move: bool = parent.has_node('%MovementComponent')
+#@onready var main_sprite: Sprite2D = unit.get_node('Sprite2D')
+#@onready var collider: CollisionShape2D = unit.get_node('CollisionShape2D')
+
+@export var collider: CollisionObject2D
+@export var can_move: bool = true # unit.has_node('%MovementComponent')
 
 var is_selected := false
 
@@ -24,20 +25,15 @@ signal deselected
 
 func _ready():
 	# scale the selection sprites according to the main sprite size
-	var size = main_sprite.texture.get_size()
-	var new_scale = 0.2 + min( size.x, size.y ) / 4000
-	for sprite in [select_sprite, hover_sprite, movable_sprite]:
-		sprite.visible = false
-		sprite.scale = Vector2( new_scale, new_scale)
+#	var size = main_sprite.texture.get_size()
+#	var new_scale = 0.2 + min( size.x, size.y ) / 4000
+#	for sprite in [select_sprite, hover_sprite, movable_sprite]:
+#		sprite.visible = false
+#		sprite.scale = Vector2( new_scale, new_scale)
+
 	# connect all the signals needed
-	parent.mouse_entered.connect(func():hover_sprite.visible=true)
-	parent.mouse_exited.connect(func():hover_sprite.visible=false)
-	if has_node('%ControllerComponent'):
-		selected.connect(%ControllerComponent._on_selected)
-		deselected.connect(%ControllerComponent._on_deselected)
-	if has_node('%HealthComponent'):
-		selected.connect(%HealthComponent._on_selected)
-		deselected.connect(%HealthComponent._on_deselected)
+	collider.mouse_entered.connect(func(): hover_sprite.visible=true)
+	collider.mouse_exited.connect(func(): hover_sprite.visible=false)
 
 
 func select():

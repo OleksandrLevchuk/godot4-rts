@@ -1,7 +1,7 @@
 extends Label
 
 func _ready():
-	Game.update_ui.connect(update)
+	Game.ui_updated.connect(update)
 	update()
 	
 func update():

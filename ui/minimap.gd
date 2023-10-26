@@ -2,6 +2,8 @@ extends SubViewport
 
 @export var minimap_marker : PackedScene
 
+@onready var camera: Camera2D = get_node('Camera')
+
 
 func add_marker(unit):
 	var marker = minimap_marker.instantiate()
