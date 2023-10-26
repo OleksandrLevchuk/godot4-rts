@@ -1,5 +1,4 @@
-extends Node2D
-class_name ControllerComponent
+extends BaseComponent
 
 @onready var can_move: bool = has_node('%MovementComponent')
 @onready var can_attack: bool = has_node('%AttackComponent')

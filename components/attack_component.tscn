@@ -1,18 +1,20 @@
-[gd_scene load_steps=4 format=3 uid="uid://cmu5q72wauwkk"]
+[gd_scene load_steps=5 format=3 uid="uid://cmu5q72wauwkk"]
 
 [ext_resource type="Texture2D" uid="uid://yoseowf0t8iu" path="res://art/units/parts/turret_1.png" id="1_r24ut"]
 
 [sub_resource type="GDScript" id="GDScript_f82ki"]
-script/source = "extends Node2D
+script/source = "extends BaseComponent
 
 @export var DAMAGE : int = 5
 var target : Node
-@onready var unit: Node = get_owner()
+@onready var aim_calculator: Node = $AimCalculator
 signal attacked
 
 
 func _ready():
+#	unit.can.attack = true
 	%Cooldown.timeout.connect(attack)
+	aim_calculator.aimed.connect(_on_aimed)
 
 
 func _on_ordered_to_attack( new_target ):
@@ -28,15 +30,16 @@ func _on_ordered_to_attack( new_target ):
 
 
 func start_aiming():
-	%AimCalculator.aimed.connect(_on_aimed)
 	set_process(true)
 
 
-func _process(delta):
-	rotation = %AimCalculator.calculate()
+func _process(_delta):
+	rotation = aim_calculator.rotation
+#	if aim.is_aimed( unit.position )
 
 
 func _on_aimed():
+	print(unit, \" has aimed\")
 	set_process(false)
 	%Cooldown.start()
 	attack()
@@ -79,6 +82,36 @@ func _process( _delta ):
 		visible = false
 "
 
+[sub_resource type="GDScript" id="GDScript_6jemm"]
+script/source = "## aim calculator
+extends Node
+
+var angle_wanted: float
+var which_side: float
+var rotation: float
+
+@export var ROTATION_PER_SEC_DEG: float = 45
+@onready var ROTATION_PER_SEC: float = deg_to_rad( ROTATION_PER_SEC_DEG )
+signal aimed
+
+
+func start( origin: Vector2, destination: Vector2 ):
+	angle_wanted = origin.angle_to_point( destination )
+	# cross product of two vectors becomes 0 when they're looking towards each other
+	var cross = origin.cross( destination )
+	# the sign of the cross product is negative when the second vector is to the left of the first
+	which_side = sign( cross )
+	print('aiming started')
+
+
+func calculate( delta: float ) -> float:
+	var new_angle: float = ROTATION_PER_SEC * delta * which_side
+	if new_angle == angle_wanted:
+		aimed.emit()
+	print('calculated')
+	return new_angle
+"
+
 [node name="AttackComponent" type="Node2D"]
 script = SubResource("GDScript_f82ki")
 
@@ -99,3 +132,6 @@ position = Vector2(45, -3)
 points = PackedVector2Array(54, 0, 0, 0)
 width = 2.0
 script = SubResource("GDScript_qhcju")
+
+[node name="AimCalculator" type="Node" parent="."]
+script = SubResource("GDScript_6jemm")

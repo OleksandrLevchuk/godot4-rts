@@ -1,12 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://cjl74u827soth"]
+[gd_scene load_steps=8 format=3 uid="uid://cjl74u827soth"]
 
 [ext_resource type="Texture2D" uid="uid://dgu547gfxj11c" path="res://art/units/parts/track_spritesheet.png" id="1_f3nfg"]
 
 [sub_resource type="GDScript" id="GDScript_ugeiu"]
-script/source = "extends Node2D
+script/source = "extends BaseComponent
 
-var test: Variant
-## how many pixels it traverses per second at most
+## how many pixels it traverses per second
 @export var MAX_SPEED: float = 200
 ## how many seconds it takes to reach max speed
 @export var ACCEL_TIME: float = 1.5
@@ -16,9 +15,9 @@ var test: Variant
 
 var is_moving: bool = false
 
-@onready var parent := get_owner()
 #@onready var line: RefCounted = preload(\"res://components/movement/Trajectory.gd\").new(self)
-@onready var velocity_calculator: RefCounted = preload(\"res://components/movement/VelocityCalculator.gd\").new(self)
+#@onready var velocity_calculator: RefCounted = preload(\"res://components/movement/VelocityCalculator.gd\").new(self)
+@onready var velocity_calculator: Node = $VelocityCalculator
 
 signal departed
 signal minimap_updated
@@ -27,33 +26,32 @@ signal arrived
 
 func _ready():
 	set_process(false)
-	velocity_calculator.arrived.connect(_on_arrived)
-	%MinimapUpdateTimer.timeout.connect(func(): 
-		minimap_updated.emit( parent.position )
+	velocity_calculator.halted.connect(_on_calculator_halted)
+	$MinimapUpdateTimer.timeout.connect(func():
+		minimap_updated.emit( unit.position )
 	)
 
 
-func _process(delta):
-	velocity_calculator.calculate(delta)
-	parent.velocity = velocity_calculator.velocity
-	parent.rotation = velocity_calculator.facing.angle()
-	parent.move_and_slide()
+func _process(_delta):
+	unit.velocity = velocity_calculator.velocity
+	unit.rotation = velocity_calculator.facing.angle()
+	unit.move_and_slide()
 
 
-func _on_arrived():
+func _on_calculator_halted():
 	print(self, ' arrived')
 	arrived.emit()
 	set_process(false)
-	%MinimapUpdateTimer.stop() # the minimap update timer
+	$MinimapUpdateTimer.stop() # the minimap update timer
 
 
 func _on_ordered_to_move( dest ):
 	print(self, ' departed')
 	departed.emit()
-	velocity_calculator.start( self, dest )
+	velocity_calculator.start( unit.position, unit.rotation, dest )
 #	line.draw( self, dest )
 	set_process( true )
-	%MinimapUpdateTimer.start() # the minimap update timer
+	$MinimapUpdateTimer.start() # the minimap update timer
 "
 
 [sub_resource type="Animation" id="Animation_66ek5"]
@@ -94,11 +92,125 @@ _data = {
 "drive": SubResource("Animation_jhrpe")
 }
 
+[sub_resource type="GDScript" id="GDScript_3hyjp"]
+script/source = "## velocity calculator
+extends Node
+
+var position: Vector2
+var destination: Vector2
+var facing: Vector2
+var velocity: Vector2
+
+var braking_distance: float = 0.0
+var elapsed: float = 0.0
+
+var is_moving: bool = false
+var is_accelerating: bool = false
+var is_braking: bool = false
+var is_turning: bool = false
+
+@onready var movement: Node = get_owner()
+@onready var TURN_RATE: float = movement.TURN_RATE
+@onready var MAX_SPEED: float = movement.MAX_SPEED
+@onready var ACCEL_TIME: float = movement.ACCEL_TIME
+
+signal halted
+
+
+func _ready():
+	pass
+
+
+func start( pos, rot, dest ):
+	position = pos
+	destination = dest
+	facing = Vector2.RIGHT.rotated(rot) 
+	is_accelerating = true
+	is_turning = true
+	is_moving = true
+
+func _process( delta ):
+	if is_turning:
+		var facing_wanted: Vector2 = (destination-position).normalized()
+		# cross product sign is positive for clock-wise angles
+		var which_side: float = sign( facing.cross( facing_wanted ) )
+		# increment
+		var new_facing: Vector2 = facing.rotated( TURN_RATE * delta*which_side )
+		# dot product is higher for similar angles
+		if facing.dot(facing_wanted) < facing.dot(new_facing):
+			facing = new_facing
+		else:
+			is_turning = false
+			facing = facing_wanted
+
+	if is_accelerating:
+		elapsed += delta
+		velocity = facing * elapsed/ACCEL_TIME * MAX_SPEED
+		if elapsed > ACCEL_TIME:
+			velocity = facing * MAX_SPEED
+			is_accelerating = false
+		braking_distance = elapsed/ACCEL_TIME * MAX_SPEED * ACCEL_TIME * 0.5
+		print(elapsed, ACCEL_TIME, MAX_SPEED, braking_distance)
+
+	elif is_braking:
+		elapsed -= delta
+		if elapsed > 0:
+			velocity = facing * elapsed/ACCEL_TIME * MAX_SPEED
+		else:
+			velocity = Vector2.ZERO
+			is_braking = false
+			halted.emit()
+
+	position += velocity * delta
+	if not is_braking and braking_distance > position.distance_to(destination):
+		is_accelerating = false
+		is_braking = true
+"
+
+[sub_resource type="GDScript" id="GDScript_f115a"]
+script/source = "## trajectory
+extends Line2D
+
+#var VelocityCalc = preload(\"res://components/movement/VelocityCalculator.gd\")
+#var dot_maker = preload(\"res://components/movement/Dot.gd\").new()
+var velo: RefCounted
+var line: Line2D
+var dots: Node2D
+
+
+func _init( unit ):
+	print( unit, ' has been sent to the trajectory script')
+#	velo = VelocityCalc.new( unit )
+	line = Line2D.new()
+	line.top_level = true
+	line.width = 1
+	unit.add_child(line)
+	dots = Node2D.new()
+	line.add_child(dots)
+	
+
+
+func draw( unit, dest ):
+	var point = unit.parent.position
+	line.clear_points()
+	for dot in line.get_children():
+		dot.queue_free()
+	line.add_point( point )
+	velo.start( unit, dest )
+	var delta: float = 0.1
+	var velocity: Vector2 = velo.calc(delta)
+	while velocity != Vector2.ZERO:
+		velocity = velo.calc(delta)
+		point += velocity * delta
+		line.add_point( point )
+#		line.add_child( dot_maker.make( point ) )
+	print(\"drawign ended\")
+"
+
 [node name="MovementComponent" type="Node2D"]
 script = SubResource("GDScript_ugeiu")
 
 [node name="Animation" type="AnimationPlayer" parent="."]
-unique_name_in_owner = true
 root_node = NodePath("../..")
 libraries = {
 "": SubResource("AnimationLibrary_3hjh7")
@@ -111,4 +223,9 @@ texture = ExtResource("1_f3nfg")
 hframes = 4
 
 [node name="MinimapUpdateTimer" type="Timer" parent="."]
-unique_name_in_owner = true
+
+[node name="VelocityCalculator" type="Node" parent="."]
+script = SubResource("GDScript_3hyjp")
+
+[node name="Trajectory" type="Line2D" parent="."]
+script = SubResource("GDScript_f115a")

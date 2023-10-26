@@ -14,3 +14,7 @@ var Energy := 0:
 	set(x):
 		Energy = x
 		update_ui.emit()
+
+
+func _input(event):
+	print(event)

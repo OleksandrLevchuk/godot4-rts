@@ -47,12 +47,3 @@ static func find_free_spot_at(area_center):
 	for offset in INF: # to infinity and beyond!
 		var point = area_center + offset * Vector2.ONE * (randf()*2-1)
 		if area_is_free(point, AREA_SIZE, unit_array): return point
-
-
-static func units_in_rect(world, start, end):
-	var select_rectangle := RectangleShape2D.new()
-	select_rectangle.extents = abs(end - start) / 2
-	var query := PhysicsShapeQueryParameters2D.new()
-	query.set_shape(select_rectangle)
-	query.transform = Transform2D( 0, (end + start)/2 )
-	return world.direct_space_state.intersect_shape(query)

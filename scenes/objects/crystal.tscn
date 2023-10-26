@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://dgg0qggy2pu7o"]
 
-[ext_resource type="Texture2D" uid="uid://b2lerc7yoswd" path="res://scenes/objects/crystal/crystal.png" id="1_fpclo"]
+[ext_resource type="Texture2D" uid="uid://rnu11tyqkmcp" path="res://art/objects/crystal.png" id="1_wqwnk"]
 [ext_resource type="PackedScene" uid="uid://vn2pj1fllvl8" path="res://components/health_component.tscn" id="3_co7cq"]
 [ext_resource type="PackedScene" uid="uid://bjgmnpjrh2kc7" path="res://components/selection_component.tscn" id="4_wf6y2"]
 [ext_resource type="Script" path="res://components/ResourceComponent.gd" id="5_kui6d"]
@@ -19,12 +19,10 @@ shape = SubResource("RectangleShape2D_qwo5b")
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(0, 4)
 scale = Vector2(0.25, 0.25)
-texture = ExtResource("1_fpclo")
+texture = ExtResource("1_wqwnk")
 
-[node name="SelectionComponent" parent="." node_paths=PackedStringArray("main_sprite", "collider") instance=ExtResource("4_wf6y2")]
+[node name="SelectionComponent" parent="." instance=ExtResource("4_wf6y2")]
 unique_name_in_owner = true
-main_sprite = NodePath("../Sprite2D")
-collider = NodePath("../CollisionShape2D")
 
 [node name="HealthComponent" parent="." instance=ExtResource("3_co7cq")]
 unique_name_in_owner = true
