@@ -3,8 +3,8 @@
 [ext_resource type="Script" path="res://ui/selectbox.gd" id="1_k21uh"]
 [ext_resource type="Script" path="res://ui/info.gd" id="2_4wqkh"]
 [ext_resource type="Script" path="res://ui/minimap.gd" id="5_1bgg6"]
+[ext_resource type="Texture2D" uid="uid://c3tp64n5jdyce" path="res://art/ground.jpg" id="5_kr4e7"]
 [ext_resource type="PackedScene" uid="uid://tq46vowam2m5" path="res://ui/minimap_marker.tscn" id="6_cqrwj"]
-[ext_resource type="Texture2D" uid="uid://bvkfpoh3hpp10" path="res://art/color.jpg" id="6_kctty"]
 
 [sub_resource type="GDScript" id="GDScript_a5hhy"]
 script/source = "extends CanvasLayer
@@ -42,8 +42,8 @@ script/source = "extends Node2D
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_svi1x"]
 bg_color = Color(0.313726, 0.466667, 0.631373, 1)
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_tp1gr"]
-texture = ExtResource("6_kctty")
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_wwysj"]
+texture = ExtResource("5_kr4e7")
 0:0/0 = 0
 1:0/0 = 0
 2:0/0 = 0
@@ -71,7 +71,7 @@ texture = ExtResource("6_kctty")
 4:4/0 = 0
 
 [sub_resource type="TileSet" id="TileSet_qtvp7"]
-sources/1 = SubResource("TileSetAtlasSource_tp1gr")
+sources/0 = SubResource("TileSetAtlasSource_wwysj")
 
 [node name="UI" type="CanvasLayer"]
 script = SubResource("GDScript_a5hhy")
@@ -118,7 +118,6 @@ minimap_marker = ExtResource("6_cqrwj")
 [node name="Camera" type="Camera2D" parent="Container/Minimap"]
 
 [node name="TileMap" type="TileMap" parent="Container/Minimap"]
-visible = false
 tile_set = SubResource("TileSet_qtvp7")
 format = 2
 layer_0/z_index = -1
