@@ -30,10 +30,8 @@ func _input(event:InputEvent):
 		get_tree().quit()
 	elif event.is_action_pressed("left_click"):
 		select_start = world.get_global_mouse_position()
-		deselected.emit()
 	elif event.is_action_released('left_click'):
-		for unit in get_tree().get_nodes_in_group('selected'):
-			unit.deselect()
+		deselected.emit()
 		var select_end := world.get_global_mouse_position()
 		var select_rectangle := RectangleShape2D.new()
 		select_rectangle.extents = abs(select_end - select_start) / 2
@@ -41,8 +39,7 @@ func _input(event:InputEvent):
 		query.set_shape(select_rectangle)
 		query.transform = Transform2D( 0, (select_end + select_start)/2 )
 		for unit in world.get_world_2d().direct_space_state.intersect_shape(query):
-			if unit.collider.has_node("%SelectionComponent"):
-				unit.collider.get_node('%SelectionComponent').select()
+			unit.collider.select()
 	elif event.is_action_released('right_click'):
 		var query := PhysicsPointQueryParameters2D.new()
 		var point: Vector2 = world.get_global_mouse_position()

@@ -1,4 +1,4 @@
-class_name Utils
+class_name Utils # this is mostly just a trash bin
 
 # to find angle and distance between two points, just do: point B - point A
 

@@ -1,10 +1,10 @@
 [gd_scene load_steps=10 format=3 uid="uid://ducmhyd7xkox5"]
 
-[ext_resource type="PackedScene" uid="uid://bjgmnpjrh2kc7" path="res://components/selection_component.tscn" id="1_lrks8"]
-[ext_resource type="Texture2D" uid="uid://dqplk114rn0f4" path="res://art/units/spider.png" id="2_rfqky"]
-[ext_resource type="PackedScene" uid="uid://vn2pj1fllvl8" path="res://components/health_component.tscn" id="3_h47g2"]
+[ext_resource type="PackedScene" uid="uid://bjgmnpjrh2kc7" path="res://components_old/selection_component.tscn" id="1_lrks8"]
+[ext_resource type="Texture2D" uid="uid://cqldmo3a4xoyt" path="res://art/units/spider.png" id="2_rfqky"]
+[ext_resource type="PackedScene" uid="uid://vn2pj1fllvl8" path="res://components_old/health_component.tscn" id="3_h47g2"]
 [ext_resource type="Script" path="res://components/MinimapComponent.gd" id="4_brq43"]
-[ext_resource type="Script" path="res://components/ControllerComponent.gd" id="5_a2td7"]
+[ext_resource type="Script" path="res://components_old/ControllerComponent.gd" id="5_a2td7"]
 [ext_resource type="Script" path="res://components/AttackComponent.gd" id="6_dvh2m"]
 [ext_resource type="Script" path="res://components/MovementComponent.gd" id="7_5fi3n"]
 

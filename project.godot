@@ -22,6 +22,10 @@ Game="*res://Game.gd"
 
 movie_writer/movie_file="C:/Users/Me/Dropbox/godot video recording.avi"
 
+[filesystem]
+
+import/blender/enabled=false
+
 [input]
 
 left_click={
