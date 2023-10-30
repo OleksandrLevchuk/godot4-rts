@@ -1,10 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://cec74psspjrbe"]
+[gd_scene load_steps=12 format=3 uid="uid://cec74psspjrbe"]
 
 [ext_resource type="Script" path="res://classes/Unit.gd" id="1_kxf7s"]
 [ext_resource type="Texture2D" uid="uid://diwv700ptxrfy" path="res://art/ui/selection_hover.png" id="2_e34wn"]
 [ext_resource type="Texture2D" uid="uid://b0htollqtnx6f" path="res://art/units/parts/body.png" id="2_f6vc8"]
 [ext_resource type="Texture2D" uid="uid://hf3ewtmkkx1y" path="res://art/ui/selection.png" id="4_w25t4"]
-[ext_resource type="Texture2D" uid="uid://c2rvu0rv0p7h" path="res://art/units/parts/turret_1.png" id="5_rhsju"]
+[ext_resource type="Texture2D" uid="uid://b0l2xhswrfehj" path="res://art/units/parts/turret_1_short.png" id="5_1u1kx"]
+[ext_resource type="Texture2D" uid="uid://bjaga478va6hb" path="res://art/units/parts/barrel_1.png" id="6_hd6qc"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_mxwms"]
 radius = 201.301
@@ -49,6 +50,77 @@ func calculate( delta ):
 	return facing * SPEED * elapsed
 "
 
+[sub_resource type="GDScript" id="GDScript_1jkap"]
+script/source = "extends Sprite2D
+
+@export var TURN_RATE: float = PI / 2
+@onready var barrel := $BarrelClippingMask/BarrelSprite
+@onready var trace := $MissileTrace
+@onready var initial_offset: float = offset.x
+var RECOIL_STRENGTH: float = -15
+var recoil: float = 0:
+	set(x):
+		recoil = x
+		barrel.recoil = x
+		offset.x = initial_offset + x * RECOIL_STRENGTH
+
+
+func _process( delta ):
+	var increment: float = TURN_RATE * delta
+	var desired_angle: float = get_local_mouse_position().angle()
+	var which_side: float = sign( desired_angle )
+	rotation += min( increment, abs( desired_angle ) ) * which_side
+
+
+func shoot():
+	trace.shoot()
+	var tween := create_tween()
+	tween.tween_property(self, 'recoil', 1, 0.05)
+	tween.tween_property(self, 'recoil', 0, 0.5).set_trans(Tween.TRANS_CIRC).set_ease(Tween.EASE_OUT)
+"
+
+[sub_resource type="GDScript" id="GDScript_gw08p"]
+script/source = "extends Sprite2D
+
+var RECOIL_STRENGTH: float = -100
+var recoil: float = 0:
+	set(x):
+		recoil = x
+		offset.x = x * RECOIL_STRENGTH
+"
+
+[sub_resource type="GDScript" id="GDScript_ov8n0"]
+script/source = "extends Line2D
+
+@export var FRAMES_DURATION: int = 5
+@export var LENGTH: int = 1
+
+var frames_left: int
+var distance: float
+
+
+func _ready():
+	set_process(false)
+	visible = false
+
+
+func shoot( dist: float = 2000 ):
+	distance = dist
+	frames_left = FRAMES_DURATION
+#	points[0] = origin
+	visible = true
+	set_process(true)
+
+
+func _process( _delta ):
+	points[1].x = lerp( 0.0, distance, 1.0 - float(frames_left) / FRAMES_DURATION )
+	points[0].x = lerp( 0.0, distance, 1.0 - float(min(FRAMES_DURATION, frames_left+LENGTH)) / FRAMES_DURATION )
+	frames_left -= 1
+	if frames_left == 0:
+		set_process(false)
+		visible = false
+"
+
 [node name="Tank" type="CharacterBody2D"]
 script = ExtResource("1_kxf7s")
 
@@ -68,10 +140,10 @@ position = Vector2(0, 16)
 texture = ExtResource("4_w25t4")
 
 [node name="BodySprite" type="Sprite2D" parent="."]
-rotation = 1.5708
 texture = ExtResource("2_f6vc8")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 shape = SubResource("CircleShape2D_mxwms")
 
 [node name="RemoteTransform2D" type="RemoteTransform2D" parent="."]
@@ -82,9 +154,25 @@ update_scale = false
 [node name="Engine" type="Node" parent="."]
 script = SubResource("GDScript_50b0t")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-rotation = 1.5708
-texture = ExtResource("5_rhsju")
-offset = Vector2(0, -150)
+[node name="TurretSprite" type="Sprite2D" parent="."]
+position = Vector2(40, 0)
+texture = ExtResource("5_1u1kx")
+offset = Vector2(-20, 0)
+script = SubResource("GDScript_1jkap")
 
-[node name="Turret" type="Node2D" parent="."]
+[node name="BarrelClippingMask" type="Polygon2D" parent="TurretSprite"]
+clip_children = 1
+position = Vector2(-20, 0)
+polygon = PackedVector2Array(484, 53, 484, -52, 129, -52, 128, -38, 114, -37, 113, -39, 96, -31, 97.0936, -22.1603, 102, -22, 105, -15, 110, -12, 111, 12, 105, 14, 102, 22, 96, 23, 97, 30, 114, 39, 115, 37, 127.854, 37.8662, 128, 53)
+
+[node name="BarrelSprite" type="Sprite2D" parent="TurretSprite/BarrelClippingMask"]
+position = Vector2(242, 0)
+texture = ExtResource("6_hd6qc")
+script = SubResource("GDScript_gw08p")
+
+[node name="MissileTrace" type="Line2D" parent="TurretSprite"]
+position = Vector2(392, 0)
+points = PackedVector2Array(0, 0, 0, 0)
+width = 20.0
+default_color = Color(1, 1, 1, 0.262745)
+script = SubResource("GDScript_ov8n0")

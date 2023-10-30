@@ -5,6 +5,7 @@ class_name Unit extends CharacterBody2D
 @onready var hover := $UIParent/Hover
 @onready var selection := $UIParent/Selection
 @onready var engine := $Engine # this node calculates acceleration and turning
+@onready var turret := $TurretSprite
 
 
 func _ready():
@@ -25,6 +26,8 @@ func select():
 func _on_ordered( order: Order ):
 	if order.type == 'point':
 		start_moving_to( order.point )
+	elif order.type == 'turret test':
+		turret.shoot()
 
 
 func start_moving_to(dest: Vector2):
