@@ -20,7 +20,7 @@ Game="*res://Game.gd"
 
 [editor]
 
-movie_writer/movie_file="C:/Users/Me/Dropbox/godot video recording.avi"
+movie_writer/movie_file="C:/Users/Admin/Desktop/godot video recording.avi"
 
 [filesystem]
 
@@ -92,5 +92,4 @@ camera_pan_down={
 
 [rendering]
 
-renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"

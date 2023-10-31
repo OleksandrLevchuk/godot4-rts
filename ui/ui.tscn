@@ -1,10 +1,6 @@
-[gd_scene load_steps=12 format=3 uid="uid://b6qi0uh341w1n"]
+[gd_scene load_steps=11 format=3 uid="uid://b6qi0uh341w1n"]
 
-[ext_resource type="Script" path="res://ui/selectbox.gd" id="1_k21uh"]
-[ext_resource type="Script" path="res://ui/info.gd" id="2_4wqkh"]
-[ext_resource type="Script" path="res://ui/minimap.gd" id="5_1bgg6"]
 [ext_resource type="Texture2D" uid="uid://c3tp64n5jdyce" path="res://art/ground.jpg" id="5_kr4e7"]
-[ext_resource type="PackedScene" uid="uid://tq46vowam2m5" path="res://ui/minimap_marker.tscn" id="6_cqrwj"]
 
 [sub_resource type="GDScript" id="GDScript_a5hhy"]
 script/source = "extends CanvasLayer
@@ -35,12 +31,70 @@ border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
 
+[sub_resource type="GDScript" id="GDScript_oqvtb"]
+script/source = "extends Panel
+
+var is_dragging := false
+var drag_start :Vector2
+
+func _process(_delta):
+	if Input.is_action_just_pressed(\"left_click\"):
+		is_dragging = true
+		drag_start = get_global_mouse_position()
+	elif is_dragging:
+		var rect := Rect2(drag_start, get_global_mouse_position()-drag_start).abs()
+		position = rect.position
+		size = rect.size
+		if Input.is_action_just_released(\"left_click\"):
+			is_dragging = false
+			position = Vector2.ZERO
+			size = Vector2.ZERO
+"
+
+[sub_resource type="GDScript" id="GDScript_xdiq8"]
+script/source = "extends Label
+
+func _ready():
+	Game.ui_updated.connect(update)
+	update()
+	
+func update():
+	# this hefty setup is handy for debugging, when there's a lot of lines
+	var dict = { 
+		crystals = Game.Crystals,
+		energy = Game.Energy,
+	}
+	var tempstr = ''
+	for key in dict:
+		tempstr += key + ': ' + str(dict[key]) + '\\n'
+	text = tempstr
+"
+
 [sub_resource type="GDScript" id="GDScript_2lv6c"]
 script/source = "extends Node2D
 "
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_svi1x"]
 bg_color = Color(0.313726, 0.466667, 0.631373, 1)
+
+[sub_resource type="GDScript" id="GDScript_qo6l4"]
+script/source = "extends SubViewport
+
+var minimap_marker: PackedScene = preload(\"res://ui/minimap_marker.tscn\")
+
+@onready var camera: Camera2D = get_node('Camera')
+
+
+func add_marker(unit):
+	var marker = minimap_marker.instantiate()
+	get_node(unit.minimap_marker_type + 's').add_child( marker )
+	marker.get_node(unit.minimap_marker_type).visible = true
+	unit.minimap_updated.connect(marker.set_position)
+#	if unit.has_node(\"%MovementComponent\"):
+#	if unit.has_node(\"%HealthComponent\"):
+#		unit.get_node(\"%HealthComponent\").died.connect(marker.queue_free)
+	marker.position = unit.get_owner().position
+"
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_wwysj"]
 texture = ExtResource("5_kr4e7")
@@ -78,7 +132,7 @@ script = SubResource("GDScript_a5hhy")
 
 [node name="selectbox" type="Panel" parent="."]
 theme_override_styles/panel = SubResource("StyleBoxFlat_7ojft")
-script = ExtResource("1_k21uh")
+script = SubResource("GDScript_oqvtb")
 metadata/_edit_use_anchors_ = true
 metadata/_edit_lock_ = true
 
@@ -91,7 +145,7 @@ offset_bottom = 26.0
 grow_horizontal = 0
 text = "asdf"
 horizontal_alignment = 2
-script = ExtResource("2_4wqkh")
+script = SubResource("GDScript_xdiq8")
 
 [node name="order_target" type="Node2D" parent="."]
 script = SubResource("GDScript_2lv6c")
@@ -112,8 +166,7 @@ scale = Vector2(0.5, 0.5)
 handle_input_locally = false
 size = Vector2i(280, 280)
 render_target_update_mode = 4
-script = ExtResource("5_1bgg6")
-minimap_marker = ExtResource("6_cqrwj")
+script = SubResource("GDScript_qo6l4")
 
 [node name="Camera" type="Camera2D" parent="Container/Minimap"]
 

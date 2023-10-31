@@ -6,6 +6,9 @@ class_name Unit extends CharacterBody2D
 @onready var selection := $UIParent/Selection
 @onready var engine := $Engine # this node calculates acceleration and turning
 @onready var turret := $TurretSprite
+@onready var minimap_timer := $MinimapUpdateTimer
+
+signal minimap_updated
 
 
 func _ready():
@@ -15,6 +18,7 @@ func _ready():
 	mouse_entered.connect(_on_mouse_entered)
 	mouse_exited.connect(_on_mouse_exited)
 	engine.halted.connect(_on_engine_halted)
+	minimap_timer.timeout.connect(_on_minimap_timer_timeout)
 
 
 func select():
@@ -35,7 +39,12 @@ func start_moving_to(dest: Vector2):
 	# subtracting vectors gives a direction between them
 #	velocity = (dest - position).normalized() * SPEED
 	engine.start( dest )
+	minimap_timer.start()
 	set_process(true)
+
+
+func _on_minimap_timer_timeout():
+	minimap_updated.emit(position)
 
 
 func _process(delta):
@@ -46,6 +55,7 @@ func _process(delta):
 
 func _on_engine_halted():
 	set_process(false)
+	minimap_timer.stop()
 
 
 func deselect():
