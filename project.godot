@@ -18,6 +18,10 @@ config/features=PackedStringArray("4.1", "GL Compatibility")
 
 Game="*res://Game.gd"
 
+[display]
+
+window/size/mode=3
+
 [editor]
 
 movie_writer/movie_file="C:/Users/Admin/Desktop/godot video recording.avi"

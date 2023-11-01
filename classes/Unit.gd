@@ -5,7 +5,7 @@ class_name Unit extends CharacterBody2D
 @onready var hover := $UIParent/Hover
 @onready var selection := $UIParent/Selection
 @onready var engine := $Engine # this node calculates acceleration and turning
-@onready var turret := $TurretSprite
+@onready var turret := $Turret
 @onready var minimap_timer := $MinimapUpdateTimer
 
 signal minimap_updated
