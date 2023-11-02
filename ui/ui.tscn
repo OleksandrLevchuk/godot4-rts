@@ -10,6 +10,10 @@ var is_dialog_up := false
 signal ordered_unit_spawn
 
 
+func _ready():
+	visible = true
+
+
 func _on_buildings_building_selected(pos:Vector2, dialog_scene:Resource):
 	if is_dialog_up: return
 	is_dialog_up = true
@@ -72,6 +76,32 @@ func update():
 
 [sub_resource type="GDScript" id="GDScript_2lv6c"]
 script/source = "extends Node2D
+
+const COLOR1 := Color.MEDIUM_SPRING_GREEN # this color is opaque
+const COLOR2 := Color(Color.PURPLE,0) # alpha zero means transparent
+const FADE_TIME := 0.5
+const CIRCLE_SIZE := 20.0
+
+var target :Vector2
+var fade_percent := 0.0
+
+
+func _draw():
+	draw_circle( target, CIRCLE_SIZE*fade_percent, COLOR1.lerp(COLOR2, fade_percent) )
+
+
+func _input(event):
+	if event.is_action_pressed(\"right_click\"):
+		target = get_global_mouse_position()
+		set_process(true)
+		fade_percent = 0
+
+
+func _process(delta):
+	fade_percent = fade_percent + delta / FADE_TIME
+	queue_redraw()
+	if fade_percent>1: 
+		set_process(false)
 "
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_svi1x"]
@@ -87,13 +117,11 @@ var minimap_marker: PackedScene = preload(\"res://ui/minimap_marker.tscn\")
 
 func add_marker(unit):
 	var marker = minimap_marker.instantiate()
-	get_node(unit.minimap_marker_type + 's').add_child( marker )
 	marker.get_node(unit.minimap_marker_type).visible = true
 	unit.minimap_updated.connect(marker.set_position)
-#	if unit.has_node(\"%MovementComponent\"):
-#	if unit.has_node(\"%HealthComponent\"):
-#		unit.get_node(\"%HealthComponent\").died.connect(marker.queue_free)
+	unit.died.connect(marker.queue_free)
 	marker.position = unit.get_owner().position
+	get_node(unit.minimap_marker_type + 's').add_child( marker )
 "
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_wwysj"]

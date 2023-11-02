@@ -1,9 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://vn2pj1fllvl8"]
+[gd_scene load_steps=4 format=3 uid="uid://vn2pj1fllvl8"]
 
 [ext_resource type="Theme" uid="uid://ccb7csnxqndm6" path="res://ui/my_ui_theme.tres" id="2_yweqt"]
 
-[sub_resource type="GDScript" id="GDScript_30ktc"]
-script/source = "extends Node2D
+[sub_resource type="GDScript" id="GDScript_720o7"]
+script/source = "extends ProgressBar
 
 var is_temporary_visible: bool = false
 var is_selected: bool = false
@@ -14,8 +14,8 @@ signal died
 
 
 func _ready():
-	%HPBar.max_value = MAX_HEALTH
-	%HPBar.value = MAX_HEALTH
+	max_value = MAX_HEALTH
+	value = MAX_HEALTH
 	# when a unit takes damage, display the hp bar temporarily
 	$TemporaryVisibilityTimer.timeout.connect(_on_temporary_visibility_end)
 	# upon dying, wait a little before removing the unit
@@ -56,27 +56,6 @@ func _on_deselected():
 		visible = false
 "
 
-[sub_resource type="GDScript" id="GDScript_aifk4"]
-script/source = "extends Node2D
-# if this unit is movable, make the UI parent top level
-# in order to keep ui elements from rotating with the unit
-
-
-func _ready():
-	if get_owner().has_node(\"%MovementComponent\"):
-		top_level = true
-"
-
-[sub_resource type="GDScript" id="GDScript_thyfq"]
-script/source = "extends RemoteTransform2D
-# if this unit is stationary, this node is useless, so delete it
-
-
-func _ready():
-	if not get_owner().has_node(\"%MovementComponent\"):
-		queue_free()
-"
-
 [sub_resource type="GDScript" id="GDScript_574ft"]
 script/source = "extends Line2D
 
@@ -94,7 +73,7 @@ var right: float:
 		right = x
 		points[1].x = x * size
 
-@onready var size: int = %HPBar.get_size().x
+@onready var size: int = get_parent().get_size().x
 
 
 func _ready():
@@ -126,45 +105,32 @@ func animate_to( new_value ):
 	set_process(true)
 "
 
-[node name="HealthComponent" type="Node2D"]
-script = SubResource("GDScript_30ktc")
+[node name="Health" type="ProgressBar"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -60.0
+offset_top = -67.0
+offset_right = 60.0
+offset_bottom = -63.0
+grow_horizontal = 2
+theme = ExtResource("2_yweqt")
+value = 80.0
+show_percentage = false
+script = SubResource("GDScript_720o7")
+metadata/_edit_use_anchors_ = true
 
 [node name="TemporaryVisibilityTimer" type="Timer" parent="."]
 wait_time = 2.445
 one_shot = true
 
-[node name="UIParent" type="Node2D" parent="."]
-script = SubResource("GDScript_aifk4")
-
-[node name="RemoteTransform2D" type="RemoteTransform2D" parent="."]
-remote_path = NodePath("../UIParent")
-update_rotation = false
-update_scale = false
-script = SubResource("GDScript_thyfq")
-
-[node name="HPBar" type="ProgressBar" parent="."]
-unique_name_in_owner = true
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -35.0
-offset_top = -40.0
-offset_right = 35.0
-offset_bottom = -36.0
-grow_horizontal = 2
-theme = ExtResource("2_yweqt")
-value = 80.0
-show_percentage = false
-metadata/_edit_use_anchors_ = true
-
-[node name="Line" type="Line2D" parent="HPBar"]
-unique_name_in_owner = true
+[node name="Line" type="Line2D" parent="."]
 visible = false
 position = Vector2(0, 2)
 points = PackedVector2Array(0, 0, 70, 0)
 width = 4.0
 script = SubResource("GDScript_574ft")
 
-[node name="Ease" type="Timer" parent="HPBar/Line"]
+[node name="Ease" type="Timer" parent="Line"]
 wait_time = 0.734
 one_shot = true

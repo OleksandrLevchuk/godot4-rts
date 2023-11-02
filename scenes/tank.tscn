@@ -1,14 +1,43 @@
-[gd_scene load_steps=30 format=3 uid="uid://cec74psspjrbe"]
+[gd_scene load_steps=32 format=3 uid="uid://cec74psspjrbe"]
 
 [ext_resource type="Script" path="res://classes/Unit.gd" id="1_kxf7s"]
 [ext_resource type="Texture2D" uid="uid://diwv700ptxrfy" path="res://art/ui/selection_hover.png" id="2_e34wn"]
 [ext_resource type="Texture2D" uid="uid://b0htollqtnx6f" path="res://art/units/parts/body.png" id="2_f6vc8"]
+[ext_resource type="Texture2D" uid="uid://8k5t1kg0e04x" path="res://art/ui/selection_movable_red.png" id="3_kw475"]
+[ext_resource type="PackedScene" uid="uid://vn2pj1fllvl8" path="res://components_old/health_component.tscn" id="4_4jssk"]
 [ext_resource type="Texture2D" uid="uid://hf3ewtmkkx1y" path="res://art/ui/selection.png" id="4_w25t4"]
 [ext_resource type="Texture2D" uid="uid://b0l2xhswrfehj" path="res://art/units/parts/turret_1_short.png" id="5_1u1kx"]
 [ext_resource type="Texture2D" uid="uid://c0xsasdpoyg17" path="res://art/units/parts/body_n.png" id="5_qioos"]
 [ext_resource type="Texture2D" uid="uid://c8y1sundt1qgn" path="res://art/units/parts/turret_1_short_n.png" id="6_6grwj"]
 [ext_resource type="Texture2D" uid="uid://bjaga478va6hb" path="res://art/units/parts/barrel_1.png" id="6_hd6qc"]
-[ext_resource type="Texture2D" uid="uid://cbct77656dfms" path="res://art/units/parts/battery.png" id="9_050vt"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_gsfhd"]
+blend_mode = 3
+
+[sub_resource type="Gradient" id="Gradient_br721"]
+offsets = PackedFloat32Array(0.398305, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_n4vlu"]
+gradient = SubResource("Gradient_br721")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="GDScript" id="GDScript_672j5"]
+script/source = "extends Sprite2D
+
+@export var FLASH_TIME: float = 0.15
+
+func flash():
+	visible = true
+	self_modulate = Color.TRANSPARENT
+	var tween := create_tween()
+	tween.tween_property(self, \"self_modulate\", Color.WHITE, FLASH_TIME)
+	tween.tween_property(self, \"self_modulate\", Color.TRANSPARENT, FLASH_TIME)
+	tween.tween_property(self, \"self_modulate\", Color.WHITE, FLASH_TIME)
+	tween.tween_property(self, \"self_modulate\", Color.TRANSPARENT, FLASH_TIME)
+	tween.tween_callback(func(): visible = false)
+"
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_34usc"]
 diffuse_texture = ExtResource("2_f6vc8")
@@ -63,6 +92,7 @@ func calculate( delta ):
 [sub_resource type="CanvasTexture" id="CanvasTexture_i14q3"]
 diffuse_texture = ExtResource("5_1u1kx")
 normal_texture = ExtResource("6_6grwj")
+specular_shininess = 0.0
 
 [sub_resource type="GDScript" id="GDScript_1jkap"]
 script/source = "extends Sprite2D
@@ -72,6 +102,7 @@ script/source = "extends Sprite2D
 @onready var trace := $MissileTrace
 @onready var flash := $MuzzleFlash
 @onready var sparks := $Sparks
+@onready var cooldown := $AttackCooldown
 
 @onready var initial_offset: float = offset.x
 
@@ -81,35 +112,36 @@ var recoil: float = 0:
 		recoil = x
 		barrel.recoil = x
 		offset.x = initial_offset + x * RECOIL_STRENGTH
+var target: Node2D
+
+
+func _ready():
+	set_process(false) # don't turn the turret until ordered to attack
 
 
 func _process( delta ):
 	var increment: float = TURN_RATE * delta
-	var desired_angle: float = get_local_mouse_position().angle()
+	var desired_angle: float = get_angle_to( target.position )
+	print('desired angle: ', desired_angle)
 	var which_side: float = sign( desired_angle )
 	rotation += min( increment, abs( desired_angle ) ) * which_side
+
+
+func start_attacking( unit: Node2D ):
+	
+	target = unit
+	set_process(true)
 
 
 func shoot():
 	trace.shoot()
 	flash.flash()
 	sparks.restart()
+	cooldown.start()
 	var tween := create_tween()
 	tween.tween_property(self, 'recoil', 1, 0.05)
 	tween.tween_property(self, 'recoil', 0, 0.5).set_trans(Tween.TRANS_CIRC).set_ease(Tween.EASE_OUT)
 "
-
-[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_gsfhd"]
-blend_mode = 3
-
-[sub_resource type="Gradient" id="Gradient_br721"]
-offsets = PackedFloat32Array(0.70339, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_n4vlu"]
-gradient = SubResource("Gradient_br721")
-fill = 1
-fill_from = Vector2(0.5, 0.5)
-fill_to = Vector2(0.5, 0)
 
 [sub_resource type="GDScript" id="GDScript_gw08p"]
 script/source = "extends Sprite2D
@@ -194,8 +226,8 @@ blend_mode = 1
 
 [sub_resource type="Gradient" id="Gradient_8uxpa"]
 interpolation_mode = 2
-offsets = PackedFloat32Array(0, 0.135593, 1)
-colors = PackedColorArray(0.255659, 0.255659, 0.255659, 1, 0.136496, 0.136496, 0.136496, 1, 0, 0, 0, 1)
+offsets = PackedFloat32Array(0, 0.15678, 1)
+colors = PackedColorArray(0.136496, 0.136496, 0.136496, 1, 0.0704166, 0.0704166, 0.0704166, 1, 0, 0, 0, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_30eye"]
 gradient = SubResource("Gradient_8uxpa")
@@ -222,8 +254,22 @@ scale_min = 0.2
 [node name="Tank" type="CharacterBody2D"]
 script = ExtResource("1_kxf7s")
 
+[node name="DiffuseShadow" type="Sprite2D" parent="."]
+z_index = -1
+material = SubResource("CanvasItemMaterial_gsfhd")
+position = Vector2(-46.166, 0)
+scale = Vector2(10.2207, 7.20375)
+texture = SubResource("GradientTexture2D_n4vlu")
+offset = Vector2(5, 0)
+
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="."]
+remote_path = NodePath("../UIParent")
+update_rotation = false
+update_scale = false
+
 [node name="UIParent" type="Node2D" parent="."]
 top_level = true
+z_index = 1
 scale = Vector2(0.5, 0.5)
 
 [node name="Hover" type="Sprite2D" parent="UIParent"]
@@ -231,10 +277,18 @@ visible = false
 position = Vector2(0, 16)
 texture = ExtResource("2_e34wn")
 
+[node name="Attacked" type="Sprite2D" parent="UIParent"]
+visible = false
+position = Vector2(0, 16)
+texture = ExtResource("3_kw475")
+script = SubResource("GDScript_672j5")
+
 [node name="Selection" type="Sprite2D" parent="UIParent"]
 visible = false
 position = Vector2(0, 16)
 texture = ExtResource("4_w25t4")
+
+[node name="Health" parent="UIParent" instance=ExtResource("4_4jssk")]
 
 [node name="BodySprite" type="Sprite2D" parent="."]
 texture = SubResource("CanvasTexture_34usc")
@@ -243,15 +297,12 @@ texture = SubResource("CanvasTexture_34usc")
 occluder = SubResource("OccluderPolygon2D_v601k")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 z_index = -1
 shape = SubResource("CircleShape2D_mxwms")
 
-[node name="RemoteTransform2D" type="RemoteTransform2D" parent="."]
-remote_path = NodePath("../UIParent")
-update_rotation = false
-update_scale = false
-
 [node name="MinimapUpdateTimer" type="Timer" parent="."]
+wait_time = 0.5
 
 [node name="Engine" type="Node" parent="."]
 script = SubResource("GDScript_50b0t")
@@ -330,8 +381,5 @@ one_shot = true
 explosiveness = 1.0
 fixed_fps = 0
 
-[node name="Node2D" type="Node2D" parent="."]
-
-[node name="BatterySprite" type="Sprite2D" parent="Node2D"]
-position = Vector2(-153, 0)
-texture = ExtResource("9_050vt")
+[node name="AttackCooldown" type="Timer" parent="Turret"]
+wait_time = 0.3

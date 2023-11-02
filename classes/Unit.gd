@@ -2,19 +2,25 @@ class_name Unit extends CharacterBody2D
 
 @export_enum("None", "Object", "Unit", "Building") var minimap_marker_type : String = "Unit"
 @export var SPEED: float = 200
+
 @onready var hover := $UIParent/Hover
 @onready var selection := $UIParent/Selection
 @onready var engine := $Engine # this node calculates acceleration and turning
 @onready var turret := $Turret
 @onready var minimap_timer := $MinimapUpdateTimer
+@onready var attacked_highlight := $UIParent/Attacked
+@onready var health := $UIParent/Health
+
+var is_moving: bool = false
 
 signal minimap_updated
+signal died
 
 
 func _ready():
 	Game.minimap.add_marker(self)
-	input_pickable = true
-	set_process(false)
+	set_process( false ) # only process upon movement
+	input_pickable = true # enables mouse hover 
 	mouse_entered.connect(_on_mouse_entered)
 	mouse_exited.connect(_on_mouse_exited)
 	engine.halted.connect(_on_engine_halted)
@@ -30,17 +36,25 @@ func select():
 func _on_ordered( order: Order ):
 	if order.type == 'point':
 		start_moving_to( order.point )
+	elif order.type == 'unit':
+		start_attacking( order.unit )
 	elif order.type == 'turret test':
 		turret.shoot()
 
 
 func start_moving_to(dest: Vector2):
 	print('started moving to ', dest )
-	# subtracting vectors gives a direction between them
-#	velocity = (dest - position).normalized() * SPEED
+	if not is_moving:
+		is_moving = true
+		minimap_timer.start()
+		set_process(true)
 	engine.start( dest )
-	minimap_timer.start()
-	set_process(true)
+
+
+func start_attacking( unit ):
+#	engine.follow( unit )
+	unit.attacked_highlight.flash()
+	turret.start_attacking( unit )
 
 
 func _on_minimap_timer_timeout():
@@ -55,6 +69,7 @@ func _process(delta):
 
 func _on_engine_halted():
 	set_process(false)
+	is_moving = false
 	minimap_timer.stop()
 
 
