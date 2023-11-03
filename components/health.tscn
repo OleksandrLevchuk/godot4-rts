@@ -1,0 +1,142 @@
+[gd_scene load_steps=4 format=3 uid="uid://hubac0378rie"]
+
+[ext_resource type="Theme" uid="uid://ccb7csnxqndm6" path="res://ui/my_ui_theme.tres" id="1_cah5q"]
+
+[sub_resource type="GDScript" id="GDScript_720o7"]
+script/source = "extends ProgressBar
+
+var is_temporary_visible: bool = false
+var is_selected: bool = false
+@export var MAX_HEALTH: float = 3
+@export var temp_visible_timer: Timer
+@export var bar_animation: Line2D
+
+@onready var health: float = MAX_HEALTH:
+	set(x):
+		health = max(0, x)
+		value = health
+		bar_animation.animate_to( health / MAX_HEALTH )
+
+signal died
+
+
+func _ready():
+	max_value = MAX_HEALTH
+	value = MAX_HEALTH
+	# when a unit takes damage, display the hp bar temporarily
+	temp_visible_timer.timeout.connect(_on_temporary_visibility_end)
+	# upon dying, wait a little before removing the unit
+	died.connect(func():
+		get_tree().create_timer(3).timeout.connect(get_owner().queue_free)
+	)
+
+
+func take_damage( dmg: float ):
+	temp_visible_timer.start()
+	visible = true
+	is_temporary_visible = true
+	health -= dmg
+	print(\"%s lost %s hit points, %s left.\" % [get_owner(), dmg, health])
+	if health <= 0:
+		died.emit()
+
+
+func _on_temporary_visibility_end():
+	is_temporary_visible = false
+	if health == 0:
+		queue_free()
+	if not is_selected:
+		visible = false
+
+
+func _on_selected():
+	is_selected = true
+	visible = true
+
+
+func _on_deselected():
+	is_selected = false
+	if not is_temporary_visible:
+		visible = false
+"
+
+[sub_resource type="GDScript" id="GDScript_574ft"]
+script/source = "extends Line2D
+
+var anchor_id: int = 1 # 0 for left side point of the curve
+var health: float = 1
+var prev_health: float = 1
+
+var left: float:
+	set(x):
+		left = x
+		points[0].x = x * size
+
+var right: float:
+	set(x):
+		right = x
+		points[1].x = x * size
+
+@onready var size: int = get_parent().get_size().x
+@onready var ease_timer := $EaseTimer
+
+
+func _ready():
+	set_process(false)
+	ease_timer.timeout.connect(func(): 
+		visible = false
+		set_process(false)
+	)
+	left = 1
+	right = 1
+
+
+func _process(_delta):
+	points[anchor_id].x = size * lerp( health, prev_health, ease_timer.time_left/ease_timer.wait_time )
+
+
+func animate_to( new_value ):
+	visible = true
+	ease_timer.start()
+	if new_value>health: # it's healing
+		anchor_id = 0 # so, left point gets animated
+		right = new_value # while right stays fixed
+	else: # it's damage
+		anchor_id = 1 # right point gets animated
+		left = new_value # while left stays fixed
+	prev_health = health
+	health = new_value
+	set_process(true)
+"
+
+[node name="Health" type="ProgressBar" node_paths=PackedStringArray("temp_visible_timer", "bar_animation")]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -60.0
+offset_top = -67.0
+offset_right = 60.0
+offset_bottom = -63.0
+grow_horizontal = 2
+theme = ExtResource("1_cah5q")
+value = 80.0
+show_percentage = false
+script = SubResource("GDScript_720o7")
+temp_visible_timer = NodePath("TemporaryVisibleTimer")
+bar_animation = NodePath("HealthAnimationLine")
+metadata/_edit_use_anchors_ = true
+
+[node name="TemporaryVisibleTimer" type="Timer" parent="."]
+wait_time = 4.0
+one_shot = true
+
+[node name="HealthAnimationLine" type="Line2D" parent="."]
+visible = false
+position = Vector2(0, 2)
+points = PackedVector2Array(0, 0, 70, 0)
+width = 4.0
+script = SubResource("GDScript_574ft")
+
+[node name="EaseTimer" type="Timer" parent="HealthAnimationLine"]
+wait_time = 0.734
+one_shot = true

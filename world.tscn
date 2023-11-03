@@ -164,7 +164,7 @@ texture_scale = 10.0
 height = 10.0
 
 [node name="Tank" parent="." instance=ExtResource("3_pvbeh")]
-position = Vector2(312, 97)
+position = Vector2(256, 139)
 scale = Vector2(0.125, 0.125)
 
 [node name="Tank2" parent="." instance=ExtResource("3_pvbeh")]

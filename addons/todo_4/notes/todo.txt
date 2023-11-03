@@ -1,0 +1,8 @@
+ - make tanks take damage
+ - make units able to die
+ - make units not only be tanks
+ - make the missile trajectory change length
+ - add muzzle smoke fx upon shooting
+ - add explosion fx upon taking a shot
+ - make units approach target before shooting
+ - add a distance check before shooting

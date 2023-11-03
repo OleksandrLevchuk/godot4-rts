@@ -12,6 +12,7 @@ signal ordered_unit_spawn
 
 func _ready():
 	visible = true
+	print( \"is true\" if true else \"is false\")
 
 
 func _on_buildings_building_selected(pos:Vector2, dialog_scene:Resource):

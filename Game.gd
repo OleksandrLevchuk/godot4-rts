@@ -1,6 +1,5 @@
 extends Node
 
-
 @onready var world: Node2D = get_tree().get_root().get_node('/root/World')
 @onready var ui: CanvasLayer = world.get_node('UI')
 @onready var minimap: SubViewport = ui.get_node('Container/Minimap')
