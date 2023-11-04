@@ -172,7 +172,8 @@ func init(dock: Control) -> void:
 	_btn_save.connect("pressed", _btn_save_click)
 	var btn_reload = h_edit.get_node("btn_reload") as Button
 	btn_reload.connect("pressed", _btn_reload_click)
-	_text = dock.get_node("text_edit") as  TextEdit
+	_text = dock.get_node("text_edit") as TextEdit
 	_text.connect("text_changed", func(): _change_save_status(true))
+	_text.connect("focus_exited",_btn_save_click)
 	
 	_reload_tabs()

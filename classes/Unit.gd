@@ -1,15 +1,16 @@
 class_name Unit extends CharacterBody2D
 
-@export_enum("None", "Object", "Unit", "Building") var minimap_marker_type : String = "Unit"
+@export_enum("None", "Object", "Unit", "Building") 
+var minimap_marker_type: String = "Unit"
 @export var SPEED: float = 200
-
-@onready var hover := $UIParent/Hover
-@onready var selection := $UIParent/Selection
-@onready var engine := $Engine # this node calculates acceleration and turning
-@onready var turret := $Turret
-@onready var minimap_timer := $MinimapUpdateTimer
-@onready var attacked_highlight := $UIParent/Attacked
-@onready var health := $UIParent/Health
+@export var HEALTH: float = 100
+@export var DAMAGE: float = 1
+@export_group("Inner")
+@export var engine: Node # calculates acceleration and turning
+@export var turret: Node
+@export var health: Node
+@export var selection: Node
+@export var minimap_timer: Timer
 
 var is_moving: bool = false
 
@@ -20,7 +21,7 @@ signal died
 func _ready():
 	Game.minimap.add_marker(self)
 	set_process( false ) # only process upon movement
-	input_pickable = true # enables mouse hover 
+	input_pickable = true # enables mouse hover
 	mouse_entered.connect(_on_mouse_entered)
 	mouse_exited.connect(_on_mouse_exited)
 	engine.halted.connect(_on_engine_halted)
@@ -28,7 +29,7 @@ func _ready():
 
 
 func select():
-	selection.visible = true
+	selection.selection.visible = true
 	Game.deselected.connect(deselect)
 	Game.ordered.connect(_on_ordered)
 
@@ -51,10 +52,10 @@ func start_moving_to(dest: Vector2):
 	engine.start( dest )
 
 
-func start_attacking( unit ):
+func start_attacking( target: Unit ):
 #	engine.follow( unit )
-	unit.attacked_highlight.flash()
-	turret.start_attacking( unit )
+	target.selection.attacked.flash()
+	turret.start_engaging( target )
 
 
 func _on_minimap_timer_timeout():
@@ -74,14 +75,14 @@ func _on_engine_halted():
 
 
 func deselect():
-	selection.visible = false
+	selection.selection.visible = false
 	Game.deselected.disconnect(deselect)
 	Game.ordered.disconnect(_on_ordered)
 
 
 func _on_mouse_entered():
-	hover.visible = true
+	selection.hover.visible = true
 
 
 func _on_mouse_exited():
-	hover.visible = false
+	selection.hover.visible = false

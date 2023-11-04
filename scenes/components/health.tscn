@@ -7,10 +7,10 @@ script/source = "extends ProgressBar
 
 var is_temporary_visible: bool = false
 var is_selected: bool = false
-@export var MAX_HEALTH: float = 3
 @export var temp_visible_timer: Timer
 @export var bar_animation: Line2D
 
+@onready var MAX_HEALTH: float = get_owner().HEALTH
 @onready var health: float = MAX_HEALTH:
 	set(x):
 		health = max(0, x)

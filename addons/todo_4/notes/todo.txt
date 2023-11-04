@@ -1,8 +1,16 @@
- - make tanks take damage
- - make units able to die
- - make units not only be tanks
- - make the missile trajectory change length
- - add muzzle smoke fx upon shooting
- - add explosion fx upon taking a shot
- - make units approach target before shooting
- - add a distance check before shooting
+----------------------- done today
+
+----------------------- to do today
+make the missile trajectory change length
+add muzzle smoke fx upon shooting
+add explosion fx upon taking a hit
+add expolosion fx upon dying
+
+----------------------- to do later
+make units not only be tanks
+make units approach target before shooting
+add a distance check before shooting
+
+----------------------- maybe don't do at all
+add an alt-up and alt-down key to the notes plugin
+

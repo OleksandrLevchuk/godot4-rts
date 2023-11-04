@@ -1,0 +1,51 @@
+[gd_scene load_steps=6 format=3 uid="uid://bs11pbxtx5l0y"]
+
+[ext_resource type="Texture2D" uid="uid://diwv700ptxrfy" path="res://art/ui/selection_hover.png" id="1_skwd0"]
+[ext_resource type="Texture2D" uid="uid://8k5t1kg0e04x" path="res://art/ui/selection_movable_red.png" id="2_pdpvd"]
+[ext_resource type="Texture2D" uid="uid://hf3ewtmkkx1y" path="res://art/ui/selection.png" id="3_qfas2"]
+
+[sub_resource type="GDScript" id="GDScript_0qkx8"]
+script/source = "extends Node2D
+
+@export var selection: Sprite2D
+@export var attacked: Sprite2D
+@export var hover: Sprite2D
+"
+
+[sub_resource type="GDScript" id="GDScript_672j5"]
+script/source = "extends Sprite2D
+
+@export var FLASH_TIME: float = 0.15
+
+func flash():
+	visible = true
+	self_modulate = Color.TRANSPARENT
+	var tween := create_tween()
+	tween.tween_property(self, \"self_modulate\", Color.WHITE, FLASH_TIME)
+	tween.tween_property(self, \"self_modulate\", Color.TRANSPARENT, FLASH_TIME)
+	tween.tween_property(self, \"self_modulate\", Color.WHITE, FLASH_TIME)
+	tween.tween_property(self, \"self_modulate\", Color.TRANSPARENT, FLASH_TIME)
+	tween.tween_callback(func(): visible = false)
+"
+
+[node name="Selection" type="Node2D" node_paths=PackedStringArray("selection", "attacked", "hover")]
+script = SubResource("GDScript_0qkx8")
+selection = NodePath("Selection")
+attacked = NodePath("Attacked")
+hover = NodePath("Hover")
+
+[node name="Hover" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(0, 16)
+texture = ExtResource("1_skwd0")
+
+[node name="Attacked" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(0, 16)
+texture = ExtResource("2_pdpvd")
+script = SubResource("GDScript_672j5")
+
+[node name="Selection" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(0, 16)
+texture = ExtResource("3_qfas2")
