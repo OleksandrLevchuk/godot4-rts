@@ -20,6 +20,7 @@ Game="*res://game.gd"
 
 [editor]
 
+movie_writer/mjpeg_quality=1.0
 movie_writer/movie_file="C:/Users/Admin/Desktop/godot video recording.avi"
 
 [editor_plugins]

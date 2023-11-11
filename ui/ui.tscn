@@ -119,7 +119,7 @@ func add_marker(unit):
 	var marker = minimap_marker.instantiate()
 	marker.get_node(unit.minimap_marker_type).visible = true
 	unit.minimap_updated.connect(marker.set_position)
-	unit.died.connect(marker.queue_free)
+	unit.health.died.connect(marker.queue_free)
 	marker.position = unit.get_owner().position
 	get_node(unit.minimap_marker_type + 's').add_child( marker )
 "

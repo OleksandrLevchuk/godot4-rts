@@ -1,6 +1,9 @@
 ----------------------- done today
 
 ----------------------- to do today
+make units deselect upon dying
+make units hide hp upon dying
+make units stop shooting upon move order
 make the missile trajectory change length
 add muzzle smoke fx upon shooting
 add explosion fx upon taking a hit

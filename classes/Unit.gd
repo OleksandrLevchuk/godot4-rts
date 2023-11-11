@@ -15,7 +15,6 @@ var minimap_marker_type: String = "Unit"
 var is_moving: bool = false
 
 signal minimap_updated
-signal died
 
 
 func _ready():

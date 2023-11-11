@@ -149,7 +149,7 @@ script = SubResource("GDScript_cysgo")
 metadata/_edit_lock_ = true
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
-position = Vector2(0, 2)
+position = Vector2(-4, -188)
 texture = SubResource("GradientTexture2D_drhh3")
 texture_scale = 10.0
 height = 10.0
@@ -169,5 +169,5 @@ rotation = -3.14159
 scale = Vector2(0.125, 0.125)
 
 [node name="Tank2" parent="." instance=ExtResource("3_pvbeh")]
-position = Vector2(-266, -147)
+position = Vector2(-75, 107)
 scale = Vector2(0.125, 0.125)
