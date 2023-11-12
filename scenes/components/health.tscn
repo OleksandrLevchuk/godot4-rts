@@ -29,6 +29,9 @@ func _ready():
 	died.connect(func():
 		get_tree().create_timer(3).timeout.connect(get_owner().queue_free)
 	)
+	died.connect(func():
+		bar_animation.ease_timer.timeout.connect(queue_free)
+	)
 
 
 func take_damage( dmg: float ):
@@ -85,7 +88,7 @@ func _ready():
 	set_process(false)
 	ease_timer.timeout.connect(func(): 
 		visible = false
-		set_process(false)
+		set_process( false )
 	)
 	left = 1
 	right = 1

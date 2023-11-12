@@ -118,3 +118,5 @@ script = SubResource("GDScript_50b0t")
 
 [node name="Turret" parent="." instance=ExtResource("8_q1ujq")]
 ATTACK_DAMAGE = 9
+
+[connection signal="died" from="UIParent/Health" to="." method="deselect"]
