@@ -1,11 +1,103 @@
 [gd_scene load_steps=14 format=3 uid="uid://cec74psspjrbe"]
 
-[ext_resource type="Script" path="res://classes/unit.gd" id="1_4fde4"]
 [ext_resource type="Texture2D" uid="uid://b0htollqtnx6f" path="res://art/units/parts/body.png" id="2_f6vc8"]
 [ext_resource type="PackedScene" uid="uid://bs11pbxtx5l0y" path="res://scenes/components/selection.tscn" id="3_3w5sw"]
 [ext_resource type="PackedScene" uid="uid://hubac0378rie" path="res://scenes/components/health.tscn" id="5_7qv1c"]
 [ext_resource type="Texture2D" uid="uid://c0xsasdpoyg17" path="res://art/units/parts/body_n.png" id="5_qioos"]
 [ext_resource type="PackedScene" uid="uid://btoyouaxxhuk2" path="res://scenes/components/turret.tscn" id="8_q1ujq"]
+
+[sub_resource type="GDScript" id="GDScript_bd8pa"]
+resource_name = "Unit"
+script/source = "extends CharacterBody2D
+
+@export_enum(\"None\", \"Object\", \"Unit\", \"Building\") 
+var minimap_marker_type: String = \"Unit\"
+@export var SPEED: float = 200
+@export var HEALTH: float = 100
+@export var DAMAGE: float = 17
+
+@onready var engine: Node = $Engine # calculates acceleration and turning
+@onready var turret: Node = $Turret
+@onready var health: Node = $UIParent/Health
+@onready var selection: Node = $UIParent/Selection
+@onready var minimap_updater: Timer = $MinimapUpdater
+
+var is_moving: bool = false
+
+signal minimap_updated
+
+
+func _ready():
+	health.MAX_HEALTH = HEALTH
+	turret.DAMAGE = DAMAGE
+	Game.minimap.add_marker(self)
+	set_process( false ) # only process upon movement
+	input_pickable = true # enables mouse hover
+	mouse_entered.connect(_on_mouse_entered)
+	mouse_exited.connect(_on_mouse_exited)
+	engine.halted.connect(_on_engine_halted)
+	minimap_updater.timeout.connect(_on_minimap_updater_timeout)
+
+
+func select():
+	selection.selection.visible = true
+	Game.deselected.connect(deselect)
+	Game.ordered.connect(_on_ordered)
+
+
+func _on_ordered( target ):
+#	print( Variant.Type ) # typeof(target) )
+	if target is Vector2:
+		start_moving_to( target )
+	else:
+		if target != self:
+			start_attacking( target )
+
+
+func start_moving_to(dest: Vector2):
+	print('started moving to ', dest )
+	if not is_moving:
+		is_moving = true
+		minimap_timer.start()
+		set_process(true)
+	engine.start( dest )
+
+
+func start_attacking( target: CharacterBody2D ):
+#	engine.follow( unit )
+	target.selection.attacked.flash()
+	turret.start_engaging( target )
+
+
+func _on_minimap_updater_timeout():
+	minimap_updated.emit(position)
+
+
+func _process(delta):
+	velocity = engine.calculate(delta)
+	rotation = velocity.angle()
+	move_and_slide()
+
+
+func _on_engine_halted():
+	set_process(false)
+	is_moving = false
+	minimap_timer.stop()
+
+
+func deselect():
+	selection.selection.visible = false
+	Game.deselected.disconnect(deselect)
+	Game.ordered.disconnect(_on_ordered)
+
+
+func _on_mouse_entered():
+	selection.hover.visible = true
+
+
+func _on_mouse_exited():
+	selection.hover.visible = false
+"
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_gsfhd"]
 blend_mode = 3
@@ -69,13 +161,15 @@ func calculate( delta ):
 	return facing * SPEED * elapsed
 "
 
-[node name="Tank" type="CharacterBody2D" node_paths=PackedStringArray("engine", "turret", "health", "selection", "minimap_timer")]
-script = ExtResource("1_4fde4")
-engine = NodePath("Engine")
-turret = NodePath("Turret")
+[node name="Tank" type="CharacterBody2D" node_paths=PackedStringArray("health", "selection", "minimap_timer")]
+script = SubResource("GDScript_bd8pa")
+minimap_marker_type = null
+SPEED = null
+HEALTH = null
+DAMAGE = null
 health = NodePath("UIParent/Health")
 selection = NodePath("UIParent/Selection")
-minimap_timer = NodePath("MinimapUpdateTimer")
+minimap_timer = NodePath("MinimapUpdater")
 
 [node name="DiffuseShadow" type="Sprite2D" parent="."]
 z_index = -1
@@ -110,13 +204,13 @@ visible = false
 z_index = -1
 shape = SubResource("CircleShape2D_mxwms")
 
-[node name="MinimapUpdateTimer" type="Timer" parent="."]
+[node name="MinimapUpdater" type="Timer" parent="."]
 wait_time = 0.5
 
 [node name="Engine" type="Node" parent="."]
 script = SubResource("GDScript_50b0t")
 
 [node name="Turret" parent="." instance=ExtResource("8_q1ujq")]
-ATTACK_DAMAGE = 9
 
 [connection signal="died" from="UIParent/Health" to="." method="deselect"]
+[connection signal="died" from="UIParent/Health" to="Turret" method="stop_shooting"]

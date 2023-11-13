@@ -7,10 +7,11 @@ script/source = "extends ProgressBar
 
 var is_temporary_visible: bool = false
 var is_selected: bool = false
+var MAX_HEALTH: float
+
 @export var temp_visible_timer: Timer
 @export var bar_animation: Line2D
 
-@onready var MAX_HEALTH: float = get_owner().HEALTH
 @onready var health: float = MAX_HEALTH:
 	set(x):
 		health = max(0, x)
@@ -22,7 +23,7 @@ signal died
 
 func _ready():
 	max_value = MAX_HEALTH
-	value = MAX_HEALTH
+	health = MAX_HEALTH
 	# when a unit takes damage, display the hp bar temporarily
 	temp_visible_timer.timeout.connect(_on_temporary_visibility_end)
 	# upon dying, wait a little before removing the unit

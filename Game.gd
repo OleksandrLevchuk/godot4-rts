@@ -27,8 +27,6 @@ signal ui_updated
 func _input(event:InputEvent):
 	if event.is_action_pressed("quit"):
 		get_tree().quit()
-	elif event.is_action_pressed("1"):
-		ordered.emit( Order.new('turret test') )
 	elif event.is_action_pressed("left_click"):
 		select_start = world.get_global_mouse_position()
 	elif event.is_action_released('left_click'):
@@ -43,8 +41,6 @@ func _input(event:InputEvent):
 			unit.collider.select()
 	elif event.is_action_released('right_click'):
 		var query := PhysicsPointQueryParameters2D.new()
-		var point: Vector2 = world.get_global_mouse_position()
-		query.position = point
+		query.position = world.get_global_mouse_position()
 		var units = world.get_world_2d().direct_space_state.intersect_point(query)
-		var order = Order.new( units[0].collider if units.size()>0 else point )
-		ordered.emit( order )
+		ordered.emit( units[0].collider if units.size()>0 else query.position )

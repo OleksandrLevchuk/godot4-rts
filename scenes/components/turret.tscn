@@ -9,12 +9,15 @@ diffuse_texture = ExtResource("1_6tico")
 normal_texture = ExtResource("2_6ye0n")
 specular_shininess = 0.0
 
-[sub_resource type="GDScript" id="GDScript_1jkap"]
+[sub_resource type="GDScript" id="GDScript_p01b1"]
+resource_name = "Turret"
 script/source = "extends Sprite2D
 
-@export var ATTACK_DAMAGE: int = 150
+var DAMAGE: int
+
 @export var TURN_RATE: float = PI / 2
 @export var COOLDOWN: float = 0.2
+
 @export_group('Inner')
 @export var barrel: Sprite2D
 @export var trace: Line2D
@@ -37,7 +40,6 @@ var is_aimed: bool
 
 
 func _ready():
-	get_owner().health.died.connect(stop_shooting)
 	set_process(false) # don't turn the turret until ordered to attack
 
 
@@ -91,7 +93,7 @@ func shoot():
 	var tween := create_tween()
 	tween.tween_property(self, 'recoil', 1, 0.05)
 	tween.tween_property(self, 'recoil', 0, 0.5).set_trans(Tween.TRANS_CIRC).set_ease(Tween.EASE_OUT)
-	target.health.take_damage( ATTACK_DAMAGE )
+	target.health.take_damage( DAMAGE )
 
 
 func stop_shooting():
@@ -225,7 +227,7 @@ z_index = 1
 position = Vector2(40, 0)
 texture = SubResource("CanvasTexture_i14q3")
 offset = Vector2(-20, 0)
-script = SubResource("GDScript_1jkap")
+script = SubResource("GDScript_p01b1")
 barrel = NodePath("BarrelClippingMask/BarrelSprite")
 trace = NodePath("MissileTrace")
 flash = NodePath("MuzzleFlash")

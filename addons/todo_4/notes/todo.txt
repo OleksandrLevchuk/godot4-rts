@@ -1,8 +1,7 @@
 ----------------------- done today
-
------------------------ to do today
-make units deselect upon dying
-make units hide hp upon dying
+reworked exports back into onloads, buggy
+----------------------- to do
+move minimap login inside a unit
 make units stop shooting upon move order
 make the missile trajectory change length
 add muzzle smoke fx upon shooting
