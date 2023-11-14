@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://cec74psspjrbe"]
+[gd_scene load_steps=15 format=3 uid="uid://cec74psspjrbe"]
 
 [ext_resource type="Texture2D" uid="uid://b0htollqtnx6f" path="res://art/units/parts/body.png" id="2_f6vc8"]
 [ext_resource type="PackedScene" uid="uid://bs11pbxtx5l0y" path="res://scenes/components/selection.tscn" id="3_3w5sw"]
@@ -28,9 +28,7 @@ signal minimap_updated
 
 
 func _ready():
-	health.MAX_HEALTH = HEALTH
 	turret.DAMAGE = DAMAGE
-	Game.minimap.add_marker(self)
 	set_process( false ) # only process upon movement
 	input_pickable = true # enables mouse hover
 	mouse_entered.connect(_on_mouse_entered)
@@ -46,7 +44,6 @@ func select():
 
 
 func _on_ordered( target ):
-#	print( Variant.Type ) # typeof(target) )
 	if target is Vector2:
 		start_moving_to( target )
 	else:
@@ -58,7 +55,7 @@ func start_moving_to(dest: Vector2):
 	print('started moving to ', dest )
 	if not is_moving:
 		is_moving = true
-		minimap_timer.start()
+		minimap_updater.start()
 		set_process(true)
 	engine.start( dest )
 
@@ -82,7 +79,7 @@ func _process(delta):
 func _on_engine_halted():
 	set_process(false)
 	is_moving = false
-	minimap_timer.stop()
+	minimap_updater.stop()
 
 
 func deselect():
@@ -120,6 +117,30 @@ polygon = PackedVector2Array(133, -123, 148, -109, 139, -102, 126, -115, 127, -1
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_mxwms"]
 radius = 201.301
+
+[sub_resource type="GDScript" id="GDScript_kyucj"]
+resource_name = "MinimapUpdater"
+script/source = "extends Timer
+
+var marker: Node2D
+@onready var unit := get_owner()
+
+
+func _ready():
+	marker = preload(\"res://scenes/minimap_marker.tscn\").instantiate()
+	marker.get_node(unit.minimap_marker_type).visible = true
+	timeout.connect( update_marker )
+	update_marker()
+	Game.minimap.get_node(unit.minimap_marker_type + 's').add_child( marker )
+
+
+func _on_health_died():
+	marker.queue_free()
+
+
+func update_marker():
+	marker.set_position( unit.position )
+"
 
 [sub_resource type="GDScript" id="GDScript_50b0t"]
 script/source = "extends Node
@@ -161,15 +182,8 @@ func calculate( delta ):
 	return facing * SPEED * elapsed
 "
 
-[node name="Tank" type="CharacterBody2D" node_paths=PackedStringArray("health", "selection", "minimap_timer")]
+[node name="Tank" type="CharacterBody2D"]
 script = SubResource("GDScript_bd8pa")
-minimap_marker_type = null
-SPEED = null
-HEALTH = null
-DAMAGE = null
-health = NodePath("UIParent/Health")
-selection = NodePath("UIParent/Selection")
-minimap_timer = NodePath("MinimapUpdater")
 
 [node name="DiffuseShadow" type="Sprite2D" parent="."]
 z_index = -1
@@ -206,6 +220,7 @@ shape = SubResource("CircleShape2D_mxwms")
 
 [node name="MinimapUpdater" type="Timer" parent="."]
 wait_time = 0.5
+script = SubResource("GDScript_kyucj")
 
 [node name="Engine" type="Node" parent="."]
 script = SubResource("GDScript_50b0t")
@@ -213,4 +228,5 @@ script = SubResource("GDScript_50b0t")
 [node name="Turret" parent="." instance=ExtResource("8_q1ujq")]
 
 [connection signal="died" from="UIParent/Health" to="." method="deselect"]
+[connection signal="died" from="UIParent/Health" to="MinimapUpdater" method="_on_health_died"]
 [connection signal="died" from="UIParent/Health" to="Turret" method="stop_shooting"]

@@ -1,17 +1,15 @@
 [gd_scene load_steps=4 format=3 uid="uid://hubac0378rie"]
 
-[ext_resource type="Theme" uid="uid://ccb7csnxqndm6" path="res://ui/my_ui_theme.tres" id="1_cah5q"]
+[ext_resource type="Theme" uid="uid://ccb7csnxqndm6" path="res://my_ui_theme.tres" id="1_5fkm7"]
 
 [sub_resource type="GDScript" id="GDScript_720o7"]
 script/source = "extends ProgressBar
 
 var is_temporary_visible: bool = false
 var is_selected: bool = false
-var MAX_HEALTH: float
-
 @export var temp_visible_timer: Timer
 @export var bar_animation: Line2D
-
+@onready var MAX_HEALTH: float = get_owner().HEALTH
 @onready var health: float = MAX_HEALTH:
 	set(x):
 		health = max(0, x)
@@ -122,7 +120,7 @@ offset_top = -67.0
 offset_right = 60.0
 offset_bottom = -63.0
 grow_horizontal = 2
-theme = ExtResource("1_cah5q")
+theme = ExtResource("1_5fkm7")
 value = 80.0
 show_percentage = false
 script = SubResource("GDScript_720o7")

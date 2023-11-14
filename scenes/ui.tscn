@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://b6qi0uh341w1n"]
+[gd_scene load_steps=10 format=3 uid="uid://b6qi0uh341w1n"]
 
 [ext_resource type="Texture2D" uid="uid://c3tp64n5jdyce" path="res://art/ground.jpg" id="5_kr4e7"]
 
@@ -107,23 +107,6 @@ func _process(delta):
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_svi1x"]
 bg_color = Color(0.313726, 0.466667, 0.631373, 1)
 
-[sub_resource type="GDScript" id="GDScript_qo6l4"]
-script/source = "extends SubViewport
-
-var minimap_marker: PackedScene = preload(\"res://ui/minimap_marker.tscn\")
-
-@onready var camera: Camera2D = get_node('Camera')
-
-
-func add_marker(unit):
-	var marker = minimap_marker.instantiate()
-	marker.get_node(unit.minimap_marker_type).visible = true
-	unit.minimap_updated.connect(marker.set_position)
-	unit.health.died.connect(marker.queue_free)
-	marker.position = unit.get_owner().position
-	get_node(unit.minimap_marker_type + 's').add_child( marker )
-"
-
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_wwysj"]
 texture = ExtResource("5_kr4e7")
 0:0/0 = 0
@@ -194,7 +177,6 @@ scale = Vector2(0.5, 0.5)
 handle_input_locally = false
 size = Vector2i(280, 280)
 render_target_update_mode = 4
-script = SubResource("GDScript_qo6l4")
 
 [node name="Camera" type="Camera2D" parent="Container/Minimap"]
 

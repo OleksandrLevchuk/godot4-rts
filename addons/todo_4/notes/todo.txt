@@ -1,7 +1,6 @@
------------------------ done today
-reworked exports back into onloads, buggy
+----------------------- done
 ----------------------- to do
-move minimap login inside a unit
+make minimap markers scale with its unit
 make units stop shooting upon move order
 make the missile trajectory change length
 add muzzle smoke fx upon shooting
