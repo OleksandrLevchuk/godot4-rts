@@ -44,7 +44,7 @@ func _ready():
 
 
 func start_engaging( tar: Node2D ):
-	print('engaging this ', tar)
+	print('my target was ', target, ', now engaging this ', tar)
 	target = tar
 	initial_angle = get_angle_to( target.position )
 	target.health.died.connect(stop_shooting)
@@ -98,6 +98,8 @@ func shoot():
 
 func stop_shooting():
 	if target:
+		set_process(false)
+		target.health.died.disconnect(stop_shooting)
 		cooldown.timeout.disconnect(shoot)
 		target = null
 "

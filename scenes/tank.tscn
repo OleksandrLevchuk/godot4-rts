@@ -21,8 +21,11 @@ var minimap_marker_type: String = \"Unit\"
 @onready var health: Node = $UIParent/Health
 @onready var selection: Node = $UIParent/Selection
 @onready var minimap_updater: Timer = $MinimapUpdater
+@onready var collision: CollisionShape2D = $CollisionShape2D
 
 var is_moving: bool = false
+var is_selected: bool = false
+var is_shooting: bool = false
 
 signal minimap_updated
 
@@ -33,11 +36,13 @@ func _ready():
 	input_pickable = true # enables mouse hover
 	mouse_entered.connect(_on_mouse_entered)
 	mouse_exited.connect(_on_mouse_exited)
+	health.died.connect(_on_health_died)
 	engine.halted.connect(_on_engine_halted)
 	minimap_updater.timeout.connect(_on_minimap_updater_timeout)
 
 
 func select():
+	is_selected = true
 	selection.selection.visible = true
 	Game.deselected.connect(deselect)
 	Game.ordered.connect(_on_ordered)
@@ -45,9 +50,13 @@ func select():
 
 func _on_ordered( target ):
 	if target is Vector2:
+		if is_shooting:
+			turret.stop_shooting()
 		start_moving_to( target )
+		is_shooting = false
 	else:
 		if target != self:
+			is_shooting = true
 			start_attacking( target )
 
 
@@ -86,6 +95,7 @@ func deselect():
 	selection.selection.visible = false
 	Game.deselected.disconnect(deselect)
 	Game.ordered.disconnect(_on_ordered)
+	is_selected = false
 
 
 func _on_mouse_entered():
@@ -94,6 +104,18 @@ func _on_mouse_entered():
 
 func _on_mouse_exited():
 	selection.hover.visible = false
+
+
+func _on_health_died():
+	# wait 3 sec before disappearing
+	mouse_entered.disconnect(_on_mouse_entered)
+	mouse_exited.disconnect(_on_mouse_exited)
+	collision.queue_free()
+	print('collision shape freed!')
+	if is_selected:
+		deselect()
+	selection.queue_free()
+	get_tree().create_timer(3).timeout.connect( queue_free )
 "
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_gsfhd"]
@@ -116,7 +138,7 @@ normal_texture = ExtResource("5_qioos")
 polygon = PackedVector2Array(133, -123, 148, -109, 139, -102, 126, -115, 127, -105, 154, -76, 154, -70, 164, -66, 165, 65, 144, 68, 133, 75, 144, 71, 151, 72, 150, 81, 117, 110, 121, 113, 135, 104, 142, 111, 127, 122, -102, 123, -106, 87, -93, 87, -30, 113, -90, 80, -180, 82, -196, 56, -195, -58, -179, -81, -94, -78, -40, -111, -90, -90, -91, -124)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_mxwms"]
-radius = 201.301
+radius = 26.0768
 
 [sub_resource type="GDScript" id="GDScript_kyucj"]
 resource_name = "MinimapUpdater"
@@ -188,8 +210,7 @@ script = SubResource("GDScript_bd8pa")
 [node name="DiffuseShadow" type="Sprite2D" parent="."]
 z_index = -1
 material = SubResource("CanvasItemMaterial_gsfhd")
-position = Vector2(-46.166, 0)
-scale = Vector2(10.2207, 7.20375)
+scale = Vector2(1.00996, 0.767973)
 texture = SubResource("GradientTexture2D_n4vlu")
 offset = Vector2(5, 0)
 
@@ -208,13 +229,13 @@ scale = Vector2(0.5, 0.5)
 [node name="Selection" parent="UIParent" instance=ExtResource("3_3w5sw")]
 
 [node name="BodySprite" type="Sprite2D" parent="."]
+scale = Vector2(0.125, 0.125)
 texture = SubResource("CanvasTexture_34usc")
 
 [node name="CastShadow" type="LightOccluder2D" parent="BodySprite"]
 occluder = SubResource("OccluderPolygon2D_v601k")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
 z_index = -1
 shape = SubResource("CircleShape2D_mxwms")
 
@@ -226,7 +247,5 @@ script = SubResource("GDScript_kyucj")
 script = SubResource("GDScript_50b0t")
 
 [node name="Turret" parent="." instance=ExtResource("8_q1ujq")]
-
-[connection signal="died" from="UIParent/Health" to="." method="deselect"]
-[connection signal="died" from="UIParent/Health" to="MinimapUpdater" method="_on_health_died"]
-[connection signal="died" from="UIParent/Health" to="Turret" method="stop_shooting"]
+position = Vector2(6, 0)
+scale = Vector2(0.125, 0.125)

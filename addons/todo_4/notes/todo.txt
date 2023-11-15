@@ -1,13 +1,12 @@
 ----------------------- done
 ----------------------- to do
-make minimap markers scale with its unit
-make units stop shooting upon move order
 make the missile trajectory change length
 add muzzle smoke fx upon shooting
 add explosion fx upon taking a hit
 add expolosion fx upon dying
 
 ----------------------- to do later
+make minimap markers scale with its unit
 make units not only be tanks
 make units approach target before shooting
 add a distance check before shooting

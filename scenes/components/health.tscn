@@ -7,8 +7,8 @@ script/source = "extends ProgressBar
 
 var is_temporary_visible: bool = false
 var is_selected: bool = false
-@export var temp_visible_timer: Timer
-@export var bar_animation: Line2D
+@onready var temp_visible_timer: Timer = $TemporaryVisibleTimer
+@onready var bar_animation: Line2D = $HealthAnimationLine
 @onready var MAX_HEALTH: float = get_owner().HEALTH
 @onready var health: float = MAX_HEALTH:
 	set(x):
@@ -24,10 +24,6 @@ func _ready():
 	health = MAX_HEALTH
 	# when a unit takes damage, display the hp bar temporarily
 	temp_visible_timer.timeout.connect(_on_temporary_visibility_end)
-	# upon dying, wait a little before removing the unit
-	died.connect(func():
-		get_tree().create_timer(3).timeout.connect(get_owner().queue_free)
-	)
 	died.connect(func():
 		bar_animation.ease_timer.timeout.connect(queue_free)
 	)
@@ -111,7 +107,7 @@ func animate_to( new_value ):
 	set_process(true)
 "
 
-[node name="Health" type="ProgressBar" node_paths=PackedStringArray("temp_visible_timer", "bar_animation")]
+[node name="Health" type="ProgressBar"]
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
@@ -124,8 +120,6 @@ theme = ExtResource("1_5fkm7")
 value = 80.0
 show_percentage = false
 script = SubResource("GDScript_720o7")
-temp_visible_timer = NodePath("TemporaryVisibleTimer")
-bar_animation = NodePath("HealthAnimationLine")
 metadata/_edit_use_anchors_ = true
 
 [node name="TemporaryVisibleTimer" type="Timer" parent="."]

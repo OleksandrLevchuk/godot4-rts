@@ -10,6 +10,8 @@ script/source = "extends Node2D
 @export var selection: Sprite2D
 @export var attacked: Sprite2D
 @export var hover: Sprite2D
+
+var is_selected: bool = false
 "
 
 [sub_resource type="GDScript" id="GDScript_672j5"]
@@ -17,6 +19,7 @@ script/source = "extends Sprite2D
 
 @export var FLASH_TIME: float = 0.15
 
+# here's the red visual upon becoming someone's target
 func flash():
 	visible = true
 	self_modulate = Color.TRANSPARENT
