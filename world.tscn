@@ -165,7 +165,13 @@ script = SubResource("GDScript_cysgo")
 metadata/_edit_lock_ = true
 
 [node name="Tank" parent="." instance=ExtResource("3_pvbeh")]
-position = Vector2(-191, -45)
+position = Vector2(-198, 56)
 
 [node name="Tank2" parent="." instance=ExtResource("3_pvbeh")]
-position = Vector2(107, 100)
+position = Vector2(165, -93)
+
+[node name="Tank3" parent="." instance=ExtResource("3_pvbeh")]
+position = Vector2(123, 90)
+
+[node name="Tank4" parent="." instance=ExtResource("3_pvbeh")]
+position = Vector2(-93, -65)

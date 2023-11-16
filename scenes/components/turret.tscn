@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://btoyouaxxhuk2"]
+[gd_scene load_steps=19 format=3 uid="uid://btoyouaxxhuk2"]
 
 [ext_resource type="Texture2D" uid="uid://b0l2xhswrfehj" path="res://art/units/parts/turret_1_short.png" id="1_6tico"]
 [ext_resource type="Texture2D" uid="uid://c8y1sundt1qgn" path="res://art/units/parts/turret_1_short_n.png" id="2_6ye0n"]
@@ -15,16 +15,14 @@ script/source = "extends Sprite2D
 
 var DAMAGE: int
 
-@export var TURN_RATE: float = PI / 2
+@export var TURN_RATE: float = PI
 @export var COOLDOWN: float = 0.2
 
-@export_group('Inner')
-@export var barrel: Sprite2D
-@export var trace: Line2D
-@export var flash: Node2D
-@export var sparks: GPUParticles2D
-@export var cooldown: Timer
-
+@onready var barrel := $BarrelClippingMask/BarrelSprite
+@onready var trace := $MissileTrace
+@onready var flash := $MuzzleFlash
+@onready var sparks := $Sparks
+@onready var cooldown := $AttackCooldown
 @onready var initial_offset: float = offset.x
 
 var RECOIL_STRENGTH: float = -15
@@ -40,48 +38,40 @@ var is_aimed: bool
 
 
 func _ready():
+	cooldown.timeout.connect(shoot)
 	set_process(false) # don't turn the turret until ordered to attack
 
 
-func start_engaging( tar: Node2D ):
+func engage( tar: Node2D ):
 	print('my target was ', target, ', now engaging this ', tar)
 	target = tar
 	initial_angle = get_angle_to( target.position )
-	target.health.died.connect(stop_shooting)
+	target.health.died.connect(_on_target_died)
 	set_process(true)
 
 
 func _process( delta ):
 	is_in_range = check_target_in_range()
 	is_aimed = check_rotation_and_aim( delta )
+	print(randi()%10, \" aiming: \", is_aimed, \", in range: \", is_in_range)
 	if is_in_range and is_aimed:
-		start_attacking()
-
+		set_process(false)
+		print(\"target engaged, attacking now!\")
+		shoot()
 
 func check_target_in_range() -> bool:
 	return true
 
 
 func check_rotation_and_aim( delta ) -> bool:
-	# we're looking where the target is relative to us,
 	var desired_angle: float = get_angle_to( target.position )
-	# so the angle will be positive if target is clock-wise, to the right from us, 
-	# negative if counter clock-wise, to the left side from us.
-	# while our desired target is to the same side as it was initially,
-	# the product of two angles is above zero if they have the same signs,
-	var increment = delta * TURN_RATE
-	# we gradually turn the turret until a moment the target crosses in front of us
-	rotation += clamp(desired_angle, -increment, increment)
-	# thus switching sides, and switching mathematical sign,
-	return initial_angle*desired_angle < 0
-
-
-
-func start_attacking():
-	print(\"target engaged, attacking now!\")
-	set_process(false)
-	cooldown.timeout.connect(shoot)
-	shoot()
+	var increment: float = delta * TURN_RATE
+	if increment < abs( desired_angle ):
+		rotation += increment * sign( desired_angle )
+		return false
+	else:
+		rotation += desired_angle
+		return true
 
 
 func shoot():
@@ -96,12 +86,14 @@ func shoot():
 	target.health.take_damage( DAMAGE )
 
 
-func stop_shooting():
-	if target:
-		set_process(false)
-		target.health.died.disconnect(stop_shooting)
-		cooldown.timeout.disconnect(shoot)
-		target = null
+func _on_target_died():
+	disengage()
+	
+func disengage():
+	target.health.died.disconnect(_on_target_died)
+	set_process(false)
+	cooldown.stop()
+	target = null
 "
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_gsfhd"]
@@ -126,12 +118,8 @@ var recoil: float = 0:
 		offset.x = x * RECOIL_STRENGTH
 "
 
-[sub_resource type="Curve" id="Curve_df6lf"]
-bake_resolution = 10
-_data = [Vector2(0, 1), 0.0, 0.0407709, 0, 0, Vector2(1, 0), 0.0546182, 0.0, 0, 0]
-point_count = 2
-
-[sub_resource type="GDScript" id="GDScript_ov8n0"]
+[sub_resource type="GDScript" id="GDScript_ahrwq"]
+resource_name = "MissileTrace"
 script/source = "extends Line2D
 
 @export var DURATION: float = 0.03 # how long the trace stays visible
@@ -224,17 +212,12 @@ damping_min = 100.0
 damping_max = 100.0
 scale_min = 0.2
 
-[node name="Turret" type="Sprite2D" node_paths=PackedStringArray("barrel", "trace", "flash", "sparks", "cooldown")]
+[node name="Turret" type="Sprite2D"]
 z_index = 1
 position = Vector2(40, 0)
 texture = SubResource("CanvasTexture_i14q3")
 offset = Vector2(-20, 0)
 script = SubResource("GDScript_p01b1")
-barrel = NodePath("BarrelClippingMask/BarrelSprite")
-trace = NodePath("MissileTrace")
-flash = NodePath("MuzzleFlash")
-sparks = NodePath("Sparks")
-cooldown = NodePath("AttackCooldown")
 
 [node name="TurretDiffuseShadow" type="Sprite2D" parent="."]
 z_index = -1
@@ -256,11 +239,10 @@ script = SubResource("GDScript_gw08p")
 
 [node name="MissileTrace" type="Line2D" parent="."]
 position = Vector2(384, 0)
+scale = Vector2(8, 8)
 points = PackedVector2Array(0, 0, 0, 0)
-width = 20.0
-width_curve = SubResource("Curve_df6lf")
-default_color = Color(1, 1, 1, 0.262745)
-script = SubResource("GDScript_ov8n0")
+width = 1.0
+script = SubResource("GDScript_ahrwq")
 
 [node name="MuzzleFlash" type="Node2D" parent="."]
 visible = false

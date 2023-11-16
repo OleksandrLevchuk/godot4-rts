@@ -27,6 +27,8 @@ var is_moving: bool = false
 var is_selected: bool = false
 var is_shooting: bool = false
 
+var target: Node2D
+
 signal minimap_updated
 
 
@@ -48,31 +50,23 @@ func select():
 	Game.ordered.connect(_on_ordered)
 
 
-func _on_ordered( target ):
-	if target is Vector2:
-		if is_shooting:
-			turret.stop_shooting()
-		start_moving_to( target )
-		is_shooting = false
+func _on_ordered( new_target ):
+	if new_target is Vector2:
+		if turret.is_shooting:
+			turret.disengage()
+		move_to( new_target )
 	else:
-		if target != self:
-			is_shooting = true
-			start_attacking( target )
+		if new_target != self and new_target != target:
+			turret.engage( new_target )
 
 
-func start_moving_to(dest: Vector2):
+func move_to(dest: Vector2):
 	print('started moving to ', dest )
 	if not is_moving:
 		is_moving = true
 		minimap_updater.start()
 		set_process(true)
 	engine.start( dest )
-
-
-func start_attacking( target: CharacterBody2D ):
-#	engine.follow( unit )
-	target.selection.attacked.flash()
-	turret.start_engaging( target )
 
 
 func _on_minimap_updater_timeout():
