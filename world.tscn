@@ -161,6 +161,7 @@ metadata/_edit_lock_ = true
 visible = false
 
 [node name="Camera" type="Camera2D" parent="."]
+zoom = Vector2(0.125, 0.125)
 script = SubResource("GDScript_cysgo")
 metadata/_edit_lock_ = true
 
@@ -172,6 +173,21 @@ position = Vector2(165, -93)
 
 [node name="Tank3" parent="." instance=ExtResource("3_pvbeh")]
 position = Vector2(123, 90)
+
+[node name="Tank5" parent="." instance=ExtResource("3_pvbeh")]
+position = Vector2(-89, 151)
+
+[node name="Tank6" parent="." instance=ExtResource("3_pvbeh")]
+position = Vector2(-64, 26)
+
+[node name="Tank7" parent="." instance=ExtResource("3_pvbeh")]
+position = Vector2(89, 186)
+
+[node name="Tank8" parent="." instance=ExtResource("3_pvbeh")]
+position = Vector2(47, -75)
+
+[node name="Tank9" parent="." instance=ExtResource("3_pvbeh")]
+position = Vector2(-225, -74)
 
 [node name="Tank4" parent="." instance=ExtResource("3_pvbeh")]
 position = Vector2(-93, -65)
