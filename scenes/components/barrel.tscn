@@ -1,0 +1,164 @@
+[gd_scene load_steps=11 format=3 uid="uid://2lehy33cf5j3"]
+
+[ext_resource type="Texture2D" uid="uid://bjaga478va6hb" path="res://art/units/parts/barrel_1.png" id="1_1kk5b"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_kccet"]
+lifetime_randomness = 1.0
+emission_shape = 2
+emission_sphere_radius = 1.0
+particle_flag_disable_z = true
+initial_velocity_min = 444.0
+initial_velocity_max = 666.0
+orbit_velocity_min = 0.0
+orbit_velocity_max = 0.0
+damping_min = 100.0
+damping_max = 100.0
+scale_min = 0.2
+
+[sub_resource type="GDScript" id="GDScript_bxduc"]
+script/source = "extends Node2D
+
+@export var DURATION: float = 0.05
+
+
+func _ready():
+	visible = false
+
+
+func flash():
+	visible = true
+	get_tree().create_timer(DURATION).timeout.connect(func():visible = false)
+"
+
+[sub_resource type="Gradient" id="Gradient_yi43a"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0, 0.279661, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0.501961, 0.501961, 0.501961, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_x6wma"]
+gradient = SubResource("Gradient_yi43a")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_30eoa"]
+blend_mode = 1
+
+[sub_resource type="Gradient" id="Gradient_8uxpa"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0, 0.15678, 1)
+colors = PackedColorArray(0.136496, 0.136496, 0.136496, 1, 0.0704166, 0.0704166, 0.0704166, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_30eye"]
+gradient = SubResource("Gradient_8uxpa")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="GDScript" id="GDScript_gw08p"]
+script/source = "extends Sprite2D
+
+var RECOIL_STRENGTH: float = -100
+var recoil: float = 0:
+	set(x):
+		recoil = x
+		offset.x = x * RECOIL_STRENGTH
+"
+
+[sub_resource type="GDScript" id="GDScript_ahrwq"]
+resource_name = "MissileTrace"
+script/source = "extends Line2D
+
+@export var DURATION: float = 0.3 # how long the trace stays visible
+@export var DELAY: float = 0.05 # time delay between line start and end
+
+@onready var flash: Node2D = $\"../MuzzleFlash\"
+var elapsed: float
+var distance: float
+
+
+func _ready():
+	visible = false
+	set_process(false) # the process is for the missile travelling
+
+
+func shoot( dist: float = 2000 ):
+	# to avoid the missile being affected by the turret rotation
+	# after it left the barrel, the trace is top level, 
+	# and it needs its position to be set manually every time
+	position = flash.get_global_transform().get_origin()
+	rotation = flash.get_global_transform().get_rotation()
+	elapsed = 0
+	distance = dist
+	visible = true
+	set_process(true)
+
+
+func _process( delta ):
+	elapsed += delta
+	# missile front travels for the first ( FRAMES_DURATION ) frames
+	# 20, 40, 60, 80, 100, 100, 100, 100, 100, 100
+	#  0,  0,  0,  0,   0,   0,  20,  40,  60,  80
+	var missile_front_progress: float = min( elapsed / DURATION, 1 )
+	points[1].x = lerp( 0.0, distance, missile_front_progress )
+	# missile rear stays delayed first, then travels for the last
+	var missile_rear_progress: float = max( ( elapsed - DELAY ) / DURATION , 0 )
+	points[0].x = lerp( 0.0, distance, missile_rear_progress )
+	if elapsed > DURATION + DELAY:
+		set_process(false)
+		visible = false
+"
+
+[node name="Barrel" type="Node2D"]
+
+[node name="Sparks" type="GPUParticles2D" parent="."]
+position = Vector2(395, 0)
+scale = Vector2(5, 5)
+emitting = false
+amount = 4
+process_material = SubResource("ParticleProcessMaterial_kccet")
+lifetime = 0.2
+one_shot = true
+explosiveness = 1.0
+fixed_fps = 0
+
+[node name="MuzzleFlash" type="Node2D" parent="."]
+visible = false
+position = Vector2(376, 0)
+script = SubResource("GDScript_bxduc")
+
+[node name="ShotFlashUpper" type="PointLight2D" parent="MuzzleFlash"]
+shadow_enabled = true
+shadow_filter = 1
+shadow_filter_smooth = 2.0
+shadow_item_cull_mask = 2
+texture = SubResource("GradientTexture2D_x6wma")
+texture_scale = 50.0
+
+[node name="ShotFlashLower" type="PointLight2D" parent="MuzzleFlash"]
+shadow_enabled = true
+shadow_filter = 1
+shadow_filter_smooth = 2.0
+texture = SubResource("GradientTexture2D_x6wma")
+texture_scale = 25.0
+
+[node name="Sprite2D" type="Sprite2D" parent="MuzzleFlash"]
+material = SubResource("CanvasItemMaterial_30eoa")
+scale = Vector2(10, 10)
+texture = SubResource("GradientTexture2D_30eye")
+
+[node name="BarrelsClippingMask" type="Polygon2D" parent="."]
+clip_children = 1
+position = Vector2(-20, 0)
+polygon = PackedVector2Array(213, 23, 213, -24, 67, -24, 49, -18, 49, 17, 66, 23)
+
+[node name="BarrelSprite" type="Sprite2D" parent="BarrelsClippingMask"]
+position = Vector2(122, -12)
+texture = ExtResource("1_1kk5b")
+script = SubResource("GDScript_gw08p")
+
+[node name="MissileTrace" type="Line2D" parent="."]
+top_level = true
+points = PackedVector2Array(0, 0, 0, 0)
+width = 5.0
+script = SubResource("GDScript_ahrwq")

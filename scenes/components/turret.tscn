@@ -1,13 +1,12 @@
-[gd_scene load_steps=19 format=3 uid="uid://btoyouaxxhuk2"]
+[gd_scene load_steps=10 format=3 uid="uid://btoyouaxxhuk2"]
 
-[ext_resource type="Texture2D" uid="uid://b0l2xhswrfehj" path="res://art/units/parts/turret_1_short.png" id="1_6tico"]
+[ext_resource type="Texture2D" uid="uid://c2rvu0rv0p7h" path="res://art/units/parts/turret_1.png" id="1_f4yuh"]
 [ext_resource type="Texture2D" uid="uid://c8y1sundt1qgn" path="res://art/units/parts/turret_1_short_n.png" id="2_6ye0n"]
-[ext_resource type="Texture2D" uid="uid://bjaga478va6hb" path="res://art/units/parts/barrel_1.png" id="3_bvbb8"]
+[ext_resource type="PackedScene" uid="uid://2lehy33cf5j3" path="res://scenes/components/barrel.tscn" id="3_xvw11"]
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_i14q3"]
-diffuse_texture = ExtResource("1_6tico")
+diffuse_texture = ExtResource("1_f4yuh")
 normal_texture = ExtResource("2_6ye0n")
-specular_shininess = 0.0
 
 [sub_resource type="GDScript" id="GDScript_p01b1"]
 resource_name = "Turret"
@@ -99,50 +98,6 @@ func disengage():
 	is_shooting = false
 "
 
-[sub_resource type="GDScript" id="GDScript_ahrwq"]
-resource_name = "MissileTrace"
-script/source = "extends Line2D
-
-@export var DURATION: float = 0.3 # how long the trace stays visible
-@export var DELAY: float = 0.05 # time delay between line start and end
-
-@onready var flash: Node2D = $\"../MuzzleFlash\"
-var elapsed: float
-var distance: float
-
-
-func _ready():
-	visible = false
-	set_process(false) # the process is for the missile travelling
-
-
-func shoot( dist: float = 2000 ):
-	# to avoid the missile being affected by the turret rotation
-	# after it left the barrel, the trace is top level, 
-	# and it needs its position to be set manually every time
-	position = flash.get_global_transform().get_origin()
-	rotation = flash.get_global_transform().get_rotation()
-	elapsed = 0
-	distance = dist
-	visible = true
-	set_process(true)
-
-
-func _process( delta ):
-	elapsed += delta
-	# missile front travels for the first ( FRAMES_DURATION ) frames
-	# 20, 40, 60, 80, 100, 100, 100, 100, 100, 100
-	#  0,  0,  0,  0,   0,   0,  20,  40,  60,  80
-	var missile_front_progress: float = min( elapsed / DURATION, 1 )
-	points[1].x = lerp( 0.0, distance, missile_front_progress )
-	# missile rear stays delayed first, then travels for the last
-	var missile_rear_progress: float = max( ( elapsed - DELAY ) / DURATION , 0 )
-	points[0].x = lerp( 0.0, distance, missile_rear_progress )
-	if elapsed > DURATION + DELAY:
-		set_process(false)
-		visible = false
-"
-
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_gsfhd"]
 blend_mode = 3
 
@@ -155,71 +110,8 @@ fill = 1
 fill_from = Vector2(0.5, 0.5)
 fill_to = Vector2(0.5, 0)
 
-[sub_resource type="GDScript" id="GDScript_gw08p"]
-script/source = "extends Sprite2D
-
-var RECOIL_STRENGTH: float = -100
-var recoil: float = 0:
-	set(x):
-		recoil = x
-		offset.x = x * RECOIL_STRENGTH
-"
-
-[sub_resource type="GDScript" id="GDScript_bxduc"]
-script/source = "extends Node2D
-
-@export var DURATION: float = 0.05
-
-
-func _ready():
-	visible = false
-
-
-func flash():
-	visible = true
-	get_tree().create_timer(DURATION).timeout.connect(func():visible = false)
-"
-
-[sub_resource type="Gradient" id="Gradient_yi43a"]
-interpolation_mode = 2
-offsets = PackedFloat32Array(0, 0.279661, 1)
-colors = PackedColorArray(1, 1, 1, 1, 0.501961, 0.501961, 0.501961, 1, 0, 0, 0, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_x6wma"]
-gradient = SubResource("Gradient_yi43a")
-fill = 1
-fill_from = Vector2(0.5, 0.5)
-fill_to = Vector2(0.5, 0)
-
-[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_30eoa"]
-blend_mode = 1
-
-[sub_resource type="Gradient" id="Gradient_8uxpa"]
-interpolation_mode = 2
-offsets = PackedFloat32Array(0, 0.15678, 1)
-colors = PackedColorArray(0.136496, 0.136496, 0.136496, 1, 0.0704166, 0.0704166, 0.0704166, 1, 0, 0, 0, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_30eye"]
-gradient = SubResource("Gradient_8uxpa")
-fill = 1
-fill_from = Vector2(0.5, 0.5)
-fill_to = Vector2(0.5, 0)
-
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_5ssf0"]
-polygon = PackedVector2Array(68, 26, 51, 56, 105, 95, 109, 102, 92, 104, 6, 99, -7, 82, -109, 41, -109, -42, -6, -84, 7, -99, 110, -103, 105, -94, 51, -56, 69, -25, 58, -25, 58, 26)
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_kccet"]
-lifetime_randomness = 1.0
-emission_shape = 2
-emission_sphere_radius = 1.0
-particle_flag_disable_z = true
-initial_velocity_min = 444.0
-initial_velocity_max = 666.0
-orbit_velocity_min = 0.0
-orbit_velocity_max = 0.0
-damping_min = 100.0
-damping_max = 100.0
-scale_min = 0.2
+polygon = PackedVector2Array(40, 7, 78, 25, 47, 18, 41, 26, 63, 48, 35, 29, 21, 32, 13, 49, 16, 26, -30, 16, -43, 20, -30, 8, -30, -7, -44, -21, -32, -16, 17, -26, 13, -44, 25, -33, 39, -33, 61, -50, 43, -28, 47, -19, 78, -25, 40, -6)
 
 [node name="Turret" type="Sprite2D"]
 z_index = 1
@@ -228,70 +120,20 @@ texture = SubResource("CanvasTexture_i14q3")
 offset = Vector2(-20, 0)
 script = SubResource("GDScript_p01b1")
 
-[node name="MissileTrace" type="Line2D" parent="."]
-top_level = true
-points = PackedVector2Array(0, 0, 0, 0)
-width = 5.0
-script = SubResource("GDScript_ahrwq")
-
 [node name="TurretDiffuseShadow" type="Sprite2D" parent="."]
 z_index = -1
 material = SubResource("CanvasItemMaterial_gsfhd")
-position = Vector2(-40, 0)
-scale = Vector2(5.1875, 3.65625)
+position = Vector2(-28.1348, 0)
+scale = Vector2(2.81445, 2.15625)
 texture = SubResource("GradientTexture2D_n4vlu")
 offset = Vector2(5, 0)
 
-[node name="BarrelClippingMask" type="Polygon2D" parent="."]
-clip_children = 1
-position = Vector2(-20, 0)
-polygon = PackedVector2Array(484, 53, 484, -52, 129, -52, 128, -38, 114, -37, 113, -39, 96, -31, 97.0936, -22.1603, 102, -22, 105, -15, 110, -12, 111, 12, 105, 14, 102, 22, 96, 23, 97, 30, 114, 39, 115, 37, 127.854, 37.8662, 128, 53)
-
-[node name="BarrelSprite" type="Sprite2D" parent="BarrelClippingMask"]
-position = Vector2(242, 0)
-texture = ExtResource("3_bvbb8")
-script = SubResource("GDScript_gw08p")
-
-[node name="MuzzleFlash" type="Node2D" parent="."]
-visible = false
-position = Vector2(376, 0)
-script = SubResource("GDScript_bxduc")
-
-[node name="ShotFlashUpper" type="PointLight2D" parent="MuzzleFlash"]
-shadow_enabled = true
-shadow_filter = 1
-shadow_filter_smooth = 2.0
-shadow_item_cull_mask = 2
-texture = SubResource("GradientTexture2D_x6wma")
-texture_scale = 50.0
-
-[node name="ShotFlashLower" type="PointLight2D" parent="MuzzleFlash"]
-shadow_enabled = true
-shadow_filter = 1
-shadow_filter_smooth = 2.0
-texture = SubResource("GradientTexture2D_x6wma")
-texture_scale = 25.0
-
-[node name="Sprite2D" type="Sprite2D" parent="MuzzleFlash"]
-material = SubResource("CanvasItemMaterial_30eoa")
-scale = Vector2(10, 10)
-texture = SubResource("GradientTexture2D_30eye")
+[node name="Barrel" parent="." instance=ExtResource("3_xvw11")]
 
 [node name="CastShadow" type="LightOccluder2D" parent="."]
 position = Vector2(-40, 0)
 occluder = SubResource("OccluderPolygon2D_5ssf0")
 occluder_light_mask = 2
-
-[node name="Sparks" type="GPUParticles2D" parent="."]
-position = Vector2(395, 0)
-scale = Vector2(5, 5)
-emitting = false
-amount = 4
-process_material = SubResource("ParticleProcessMaterial_kccet")
-lifetime = 0.2
-one_shot = true
-explosiveness = 1.0
-fixed_fps = 0
 
 [node name="AttackCooldown" type="Timer" parent="."]
 wait_time = 0.3
