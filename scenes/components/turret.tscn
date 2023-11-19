@@ -76,9 +76,9 @@ func check_rotation_and_aim( delta ) -> bool:
 
 
 func shoot():
-	print(\"shooting\")
+	print( \"shooting at \", target )
 	cooldown.start()
-	trace.shoot( flash.position.distance_to(target.position) )
+#	trace.shoot( flash.position.distance_to(target.position) )
 	flash.flash()
 	sparks.restart()
 	var tween := create_tween()
